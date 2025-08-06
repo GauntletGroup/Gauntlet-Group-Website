@@ -293,7 +293,7 @@ function App() {
             {[
               { value: '100%', label: 'WEEE Compliant', delay: '1s' },
               { value: '24/7', label: 'Tech Support', delay: '1.2s' },
-              { value: '500+', label: 'Projects Delivered', delay: '1.4s' }
+              { value: 'FREE', label: 'Initial Assessment', delay: '1.4s' }
             ].map((stat, index) => (
               <div 
                 key={index}

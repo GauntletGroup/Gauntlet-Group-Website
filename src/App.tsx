@@ -126,7 +126,7 @@ function App() {
             <div className="flex items-center">
               <div className="flex-shrink-0 group">
                 <img 
-                  src="/Gauntlet Brand Transparent Background.png" 
+                  src="/Gauntlet Brand Transparent Background copy.png" 
                   alt="Gauntlet Group" 
                   className="h-12 w-auto transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_20px_rgba(184,134,11,0.5)]"
                 />
@@ -237,7 +237,7 @@ function App() {
             <div className="flex flex-col items-center justify-center space-y-8">
               <div className="relative group">
                 <img 
-                  src="/Gauntlet Brand Transparent Background.png" 
+                  src="/Gauntlet Brand Transparent Background copy.png" 
                   alt="Gauntlet Group Logo" 
                   className="h-32 md:h-40 lg:h-48 w-auto transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(245,158,11,0.6)] animate-float"
                 />
@@ -600,7 +600,7 @@ function App() {
             <div className="md:col-span-2">
               <div className="mb-6">
                 <img 
-                  src="/Gauntlet Brand Transparent Background.png" 
+                  src="/Gauntlet Brand Transparent Background copy.png" 
                   alt="Gauntlet Group" 
                   className="h-16 w-auto hover:scale-110 transition-transform duration-300"
                 />

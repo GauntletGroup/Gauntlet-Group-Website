@@ -139,7 +139,7 @@ function App() {
                 {['About', 'Services', 'Why Us', 'Contact'].map((item, index) => (
                   <a 
                     key={item}
-                    href={`#${item.toLowerCase().replace(' ', '-')}`}
+                    href={`#${item === 'Why Us' ? 'why-choose-us' : item.toLowerCase().replace(' ', '-')}`}
                     className="relative text-gray-300 hover:text-amber-400 px-3 py-2 text-sm font-medium transition-all duration-300 group"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
@@ -180,7 +180,7 @@ function App() {
             {['About', 'Services', 'Why Us', 'Contact'].map((item, index) => (
               <a 
                 key={item}
-                href={`#${item.toLowerCase().replace(' ', '-')}`} 
+                href={`#${item === 'Why Us' ? 'why-choose-us' : item.toLowerCase().replace(' ', '-')}`}
                 className="text-gray-300 hover:text-amber-400 block px-3 py-2 text-base font-medium transition-all duration-300 transform hover:translate-x-2"
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => setIsMenuOpen(false)}

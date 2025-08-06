@@ -547,9 +547,9 @@ function App() {
                 <h3 className="text-2xl font-bold text-white mb-8">Alternative Contact Methods</h3>
                 <div className="space-y-8">
                   {[
-                    { icon: Mail, title: 'Email', details: ['contact@gauntlet-group.com', 'support@gauntletgroup.com'], color: 'amber' },
-                    { icon: Phone, title: 'Phone', details: ['+44 7800 721443', '+1 (555) 987-6543'], color: 'emerald' },
-                    { icon: MapPin, title: 'Office', details: ['123 Tech Plaza, Suite 400', 'Innovation District', 'City, State 12345'], color: 'blue' }
+                    { icon: Mail, title: 'Email', details: ['contact@gauntlet-group.com'], color: 'amber' },
+                    { icon: Phone, title: 'Phone', details: ['+44 7800 721443'], color: 'emerald' },
+                    { icon: MapPin, title: 'Office', details: ['Peterborough'], color: 'blue' }
                   ].map((contact, index) => (
                     <div key={index} className="flex items-start space-x-6 group">
                       <div className={`bg-gradient-to-br from-${contact.color}-500/20 to-${contact.color === 'amber' ? 'blue' : contact.color === 'emerald' ? 'green' : 'indigo'}-600/20 p-4 rounded-xl border border-${contact.color}-500/30 group-hover:scale-110 transition-transform duration-300`}>

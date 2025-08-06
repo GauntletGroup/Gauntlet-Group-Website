@@ -549,7 +549,7 @@ function App() {
                   {[
                     { icon: Mail, title: 'Email', details: ['contact@gauntlet-group.com'], color: 'amber' },
                     { icon: Phone, title: 'Phone', details: ['+44 7800 721443'], color: 'emerald' },
-                    { icon: MapPin, title: 'Office', details: ['Peterborough'], color: 'blue' }
+                    { icon: MapPin, title: 'Office', details: ['Peterborough', 'United Kingdom'], color: 'blue' }
                   ].map((contact, index) => (
                     <div key={index} className="flex items-start space-x-6 group">
                       <div className={`bg-gradient-to-br from-${contact.color}-500/20 to-${contact.color === 'amber' ? 'blue' : contact.color === 'emerald' ? 'green' : 'indigo'}-600/20 p-4 rounded-xl border border-${contact.color}-500/30 group-hover:scale-110 transition-transform duration-300`}>

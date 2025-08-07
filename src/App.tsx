@@ -167,6 +167,10 @@ function App() {
                 <div className="bg-gradient-to-br from-emerald-500/20 to-green-600/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
                   <Recycle className="text-emerald-400" size={40} />
                 </div>
+                <div className="inline-flex items-center bg-gray-800/50 backdrop-blur-sm border border-emerald-500/30 rounded-full px-4 py-2 mb-4">
+                  <Shield className="text-emerald-400 mr-2" size={16} />
+                  <span className="text-emerald-400 text-sm font-medium">ISO Certified</span>
+                </div>
                 <h2 className="text-3xl font-bold text-white mb-4">WEEE Waste Management Services</h2>
                 <p className="text-gray-400 max-w-2xl mx-auto">
                   Comprehensive electronic waste management solutions that ensure compliance, security, and environmental responsibility.

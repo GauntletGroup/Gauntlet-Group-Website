@@ -720,6 +720,15 @@ function App() {
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={16} />
                 </a>
               </div>
+
+              {/* ISO Certification */}
+              <div className="mt-8 animate-fade-in-up" style={{ animationDelay: '1s' }}>
+                <img 
+                  src="/ISO27701COMBINED.jpg" 
+                  alt="ISO 27701 Certification" 
+                  className="w-48 h-auto rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-700/50 hover:border-amber-500/50"
+                />
+              </div>
             </div>
           </div>
         </div>

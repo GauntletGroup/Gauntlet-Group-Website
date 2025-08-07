@@ -33,6 +33,7 @@ function App() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    contactNumber: '',
     company: '',
     message: ''
   });
@@ -66,7 +67,7 @@ function App() {
     e.preventDefault();
     console.log('Form submitted:', formData);
     alert('Thank you for your inquiry! We\'ll get back to you soon.');
-    setFormData({ name: '', email: '', company: '', message: '' });
+    setFormData({ name: '', email: '', contactNumber: '', company: '', message: '' });
   };
 
   // Floating particles component
@@ -596,6 +597,7 @@ function App() {
                 {[
                   { name: 'name', label: 'Full Name', type: 'text', required: true },
                   { name: 'email', label: 'Email Address', type: 'email', required: true },
+                  { name: 'contactNumber', label: 'Contact Number', type: 'tel', required: false },
                   { name: 'company', label: 'Company Name', type: 'text', required: false }
                 ].map((field, index) => (
                   <div key={field.name} className="group">

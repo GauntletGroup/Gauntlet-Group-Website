@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from './lib/supabase';
+import type { ContactInquiry } from './lib/supabase';
 import { 
   Monitor, 
   Recycle, 
@@ -30,6 +32,7 @@ function App() {
   const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -63,11 +66,38 @@ function App() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Thank you for your inquiry! We\'ll get back to you soon.');
-    setFormData({ name: '', email: '', contactNumber: '', company: '', message: '' });
+    
+    setIsSubmitting(true);
+    
+    try {
+      const inquiryData: ContactInquiry = {
+        name: formData.name,
+        email: formData.email,
+        contact_number: formData.contactNumber || null,
+        company: formData.company || null,
+        message: formData.message
+      };
+
+      const { error } = await supabase
+        .from('contact_inquiries')
+        .insert([inquiryData]);
+
+      if (error) {
+        throw error;
+      }
+
+      // Success - clear form and show success message
+      setFormData({ name: '', email: '', contactNumber: '', company: '', message: '' });
+      alert('Thank you for your inquiry! We\'ll get back to you soon.');
+      
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your inquiry. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Floating particles component
@@ -635,9 +665,12 @@ function App() {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-amber-500 to-blue-700 text-white py-4 px-8 rounded-xl font-semibold hover:from-amber-400 hover:to-blue-600 transition-all duration-500 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-gray-900 shadow-lg hover:shadow-amber-500/50 relative overflow-hidden group"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-amber-500 to-blue-700 text-white py-4 px-8 rounded-xl font-semibold hover:from-amber-400 hover:to-blue-600 transition-all duration-500 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-gray-900 shadow-lg hover:shadow-amber-500/50 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  <span className="relative z-10">Submit Inquiry</span>
+                  <span className="relative z-10">
+                    {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
+                  </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-blue-600 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 </button>
               </form>

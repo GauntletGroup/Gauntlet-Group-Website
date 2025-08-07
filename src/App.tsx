@@ -27,6 +27,7 @@ import {
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
@@ -119,6 +120,96 @@ function App() {
         }}
       />
 
+      {/* WEEE Services Modal */}
+      {isWEEEModalOpen && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 rounded-2xl border border-gray-700 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+            <button
+              onClick={() => setIsWEEEModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-300 z-10"
+            >
+              <X size={24} />
+            </button>
+            
+            <div className="p-8">
+              <div className="text-center mb-8">
+                <div className="bg-gradient-to-br from-emerald-500/20 to-green-600/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Recycle className="text-emerald-400" size={40} />
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">WEEE Waste Management Services</h2>
+                <p className="text-gray-400 max-w-2xl mx-auto">
+                  Comprehensive electronic waste management solutions that ensure compliance, security, and environmental responsibility.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {[
+                  {
+                    title: 'Zero Cost Disposal',
+                    description: 'Complete electronic waste disposal at no cost to your business, ensuring proper recycling and compliance.',
+                    icon: '💰'
+                  },
+                  {
+                    title: 'Asset Recovery',
+                    description: 'Maximize value from your old equipment through our comprehensive asset recovery programs.',
+                    icon: '🔄'
+                  },
+                  {
+                    title: 'Data Sanitization',
+                    description: 'Secure data destruction services ensuring complete removal of sensitive information from all devices.',
+                    icon: '🔒'
+                  },
+                  {
+                    title: 'Nationwide Collection',
+                    description: 'Convenient pickup services across the UK, making electronic waste disposal effortless for your business.',
+                    icon: '🚛'
+                  },
+                  {
+                    title: 'Hard Drive & Media Shredding',
+                    description: 'Physical destruction of storage devices ensuring complete data security and regulatory compliance.',
+                    icon: '🗂️'
+                  },
+                  {
+                    title: 'IT Refurbishment & Redeploy',
+                    description: 'Extend equipment lifecycle through professional refurbishment and redeployment services.',
+                    icon: '🔧'
+                  },
+                  {
+                    title: 'We Collect Everything',
+                    description: 'From computers to mobile phones, we handle all types of electronic equipment and components.',
+                    icon: '📱'
+                  }
+                ].map((service, index) => (
+                  <div 
+                    key={index}
+                    className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group"
+                  >
+                    <div className="text-3xl mb-4">{service.icon}</div>
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                      {service.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 text-center">
+                <button
+                  onClick={() => {
+                    setIsWEEEModalOpen(false);
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="bg-gradient-to-r from-emerald-500 to-green-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-emerald-400 hover:to-green-600 transition-all duration-300 transform hover:scale-105"
+                >
+                  Get Your Free WEEE Assessment
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-xl z-40 border-b border-cyan-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -412,7 +503,16 @@ function App() {
                 
                 <div className={`flex items-center text-${service.color}-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0`}>
                   <span className="text-sm font-medium">Learn More</span>
-                  <ArrowRight className="ml-2 group-hover:translate-x-2 transition-transform duration-300" size={16} />
+                  <ArrowRight 
+                    className="ml-2 group-hover:translate-x-2 transition-transform duration-300 cursor-pointer" 
+                    size={16}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (service.title === 'WEEE Waste Management') {
+                        setIsWEEEModalOpen(true);
+                      }
+                    }}
+                  />
                 </div>
               </div>
             ))}

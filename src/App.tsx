@@ -281,39 +281,9 @@ function App() {
                     icon: '🌐'
                   },
                   {
-                    title: 'Cloud Infrastructure',
-                    description: 'Scalable cloud solutions including AWS, Azure, and Google Cloud setup, migration, and optimization.',
-                    icon: '☁️'
-                  },
-                  {
-                    title: 'Digital Transformation',
-                    description: 'Complete business digitization strategies to modernize operations and improve efficiency across all departments.',
-                    icon: '🚀'
-                  },
-                  {
-                    title: 'IT Security Consulting',
-                    description: 'Comprehensive cybersecurity assessments, implementation of security protocols, and ongoing monitoring solutions.',
-                    icon: '🔐'
-                  },
-                  {
-                    title: 'Database Management',
-                    description: 'Database design, optimization, migration, and maintenance services for improved data performance and reliability.',
-                    icon: '🗄️'
-                  },
-                  {
-                    title: 'System Integration',
-                    description: 'Seamless integration of existing systems with new technologies to create unified, efficient workflows.',
-                    icon: '🔗'
-                  },
-                  {
-                    title: 'Mobile App Development',
-                    description: 'Native and cross-platform mobile applications designed for optimal user experience and business growth.',
-                    icon: '📱'
-                  },
-                  {
-                    title: '24/7 Technical Support',
-                    description: 'Round-the-clock technical assistance and maintenance to ensure your systems run smoothly without interruption.',
-                    icon: '🛠️'
+                    title: 'Chatbot for your website',
+                    description: 'Intelligent AI-powered chatbots that enhance customer engagement, provide 24/7 support, and streamline user interactions on your website.',
+                    icon: '🤖'
                   }
                 ].map((service, index) => (
                   <div 

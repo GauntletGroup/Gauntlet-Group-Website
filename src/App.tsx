@@ -30,6 +30,7 @@ import {
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
+  const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -245,6 +246,107 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Tech Consulting Services Modal */}
+      {isTechModalOpen && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 rounded-2xl border border-gray-700 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+            <button
+              onClick={() => setIsTechModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-300 z-10"
+            >
+              <X size={24} />
+            </button>
+            
+            <div className="p-8">
+              <div className="text-center mb-8">
+                <div className="bg-gradient-to-br from-amber-500/20 to-blue-600/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Monitor className="text-amber-400" size={40} />
+                </div>
+                <div className="inline-flex items-center bg-gray-800/50 backdrop-blur-sm border border-amber-500/30 rounded-full px-4 py-2 mb-4">
+                  <Zap className="text-amber-400 mr-2" size={16} />
+                  <span className="text-amber-400 text-sm font-medium">Expert Solutions</span>
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">Tech Consulting Services</h2>
+                <p className="text-gray-400 max-w-2xl mx-auto">
+                  Comprehensive technology solutions designed to drive your business forward with cutting-edge innovation and expert guidance.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {[
+                  {
+                    title: 'Website Build & Deployment',
+                    description: 'Custom website development from concept to launch, including responsive design, modern frameworks, and seamless deployment.',
+                    icon: '🌐'
+                  },
+                  {
+                    title: 'Cloud Infrastructure',
+                    description: 'Scalable cloud solutions including AWS, Azure, and Google Cloud setup, migration, and optimization.',
+                    icon: '☁️'
+                  },
+                  {
+                    title: 'Digital Transformation',
+                    description: 'Complete business digitization strategies to modernize operations and improve efficiency across all departments.',
+                    icon: '🚀'
+                  },
+                  {
+                    title: 'IT Security Consulting',
+                    description: 'Comprehensive cybersecurity assessments, implementation of security protocols, and ongoing monitoring solutions.',
+                    icon: '🔐'
+                  },
+                  {
+                    title: 'Database Management',
+                    description: 'Database design, optimization, migration, and maintenance services for improved data performance and reliability.',
+                    icon: '🗄️'
+                  },
+                  {
+                    title: 'System Integration',
+                    description: 'Seamless integration of existing systems with new technologies to create unified, efficient workflows.',
+                    icon: '🔗'
+                  },
+                  {
+                    title: 'Mobile App Development',
+                    description: 'Native and cross-platform mobile applications designed for optimal user experience and business growth.',
+                    icon: '📱'
+                  },
+                  {
+                    title: '24/7 Technical Support',
+                    description: 'Round-the-clock technical assistance and maintenance to ensure your systems run smoothly without interruption.',
+                    icon: '🛠️'
+                  }
+                ].map((service, index) => (
+                  <div 
+                    key={index}
+                    className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 hover:border-amber-500/50 transition-all duration-300 group"
+                  >
+                    <div className="text-3xl mb-4">{service.icon}</div>
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-400 transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                      {service.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 text-center">
+                <button
+                  onClick={() => {
+                    setIsTechModalOpen(false);
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="bg-gradient-to-r from-amber-500 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-amber-400 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
+                >
+                  Get Your Free Tech Consultation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-xl z-40 border-b border-cyan-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -543,7 +645,9 @@ function App() {
                     size={16}
                     onClick={(e) => {
                       e.preventDefault();
-                      if (service.title === 'WEEE Waste Management') {
+                      if (service.title === 'Tech Consulting') {
+                        setIsTechModalOpen(true);
+                      } else if (service.title === 'WEEE Waste Management') {
                         setIsWEEEModalOpen(true);
                       }
                     }}

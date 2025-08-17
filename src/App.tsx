@@ -760,7 +760,7 @@ function App() {
                 <h3 className="text-2xl font-bold text-white mb-8">Alternative Contact Methods</h3>
                 <div className="space-y-8">
                   {[
-                    { icon: Mail, title: 'Email', details: ['contact@gauntlet-group.com'], color: 'amber' },
+                    { icon: Mail, title: 'Email', details: ['imran.ishaq@gauntlet-group.com'], color: 'amber' },
                     { icon: Phone, title: 'Phone', details: ['+44 7800 721443'], color: 'emerald' },
                     { icon: MapPin, title: 'Office', details: ['Peterborough', 'United Kingdom'], color: 'blue' }
                   ].map((contact, index) => (

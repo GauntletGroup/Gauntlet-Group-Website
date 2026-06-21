@@ -2,14 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';
-
+ 
 interface ContactProps {
   formData: any;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
 }
-
+ 
 export const Contact: React.FC<ContactProps> = ({ 
   formData, 
   handleInputChange, 
@@ -21,7 +21,7 @@ export const Contact: React.FC<ContactProps> = ({
     { icon: Phone, title: 'Phone', detail: '+44 7800 721443', color: 'emerald' },
     { icon: MapPin, title: 'Office', detail: 'Peterborough, United Kingdom', color: 'blue' }
   ];
-
+ 
   return (
     <section id="contact" className="py-24 bg-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -35,7 +35,7 @@ export const Contact: React.FC<ContactProps> = ({
             Get in <span className="bg-gradient-to-r from-amber-400 to-blue-500 bg-clip-text text-transparent">Touch</span>
           </motion.h2>
         </div>
-
+ 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Form */}
           <motion.div 
@@ -92,7 +92,7 @@ export const Contact: React.FC<ContactProps> = ({
                   />
                 </div>
               </div>
-
+ 
               <div className="space-y-3">
                 <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Message *</label>
                 <textarea
@@ -104,7 +104,7 @@ export const Contact: React.FC<ContactProps> = ({
                   className="w-full bg-[#151B28] border border-white/10 rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-amber-500 outline-none transition-all resize-none placeholder:text-gray-600"
                 />
               </div>
-
+ 
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -116,7 +116,7 @@ export const Contact: React.FC<ContactProps> = ({
               </motion.button>
             </form>
           </motion.div>
-
+ 
           {/* Info */}
           <div className="space-y-12">
             <motion.div 
@@ -148,7 +148,7 @@ export const Contact: React.FC<ContactProps> = ({
                 })}
               </div>
             </motion.div>
-
+ 
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -157,11 +157,11 @@ export const Contact: React.FC<ContactProps> = ({
             >
               <h4 className="text-white font-bold text-xl mb-3">Ready to Get Started?</h4>
               <p className="text-gray-400 mb-6 leading-relaxed">Schedule a free consultation to discuss your technology and sustainability goals.</p>
-              <a href="#contact" className="text-amber-400 font-bold inline-flex items-center hover:translate-x-2 transition-transform">
+              <a href="#book-call" className="text-amber-400 font-bold inline-flex items-center hover:translate-x-2 transition-transform">
                 Book a consultation <ArrowRight className="ml-2" size={18} />
               </a>
             </motion.div>
-
+ 
             {/* Compliance Logo */}
             <motion.div 
               initial={{ opacity: 0 }}

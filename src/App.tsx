@@ -14,6 +14,7 @@ import { About } from './components/sections/About';
 import { Services } from './components/sections/Services';
 import { WhyUs } from './components/sections/WhyUs';
 import { Process } from './components/sections/Process';
+import { BookCall } from './components/sections/BookCall';
 import { Contact } from './components/sections/Contact';
 import { ImpactWidget } from './components/ui/ImpactWidget';
 
@@ -85,6 +86,7 @@ function App() {
         <Services onServiceClick={handleServiceClick} />
         <Process />
         <WhyUs />
+        <BookCall />
         <Contact 
           formData={formData} 
           handleInputChange={handleInputChange} 

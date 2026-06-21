@@ -1,14 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-
+ 
 interface NavbarProps {
   isMenuOpen: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
 }
-
+ 
 export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => {
-  const navItems = ['About', 'Services', 'Why Us', 'Contact'];
-
+  const navItems = ['About', 'Services', 'Why Us', 'Book Call', 'Contact'];
+ 
   return (
     <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-xl z-40 border-b border-cyan-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => 
               </motion.a>
             </div>
           </div>
-
+ 
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
@@ -70,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => 
           </div>
         </div>
       </div>
-
+ 
       {/* Mobile Navigation */}
       <motion.div 
         initial={false}

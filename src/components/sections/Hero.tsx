@@ -3,13 +3,12 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Zap, ArrowRight, MousePointer2 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { FloatingParticles, FloatingTechIcons } from '../ui/Particles';
-import { openCalendlyPopup } from '../../hooks/useCalendlyScript';
- 
+
 export const Hero: React.FC = () => {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
- 
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -20,12 +19,12 @@ export const Hero: React.FC = () => {
       }
     }
   };
- 
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
   };
- 
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden mesh-gradient">
       {/* Background Elements */}
@@ -46,7 +45,7 @@ export const Hero: React.FC = () => {
           className="absolute bottom-20 left-20 w-24 h-24 border border-blue-400/20 rotate-12" 
         />
       </div>
- 
+
       <motion.div 
         style={{ y: y1, opacity }}
         variants={containerVariants}
@@ -73,7 +72,7 @@ export const Hero: React.FC = () => {
             </h1>
           </div>
         </motion.div>
- 
+
         {/* Badge */}
         <motion.div variants={itemVariants} className="inline-flex items-center bg-gray-800/30 backdrop-blur-sm border border-cyan-500/30 rounded-full px-6 py-2 mb-8">
           <Zap className="text-amber-400 mr-2" size={16} />
@@ -93,7 +92,7 @@ export const Hero: React.FC = () => {
         
         {/* CTAs */}
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button variant="primary" onClick={() => openCalendlyPopup(import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com/imran-ishaq-gauntlet-group/30min')}>
+          <Button variant="primary" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
             Get a Free Assessment <ArrowRight className="ml-2 inline" size={20} />
           </Button>
           <Button variant="outline" onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
@@ -115,7 +114,7 @@ export const Hero: React.FC = () => {
           ))}
         </motion.div>
       </motion.div>
- 
+
       {/* Scroll indicator */}
       <motion.div 
         animate={{ y: [0, 10, 0] }}

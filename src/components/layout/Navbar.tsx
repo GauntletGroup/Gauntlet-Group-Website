@@ -7,7 +7,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => {
-  const navItems = ['About', 'Services', 'Why Us', 'Contact'];
+  const navItems = ['About', 'Services', 'Why Us', 'Book Call', 'Contact'];
 
   return (
     <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-xl z-40 border-b border-cyan-500/20">

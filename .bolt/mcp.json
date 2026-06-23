@@ -2,9 +2,6 @@
   "mcpServers": {
     "github": {
       "enabled": true
-    },
-    "vite_calendly_url": {
-      "enabled": false
     }
   }
 }

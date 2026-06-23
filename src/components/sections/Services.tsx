@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Monitor, Recycle, Shield, ArrowRight, Database } from 'lucide-react';
 
 interface Service {
@@ -15,6 +15,8 @@ interface ServicesProps {
 }
 
 export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   const services: Service[] = [
     {
       icon: Monitor,
@@ -46,7 +48,7 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="inline-flex items-center bg-gray-800/50 backdrop-blur-sm border border-cyan-500/30 rounded-full px-6 py-2 mb-8"
@@ -56,20 +58,20 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
           </motion.div>
           
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
             className="text-4xl md:text-5xl font-bold text-white mb-6"
           >
             Comprehensive <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">Tech Solutions</span>
           </motion.h2>
           
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: shouldReduceMotion ? 0 : 0.3 }}
             className="text-lg text-gray-400 max-w-2xl mx-auto"
           >
             Empowering your business through technological excellence and environmental stewardship.
@@ -88,11 +90,11 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: service.delay }}
-                whileHover={{ y: -10 }}
+                transition={{ delay: shouldReduceMotion ? 0 : service.delay }}
+                whileHover={shouldReduceMotion ? {} : { y: -10 }}
                 className="group bg-[#0B1120] p-8 rounded-3xl border border-white/5 relative overflow-hidden cursor-pointer transition-all duration-500"
                 onClick={() => onServiceClick(service.title)}
               >

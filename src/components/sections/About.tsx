@@ -1,18 +1,20 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Globe } from 'lucide-react';
 
 export const About: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="about" className="py-24 bg-gray-900 relative overflow-hidden">
       <div className="absolute inset-0 bg-circuit-pattern opacity-5" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.8 }}
           className="text-center"
         >
           <div className="inline-flex items-center bg-gray-800/50 backdrop-blur-sm border border-cyan-500/30 rounded-full px-6 py-2 mb-8">

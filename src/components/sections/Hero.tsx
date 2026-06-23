@@ -1,28 +1,30 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { Zap, ArrowRight, MousePointer2 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { FloatingParticles, FloatingTechIcons } from '../ui/Particles';
+import { openCalendlyPopup } from '../../hooks/useCalendlyScript';
 
 export const Hero: React.FC = () => {
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const shouldReduceMotion = useReducedMotion();
+  const y1 = shouldReduceMotion ? 0 : useTransform(scrollY, [0, 500], [0, 200]);
+  const opacity = shouldReduceMotion ? 1 : useTransform(scrollY, [0, 300], [1, 0]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: shouldReduceMotion ? 0 : 0.2,
+        delayChildren: shouldReduceMotion ? 0 : 0.3
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { y: shouldReduceMotion ? 0 : 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: shouldReduceMotion ? 0 : 0.8, ease: "easeOut" } }
   };
 
   return (
@@ -30,24 +32,28 @@ export const Hero: React.FC = () => {
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-black/40" />
-        <FloatingParticles />
-        <FloatingTechIcons />
+        {!shouldReduceMotion && <FloatingParticles />}
+        {!shouldReduceMotion && <FloatingTechIcons />}
         
         {/* Decorative elements */}
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-20 right-20 w-32 h-32 border border-amber-400/20 rotate-45" 
-        />
-        <motion.div 
-          animate={{ y: [0, 20, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-20 left-20 w-24 h-24 border border-blue-400/20 rotate-12" 
-        />
+        {!shouldReduceMotion && (
+          <>
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute top-20 right-20 w-32 h-32 border border-amber-400/20 rotate-45" 
+            />
+            <motion.div 
+              animate={{ y: [0, 20, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute bottom-20 left-20 w-24 h-24 border border-blue-400/20 rotate-12" 
+            />
+          </>
+        )}
       </div>
 
       <motion.div 
-        style={{ y: y1, opacity }}
+        style={shouldReduceMotion ? { opacity: 1 } : { y: y1, opacity }}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -57,7 +63,7 @@ export const Hero: React.FC = () => {
         <motion.div variants={itemVariants} className="mb-12">
           <div className="flex flex-col items-center justify-center space-y-6">
             <motion.div 
-              whileHover={{ scale: 1.05 }}
+              whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
               className="relative group"
             >
               <img 
@@ -92,13 +98,14 @@ export const Hero: React.FC = () => {
         
         {/* CTAs */}
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button variant="primary" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+          <Button variant="primary" magnetic={true} onClick={() => openCalendlyPopup(import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com/imran-ishaq-gauntlet-group/30min')}>
             Get a Free Assessment <ArrowRight className="ml-2 inline" size={20} />
           </Button>
-          <Button variant="outline" onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
+          <Button variant="outline" magnetic={true} onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
             Explore Services
           </Button>
         </motion.div>
+
         
         {/* Stats */}
         <motion.div variants={itemVariants} className="grid grid-cols-3 gap-8 mt-20 max-w-2xl mx-auto">

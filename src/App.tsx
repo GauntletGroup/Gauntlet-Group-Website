@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from './lib/supabase';
 import type { ContactInquiry } from './lib/supabase';
 import { Recycle, Shield, Monitor, Zap } from 'lucide-react';
@@ -14,6 +15,7 @@ import { About } from './components/sections/About';
 import { Services } from './components/sections/Services';
 import { WhyUs } from './components/sections/WhyUs';
 import { Process } from './components/sections/Process';
+import { BookCall } from './components/sections/BookCall';
 import { Contact } from './components/sections/Contact';
 import { ImpactWidget } from './components/ui/ImpactWidget';
 
@@ -22,6 +24,7 @@ function App() {
   const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -30,15 +33,85 @@ function App() {
     message: ''
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const [weeeTab, setWeeeTab] = useState<'overview' | 'process' | 'security'>('overview');
+  const [techTab, setTechTab] = useState<'overview' | 'web' | 'ai'>('overview');
+
+  const validateField = (name: string, value: string) => {
+    let error = '';
+    if (name === 'name') {
+      if (!value.trim()) {
+        error = 'Full name is required';
+      } else if (value.trim().length < 2) {
+        error = 'Name must be at least 2 characters';
+      }
+    } else if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!value.trim()) {
+        error = 'Email address is required';
+      } else if (!emailRegex.test(value.trim())) {
+        error = 'Please enter a valid email address';
+      }
+    } else if (name === 'message') {
+      if (!value.trim()) {
+        error = 'Message is required';
+      } else if (value.trim().length < 10) {
+        error = 'Message must be at least 10 characters';
+      }
+    } else if (name === 'contactNumber') {
+      if (value.trim() && !/^\+?[0-9\s-]{7,15}$/.test(value.trim())) {
+        error = 'Please enter a valid contact number';
+      }
+    }
+    return error;
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    if (touched[name]) {
+      const fieldError = validateField(name, value);
+      setErrors(prev => ({ ...prev, [name]: fieldError }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const fieldError = validateField(name, value);
+    setErrors(prev => ({ ...prev, [name]: fieldError }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Mark all as touched and run full validation
+    const formFields = ['name', 'email', 'message', 'contactNumber'];
+    const newErrors: Record<string, string> = {};
+    const newTouched: Record<string, boolean> = {};
+    let hasErrors = false;
+
+    formFields.forEach(field => {
+      newTouched[field] = true;
+      const fieldVal = formData[field as keyof typeof formData] || '';
+      const fieldErr = validateField(field, fieldVal);
+      if (fieldErr) {
+        newErrors[field] = fieldErr;
+        hasErrors = true;
+      }
+    });
+
+    setTouched(newTouched);
+    setErrors(newErrors);
+
+    if (hasErrors) return;
+
     setIsSubmitting(true);
     try {
       const inquiryData: ContactInquiry = {
@@ -56,17 +129,12 @@ function App() {
       if (error) throw error;
 
       setFormData({ name: '', email: '', contactNumber: '', company: '', message: '' });
+      setTouched({});
+      setErrors({});
       alert('Thank you for your inquiry! We\'ll get back to you soon.');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error submitting form:', error);
-      const isNetworkError = error instanceof TypeError && error.message === 'Failed to fetch';
-      if (isNetworkError) {
-        // Network unreachable (e.g. preview sandbox) — treat as success since data would persist in production
-        setFormData({ name: '', email: '', contactNumber: '', company: '', message: '' });
-        alert('Thank you for your inquiry! We\'ll get back to you soon.');
-      } else {
-        alert('There was an error submitting your inquiry. Please try again.');
-      }
+      alert('There was an error submitting your inquiry. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -74,8 +142,10 @@ function App() {
 
   const handleServiceClick = (title: string) => {
     if (title === 'Tech Consulting') {
+      setTechTab('overview');
       setIsTechModalOpen(true);
     } else if (title === 'WEEE Waste Management') {
+      setWeeeTab('overview');
       setIsWEEEModalOpen(true);
     }
   };
@@ -92,9 +162,13 @@ function App() {
         <Services onServiceClick={handleServiceClick} />
         <Process />
         <WhyUs />
+        <BookCall />
         <Contact 
           formData={formData} 
+          errors={errors}
+          touched={touched}
           handleInputChange={handleInputChange} 
+          handleBlur={handleBlur}
           handleSubmit={handleSubmit} 
           isSubmitting={isSubmitting} 
         />
@@ -107,70 +181,205 @@ function App() {
         </div>
       </footer>
 
-      {/* Modals */}
+      {/* Modals with Progressive Disclosure */}
       <Modal isOpen={isWEEEModalOpen} onClose={() => setIsWEEEModalOpen(false)}>
         <div className="p-8">
-          <div className="text-center mb-8">
-            <div className="bg-emerald-500/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Recycle className="text-emerald-400" size={40} />
+          <div className="text-center mb-6">
+            <div className="bg-emerald-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-500/30">
+              <Recycle className="text-emerald-400" size={32} />
             </div>
-            <div className="inline-flex items-center bg-gray-800/50 rounded-full px-4 py-1 mb-4 border border-emerald-500/30">
-              <Shield className="text-emerald-400 mr-2" size={14} />
-              <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">ISO Certified</span>
-            </div>
-            <h2 className="text-3xl font-bold text-white mb-4">WEEE Waste Management</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Comprehensive electronic waste management solutions ensuring compliance and security.
-            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">WEEE Waste Management</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {[
-              { title: 'Zero Cost Disposal', icon: '💰' },
-              { title: 'Asset Recovery', icon: '🔄' },
-              { title: 'Data Sanitization', icon: '🔒' },
-              { title: 'Nationwide Collection', icon: '🚛' },
-              { title: 'Hard Drive Shredding', icon: '🗂️' },
-              { title: 'IT Refurbishment', icon: '🔧' }
-            ].map((s, i) => (
-              <div key={i} className="bg-gray-800/50 p-4 rounded-xl border border-gray-700/50 flex items-center space-x-4">
-                <span className="text-2xl">{s.icon}</span>
-                <span className="font-bold text-white">{s.title}</span>
-              </div>
+          {/* Modal Tab Bar */}
+          <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
+            {(['overview', 'process', 'security'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setWeeeTab(tab)}
+                className={`relative px-5 py-3 text-sm font-semibold capitalize transition-colors duration-300
+                  ${weeeTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                `}
+              >
+                {tab}
+                {weeeTab === tab && (
+                  <motion.div 
+                    layoutId="weeeActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                  />
+                )}
+              </button>
             ))}
+          </div>
+
+          {/* Modal Tab Contents */}
+          <div className="min-h-[280px]">
+            {weeeTab === 'overview' && (
+              <div className="space-y-4">
+                <p className="text-gray-400 text-sm leading-relaxed text-center mb-6">
+                  Empowering the circular tech loop with zero-cost logistics and certified processing.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    { title: 'Zero Cost Disposal', icon: '💰', desc: 'No-charge collection & logistics for qualifying tech assets.' },
+                    { title: 'Asset Recovery', icon: '🔄', desc: 'Reclaim value from retired equipment with smart components.' },
+                    { title: 'IT Refurbishment', icon: '🔧', desc: 'Extend hardware lifecycles and reduce carbon emissions.' },
+                    { title: 'Nationwide Collection', icon: '🚛', desc: 'Fully tracked collection from any UK site.' }
+                  ].map((s, i) => (
+                    <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5 flex items-start space-x-4">
+                      <span className="text-3xl shrink-0">{s.icon}</span>
+                      <div>
+                        <h4 className="font-bold text-white text-sm">{s.title}</h4>
+                        <p className="text-gray-400 text-xs mt-1 leading-relaxed">{s.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {weeeTab === 'process' && (
+              <div className="space-y-4 max-w-xl mx-auto">
+                <p className="text-gray-400 text-sm leading-relaxed text-center mb-6">
+                  A structured, fully transparent lifecycle workflow from collection to materials recovery.
+                </p>
+                <div className="space-y-3">
+                  {[
+                    { step: '1. Secure Logistics', desc: 'Assets are collected in secure containers and transport manifests logged.' },
+                    { step: '2. Audited Processing', desc: 'All items are registered, weighed, and serialized into our database.' },
+                    { step: '3. Materials Sorting', desc: 'Metals, plastics, and reusable modules are sorted with zero-to-landfill policy.' }
+                  ].map((p, i) => (
+                    <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                      <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
+                      <p className="text-gray-400 text-xs leading-relaxed">{p.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {weeeTab === 'security' && (
+              <div className="space-y-4">
+                <p className="text-gray-400 text-sm leading-relaxed text-center mb-6">
+                  Absolute security guarantees protecting your corporate data and corporate IP.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    { title: 'Data Sanitization', icon: '🔒', desc: 'Military-grade data erasure conforming to NIST 800-88 guidelines.' },
+                    { title: 'Hard Drive Shredding', icon: '🗂️', desc: 'Physical crushing/shredding of disks to complete destruction.' },
+                    { title: 'Destruction Certificates', icon: '📝', desc: 'Serialized certificate lists provided for full regulatory auditing.' },
+                    { title: 'Asset De-branding', icon: '🏷️', desc: 'Removal of asset tags, company logos, and identity indicators.' }
+                  ].map((s, i) => (
+                    <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5 flex items-start space-x-4">
+                      <span className="text-3xl shrink-0">{s.icon}</span>
+                      <div>
+                        <h4 className="font-bold text-white text-sm">{s.title}</h4>
+                        <p className="text-gray-400 text-xs mt-1 leading-relaxed">{s.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </Modal>
 
       <Modal isOpen={isTechModalOpen} onClose={() => setIsTechModalOpen(false)}>
         <div className="p-8">
-          <div className="text-center mb-8">
-            <div className="bg-amber-500/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Monitor className="text-amber-400" size={40} />
+          <div className="text-center mb-6">
+            <div className="bg-amber-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-500/30">
+              <Monitor className="text-amber-400" size={32} />
             </div>
-            <div className="inline-flex items-center bg-gray-800/50 rounded-full px-4 py-1 mb-4 border border-amber-500/30">
-              <Zap className="text-amber-400 mr-2" size={14} />
-              <span className="text-amber-400 text-xs font-bold uppercase tracking-widest">Expert Solutions</span>
-            </div>
-            <h2 className="text-3xl font-bold text-white mb-4">Tech Consulting Services</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Tech Consulting Services</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
-              <div className="text-3xl mb-4">🌐</div>
-              <h3 className="text-xl font-bold text-white mb-2">Web Build & Deployment</h3>
-              <p className="text-gray-400 text-sm">Custom website development from concept to launch with modern frameworks.</p>
-            </div>
-            <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
-              <div className="text-3xl mb-4">🤖</div>
-              <h3 className="text-xl font-bold text-white mb-2">AI Chatbots</h3>
-              <p className="text-gray-400 text-sm">Intelligent chatbots to enhance engagement and streamline support.</p>
-            </div>
+          {/* Modal Tab Bar */}
+          <div className="flex justify-center border-b border-gray-800 mb-8 max-w-xs mx-auto">
+            {(['overview', 'web', 'ai'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setTechTab(tab)}
+                className={`relative px-5 py-3 text-sm font-semibold capitalize transition-colors duration-300
+                  ${techTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                `}
+              >
+                {tab}
+                {techTab === tab && (
+                  <motion.div 
+                    layoutId="techActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* Modal Tab Contents */}
+          <div className="min-h-[250px]">
+            {techTab === 'overview' && (
+              <div className="space-y-4 text-center">
+                <p className="text-gray-400 text-sm leading-relaxed max-w-md mx-auto mb-6">
+                  High-performance consulting to design, scale, and automate your technological capabilities.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-gray-800/30 p-6 rounded-2xl border border-white/5 text-left">
+                    <div className="text-2xl mb-2">🌐</div>
+                    <h4 className="font-bold text-white mb-1 text-sm">Full-Stack Development</h4>
+                    <p className="text-gray-400 text-xs leading-relaxed">Enterprise software architecture & modern web deployment.</p>
+                  </div>
+                  <div className="bg-gray-800/30 p-6 rounded-2xl border border-white/5 text-left">
+                    <div className="text-2xl mb-2">🤖</div>
+                    <h4 className="font-bold text-white mb-1 text-sm">AI Agent Deployments</h4>
+                    <p className="text-gray-400 text-xs leading-relaxed">Automating workflows and user support using advanced LLMs.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {techTab === 'web' && (
+              <div className="space-y-4 max-w-xl mx-auto">
+                <p className="text-gray-400 text-sm leading-relaxed text-center mb-6">
+                  We specialize in building next-gen web platforms powered by sub-second loading states and highly responsive layouts.
+                </p>
+                <div className="space-y-3">
+                  {[
+                    { feature: 'Modern Framework Stack', desc: 'Vite, React, TypeScript, Tailwind, Framer Motion, and Next.js.' },
+                    { feature: 'Database & Backend', desc: 'Supabase real-time databases, secure authorization, and serverless logic.' },
+                    { feature: 'SEO & Performance Scaling', desc: 'Server-side pre-rendering, lazy loading, and semantic compliance audits.' }
+                  ].map((f, i) => (
+                    <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                      <div className="font-bold text-amber-400 text-xs mb-1">{f.feature}</div>
+                      <p className="text-gray-400 text-xs leading-relaxed">{f.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {techTab === 'ai' && (
+              <div className="space-y-4 max-w-xl mx-auto">
+                <p className="text-gray-400 text-sm leading-relaxed text-center mb-6">
+                  Bring interactive automation into your workflows with intelligent chatbots and integrated API tooling.
+                </p>
+                <div className="space-y-3">
+                  {[
+                    { feature: 'Custom Knowledge Bases', desc: 'Embed your documentation libraries directly into conversational search utilities.' },
+                    { feature: 'Interactive API Integrations', desc: 'Automate tasks like calendar bookings, support ticket routing, or lead captures.' },
+                    { feature: 'Multi-platform support', desc: 'Omnichannel availability across Slack, Discord, web portals, and WhatsApp.' }
+                  ].map((f, i) => (
+                    <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                      <div className="font-bold text-blue-400 text-xs mb-1">{f.feature}</div>
+                      <p className="text-gray-400 text-xs leading-relaxed">{f.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </Modal>
     </div>
   );
 }
-
 export default App;

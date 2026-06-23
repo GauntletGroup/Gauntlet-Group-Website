@@ -1,33 +1,50 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 interface ContactProps {
   formData: any;
+  errors: Record<string, string>;
+  touched: Record<string, boolean>;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
 }
 
 export const Contact: React.FC<ContactProps> = ({ 
   formData, 
+  errors,
+  touched,
   handleInputChange, 
+  handleBlur,
   handleSubmit, 
   isSubmitting 
 }) => {
+  const shouldReduceMotion = useReducedMotion();
   const contactInfo = [
     { icon: Mail, title: 'Email', detail: 'imran.ishaq@gauntlet-group.com', color: 'amber' },
     { icon: Phone, title: 'Phone', detail: '+44 7800 721443', color: 'emerald' },
     { icon: MapPin, title: 'Office', detail: 'Peterborough, United Kingdom', color: 'blue' }
   ];
 
+  const getBorderClass = (fieldName: string) => {
+    if (touched[fieldName] && errors[fieldName]) {
+      return 'border-red-500/50 focus:ring-red-500/30';
+    }
+    if (touched[fieldName] && !errors[fieldName] && formData[fieldName]?.trim() !== '') {
+      return 'border-emerald-500/50 focus:ring-emerald-500/30';
+    }
+    return 'border-white/10 focus:ring-amber-500/30 focus:border-amber-500';
+  };
+
   return (
     <section id="contact" className="py-24 bg-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
@@ -39,12 +56,12 @@ export const Contact: React.FC<ContactProps> = ({
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Form */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="bg-[#0B1120] p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-2xl"
           >
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8" noValidate>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Full Name *</label>
@@ -53,9 +70,13 @@ export const Contact: React.FC<ContactProps> = ({
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     required
-                    className="w-full bg-[#151B28] border border-white/10 rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-amber-500 outline-none transition-all placeholder:text-gray-600"
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('name')}`}
                   />
+                  {touched.name && errors.name && (
+                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.name}</p>
+                  )}
                 </div>
                 <div className="space-y-3">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Email Address *</label>
@@ -64,9 +85,13 @@ export const Contact: React.FC<ContactProps> = ({
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     required
-                    className="w-full bg-[#151B28] border border-white/10 rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-amber-500 outline-none transition-all placeholder:text-gray-600"
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('email')}`}
                   />
+                  {touched.email && errors.email && (
+                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>
+                  )}
                 </div>
               </div>
               
@@ -78,7 +103,8 @@ export const Contact: React.FC<ContactProps> = ({
                     name="company"
                     value={formData.company}
                     onChange={handleInputChange}
-                    className="w-full bg-[#151B28] border border-white/10 rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-amber-500 outline-none transition-all placeholder:text-gray-600"
+                    onBlur={handleBlur}
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('company')}`}
                   />
                 </div>
                 <div className="space-y-3">
@@ -88,8 +114,12 @@ export const Contact: React.FC<ContactProps> = ({
                     name="contactNumber"
                     value={formData.contactNumber}
                     onChange={handleInputChange}
-                    className="w-full bg-[#151B28] border border-white/10 rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-amber-500 outline-none transition-all placeholder:text-gray-600"
+                    onBlur={handleBlur}
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('contactNumber')}`}
                   />
+                  {touched.contactNumber && errors.contactNumber && (
+                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.contactNumber}</p>
+                  )}
                 </div>
               </div>
 
@@ -99,15 +129,19 @@ export const Contact: React.FC<ContactProps> = ({
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   required
                   rows={4}
-                  className="w-full bg-[#151B28] border border-white/10 rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-amber-500 outline-none transition-all resize-none placeholder:text-gray-600"
+                  className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all resize-none placeholder:text-gray-600 ${getBorderClass('message')}`}
                 />
+                {touched.message && errors.message && (
+                  <p className="text-red-400 text-xs mt-1 ml-1">{errors.message}</p>
+                )}
               </div>
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full bg-gradient-to-r from-amber-500 via-amber-600 to-blue-600 text-white font-bold py-5 rounded-full shadow-[0_10px_20px_-5px_rgba(184,134,11,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(184,134,11,0.4)] transition-all duration-300 disabled:opacity-50"
@@ -120,7 +154,7 @@ export const Contact: React.FC<ContactProps> = ({
           {/* Info */}
           <div className="space-y-12">
             <motion.div 
-              initial={{ opacity: 0, x: 30 }}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
@@ -136,7 +170,7 @@ export const Contact: React.FC<ContactProps> = ({
                   
                   return (
                     <div key={i} className="flex items-start space-x-6 group">
-                      <div className={`p-4 rounded-2xl border transition-all duration-300 group-hover:scale-110 ${colorClass}`}>
+                      <div className={`p-4 rounded-2xl border transition-all duration-300 ${shouldReduceMotion ? '' : 'group-hover:scale-110'} ${colorClass}`}>
                         <info.icon size={24} />
                       </div>
                       <div>
@@ -150,21 +184,21 @@ export const Contact: React.FC<ContactProps> = ({
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="bg-[#0B1120] p-8 rounded-3xl border border-white/5"
             >
               <h4 className="text-white font-bold text-xl mb-3">Ready to Get Started?</h4>
               <p className="text-gray-400 mb-6 leading-relaxed">Schedule a free consultation to discuss your technology and sustainability goals.</p>
-              <a href="#contact" className="text-amber-400 font-bold inline-flex items-center hover:translate-x-2 transition-transform">
+              <a href="#book-call" className={`text-amber-400 font-bold inline-flex items-center ${shouldReduceMotion ? '' : 'hover:translate-x-2'} transition-transform`}>
                 Book a consultation <ArrowRight className="ml-2" size={18} />
               </a>
             </motion.div>
 
             {/* Compliance Logo */}
             <motion.div 
-              initial={{ opacity: 0 }}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="flex flex-col items-center lg:items-start space-y-4"

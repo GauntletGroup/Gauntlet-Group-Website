@@ -1,8 +1,9 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Truck, ShieldCheck, Recycle, Leaf } from 'lucide-react';
 
 export const Process: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
   const steps = [
     { icon: Truck, title: 'Secure Collection', description: 'Nationwide pickup using tracked vehicles and vetted staff.' },
     { icon: ShieldCheck, title: 'Data Destruction', description: 'Full data sanitization with certificates of destruction.' },
@@ -22,16 +23,18 @@ export const Process: React.FC = () => {
 
         <div className="relative">
           {/* Connecting Line */}
-          <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-800 hidden lg:block -translate-y-1/2" />
+          {!shouldReduceMotion && (
+            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-800 hidden lg:block -translate-y-1/2" />
+          )}
           
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 relative z-10">
             {steps.map((step, index) => (
               <motion.div 
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
+                transition={{ delay: shouldReduceMotion ? 0 : index * 0.2 }}
                 className="flex flex-col items-center text-center group"
               >
                 <div className="w-20 h-20 bg-gray-900 border-4 border-gray-800 rounded-full flex items-center justify-center mb-6 group-hover:border-amber-400/50 transition-colors duration-500 bg-black relative">

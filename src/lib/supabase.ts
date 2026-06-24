@@ -13,8 +13,8 @@ export type ContactInquiry = {
   id?: string;
   name: string;
   email: string;
-  contact_number?: string;
-  company?: string;
+  contact_number?: string | null;
+  company?: string | null;
   message: string;
   created_at?: string;
 };

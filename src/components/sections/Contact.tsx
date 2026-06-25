@@ -7,8 +7,8 @@ interface ContactProps {
   formData: any;
   errors: Record<string, string>;
   touched: Record<string, boolean>;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  handleBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
 }
@@ -33,7 +33,13 @@ export const Contact: React.FC<ContactProps> = ({
     if (touched[fieldName] && errors[fieldName]) {
       return 'border-red-500/50 focus:ring-red-500/30';
     }
-    if (touched[fieldName] && !errors[fieldName] && formData[fieldName]?.trim() !== '') {
+    if (
+      touched[fieldName] && 
+      !errors[fieldName] && 
+      formData[fieldName] !== undefined && 
+      formData[fieldName] !== '' && 
+      formData[fieldName] !== false
+    ) {
       return 'border-emerald-500/50 focus:ring-emerald-500/30';
     }
     return 'border-white/10 focus:ring-amber-500/30 focus:border-amber-500';
@@ -62,22 +68,42 @@ export const Contact: React.FC<ContactProps> = ({
             className="bg-[#0B1120] p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-2xl"
           >
             <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+              {/* Names */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Full Name *</label>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">First Name *</label>
                   <input
                     type="text"
-                    name="name"
-                    value={formData.name}
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     required
-                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('name')}`}
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('firstName')}`}
                   />
-                  {touched.name && errors.name && (
-                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.name}</p>
+                  {touched.firstName && errors.firstName && (
+                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.firstName}</p>
                   )}
                 </div>
+                <div className="space-y-3">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Last Name *</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    required
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('lastName')}`}
+                  />
+                  {touched.lastName && errors.lastName && (
+                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.lastName}</p>
+                  )}
+                </div>
+              </div>
+              
+              {/* Email and Company */}
+              <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Email Address *</label>
                   <input
@@ -93,9 +119,6 @@ export const Contact: React.FC<ContactProps> = ({
                     <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>
                   )}
                 </div>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company Name</label>
                   <input
@@ -107,22 +130,49 @@ export const Contact: React.FC<ContactProps> = ({
                     className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('company')}`}
                   />
                 </div>
+              </div>
+
+              {/* Company Size and Industry */}
+              <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Contact Number</label>
-                  <input
-                    type="tel"
-                    name="contactNumber"
-                    value={formData.contactNumber}
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company Size</label>
+                  <select
+                    name="companySize"
+                    value={formData.companySize}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
-                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('contactNumber')}`}
-                  />
-                  {touched.contactNumber && errors.contactNumber && (
-                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.contactNumber}</p>
-                  )}
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all appearance-none cursor-pointer placeholder:text-gray-600 ${getBorderClass('companySize')}`}
+                  >
+                    <option value="" disabled className="bg-[#151B28]">Select size...</option>
+                    <option value="Under 10 employees" className="bg-[#151B28]">Under 10 employees</option>
+                    <option value="10 - 49 employees" className="bg-[#151B28]">10 - 49 employees</option>
+                    <option value="50 - 249 employees" className="bg-[#151B28]">50 - 249 employees</option>
+                    <option value="250+ employees" className="bg-[#151B28]">250+ employees</option>
+                  </select>
+                </div>
+                <div className="space-y-3">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Industry</label>
+                  <select
+                    name="industry"
+                    value={formData.industry}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all appearance-none cursor-pointer placeholder:text-gray-600 ${getBorderClass('industry')}`}
+                  >
+                    <option value="" disabled className="bg-[#151B28]">Select industry...</option>
+                    <option value="Technology & IT" className="bg-[#151B28]">Technology & IT</option>
+                    <option value="Professional Services" className="bg-[#151B28]">Professional Services</option>
+                    <option value="Financial Services" className="bg-[#151B28]">Financial Services</option>
+                    <option value="Healthcare & Pharma" className="bg-[#151B28]">Healthcare & Pharma</option>
+                    <option value="Manufacturing & Logistics" className="bg-[#151B28]">Manufacturing & Logistics</option>
+                    <option value="Education & Non-Profit" className="bg-[#151B28]">Education & Non-Profit</option>
+                    <option value="Retail & Hospitality" className="bg-[#151B28]">Retail & Hospitality</option>
+                    <option value="Other" className="bg-[#151B28]">Other</option>
+                  </select>
                 </div>
               </div>
 
+              {/* Message */}
               <div className="space-y-3">
                 <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Message *</label>
                 <textarea
@@ -136,6 +186,28 @@ export const Contact: React.FC<ContactProps> = ({
                 />
                 {touched.message && errors.message && (
                   <p className="text-red-400 text-xs mt-1 ml-1">{errors.message}</p>
+                )}
+              </div>
+
+              {/* GDPR Compliance Checkbox */}
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3 mt-4">
+                  <input
+                    type="checkbox"
+                    name="gdprConsent"
+                    id="gdprConsent"
+                    checked={formData.gdprConsent}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    required
+                    className="mt-1 h-5 w-5 rounded border-white/10 bg-[#151B28] text-amber-500 focus:ring-amber-500/30 cursor-pointer"
+                  />
+                  <label htmlFor="gdprConsent" className="text-sm text-gray-400 leading-snug cursor-pointer select-none">
+                    I consent to Gauntlet Group storing my submitted information in compliance with GDPR guidelines to process my assessment request. *
+                  </label>
+                </div>
+                {touched.gdprConsent && errors.gdprConsent && (
+                  <p className="text-red-400 text-xs mt-1 ml-1">{errors.gdprConsent}</p>
                 )}
               </div>
 

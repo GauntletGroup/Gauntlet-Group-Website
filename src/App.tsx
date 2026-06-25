@@ -26,11 +26,14 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
-    contactNumber: '',
     company: '',
-    message: ''
+    companySize: '',
+    industry: '',
+    message: '',
+    gdprConsent: false
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -39,52 +42,60 @@ function App() {
   const [weeeTab, setWeeeTab] = useState<'overview' | 'process' | 'security'>('overview');
   const [techTab, setTechTab] = useState<'overview' | 'web' | 'ai'>('overview');
 
-  const validateField = (name: string, value: string) => {
+  const validateField = (name: string, value: any) => {
     let error = '';
-    if (name === 'name') {
-      if (!value.trim()) {
-        error = 'Full name is required';
-      } else if (value.trim().length < 2) {
-        error = 'Name must be at least 2 characters';
+    if (name === 'firstName') {
+      if (typeof value === 'string' && !value.trim()) {
+        error = 'First name is required';
+      }
+    } else if (name === 'lastName') {
+      if (typeof value === 'string' && !value.trim()) {
+        error = 'Last name is required';
       }
     } else if (name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!value.trim()) {
-        error = 'Email address is required';
-      } else if (!emailRegex.test(value.trim())) {
-        error = 'Please enter a valid email address';
+      if (typeof value === 'string') {
+        if (!value.trim()) {
+          error = 'Email address is required';
+        } else if (!emailRegex.test(value.trim())) {
+          error = 'Please enter a valid email address';
+        }
       }
     } else if (name === 'message') {
-      if (!value.trim()) {
-        error = 'Message is required';
-      } else if (value.trim().length < 10) {
-        error = 'Message must be at least 10 characters';
+      if (typeof value === 'string') {
+        if (!value.trim()) {
+          error = 'Message is required';
+        } else if (value.trim().length < 10) {
+          error = 'Message must be at least 10 characters';
+        }
       }
-    } else if (name === 'contactNumber') {
-      if (value.trim() && !/^\+?[0-9\s-]{7,15}$/.test(value.trim())) {
-        error = 'Please enter a valid contact number';
+    } else if (name === 'gdprConsent') {
+      if (!value) {
+        error = 'You must accept the GDPR compliance statement';
       }
     }
     return error;
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: val
     }));
 
     if (touched[name]) {
-      const fieldError = validateField(name, value);
+      const fieldError = validateField(name, val);
       setErrors(prev => ({ ...prev, [name]: fieldError }));
     }
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
     setTouched(prev => ({ ...prev, [name]: true }));
-    const fieldError = validateField(name, value);
+    const fieldError = validateField(name, val);
     setErrors(prev => ({ ...prev, [name]: fieldError }));
   };
 
@@ -92,14 +103,14 @@ function App() {
     e.preventDefault();
     
     // Mark all as touched and run full validation
-    const formFields = ['name', 'email', 'message', 'contactNumber'];
+    const formFields = ['firstName', 'lastName', 'email', 'message', 'gdprConsent'];
     const newErrors: Record<string, string> = {};
     const newTouched: Record<string, boolean> = {};
     let hasErrors = false;
 
     formFields.forEach(field => {
       newTouched[field] = true;
-      const fieldVal = formData[field as keyof typeof formData] || '';
+      const fieldVal = formData[field as keyof typeof formData];
       const fieldErr = validateField(field, fieldVal);
       if (fieldErr) {
         newErrors[field] = fieldErr;
@@ -115,11 +126,11 @@ function App() {
     setIsSubmitting(true);
     try {
       const inquiryData: ContactInquiry = {
-        name: formData.name,
+        name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
-        contact_number: formData.contactNumber || null,
+        contact_number: null,
         company: formData.company || null,
-        message: formData.message
+        message: `${formData.message}\n\n---\nCompany Size: ${formData.companySize || 'Not specified'}\nIndustry: ${formData.industry || 'Not specified'}\nGDPR Consent: Yes`
       };
 
       const { error } = await supabase
@@ -128,7 +139,43 @@ function App() {
 
       if (error) throw error;
 
-      setFormData({ name: '', email: '', contactNumber: '', company: '', message: '' });
+      // Send to n8n Webhook
+      const n8nWebhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL || import.meta.env.VITE_N8N_WEBOOK_URL;
+      if (n8nWebhookUrl) {
+        try {
+          await fetch(n8nWebhookUrl, {
+            method: 'POST',
+            mode: 'no-cors', // resilient fallback for browser CORS limits
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              email: formData.email,
+              company: formData.company || null,
+              companySize: formData.companySize || null,
+              industry: formData.industry || null,
+              message: formData.message,
+              gdprConsent: formData.gdprConsent,
+              submittedAt: new Date().toISOString()
+            }),
+          });
+        } catch (webhookError) {
+          console.error('Failed to send data to n8n webhook:', webhookError);
+        }
+      }
+
+      setFormData({ 
+        firstName: '', 
+        lastName: '', 
+        email: '', 
+        company: '', 
+        companySize: '', 
+        industry: '', 
+        message: '', 
+        gdprConsent: false 
+      });
       setTouched({});
       setErrors({});
       alert('Thank you for your inquiry! We\'ll get back to you soon.');

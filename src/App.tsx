@@ -124,6 +124,10 @@ function App() {
     if (hasErrors) return;
 
     setIsSubmitting(true);
+    let supabaseSuccess = false;
+    let n8nSuccess = false;
+
+    // 1. Send to Supabase
     try {
       const inquiryData: ContactInquiry = {
         name: `${formData.firstName} ${formData.lastName}`,
@@ -138,34 +142,43 @@ function App() {
         .insert([inquiryData]);
 
       if (error) throw error;
+      supabaseSuccess = true;
+    } catch (supabaseError) {
+      console.error('Supabase submission failed:', supabaseError);
+    }
 
-      // Send to n8n Webhook
-      const n8nWebhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL || import.meta.env.VITE_N8N_WEBOOK_URL;
-      if (n8nWebhookUrl) {
-        try {
-          await fetch(n8nWebhookUrl, {
-            method: 'POST',
-            mode: 'no-cors', // resilient fallback for browser CORS limits
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              firstName: formData.firstName,
-              lastName: formData.lastName,
-              email: formData.email,
-              company: formData.company || null,
-              companySize: formData.companySize || null,
-              industry: formData.industry || null,
-              message: formData.message,
-              gdprConsent: formData.gdprConsent,
-              submittedAt: new Date().toISOString()
-            }),
-          });
-        } catch (webhookError) {
-          console.error('Failed to send data to n8n webhook:', webhookError);
-        }
+    // 2. Send to n8n Webhook
+    const n8nWebhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL || import.meta.env.VITE_N8N_WEBOOK_URL;
+    if (n8nWebhookUrl) {
+      try {
+        await fetch(n8nWebhookUrl, {
+          method: 'POST',
+          mode: 'no-cors', // resilient fallback for browser CORS limits
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            company: formData.company || null,
+            companySize: formData.companySize || null,
+            industry: formData.industry || null,
+            message: formData.message,
+            gdprConsent: formData.gdprConsent,
+            submittedAt: new Date().toISOString()
+          }),
+        });
+        n8nSuccess = true;
+      } catch (webhookError) {
+        console.error('Failed to send data to n8n webhook:', webhookError);
       }
+    } else {
+      console.warn('n8n Webhook URL is not configured.');
+    }
 
+    // 3. Complete Submission UI Feedback
+    if (supabaseSuccess || n8nSuccess) {
       setFormData({ 
         firstName: '', 
         lastName: '', 
@@ -179,12 +192,11 @@ function App() {
       setTouched({});
       setErrors({});
       alert('Thank you for your inquiry! We\'ll get back to you soon.');
-    } catch (error) {
-      console.error('Error submitting form:', error);
+    } else {
       alert('There was an error submitting your inquiry. Please try again.');
-    } finally {
-      setIsSubmitting(false);
     }
+    
+    setIsSubmitting(false);
   };
 
   const handleServiceClick = (title: string) => {

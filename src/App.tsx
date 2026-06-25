@@ -24,7 +24,7 @@ function App() {
   const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -101,8 +101,7 @@ function App() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Mark all as touched and run full validation
+
     const formFields = ['firstName', 'lastName', 'email', 'message', 'gdprConsent'];
     const newErrors: Record<string, string> = {};
     const newTouched: Record<string, boolean> = {};
@@ -153,10 +152,8 @@ function App() {
       try {
         await fetch(n8nWebhookUrl, {
           method: 'POST',
-          mode: 'no-cors', // resilient fallback for browser CORS limits
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             firstName: formData.firstName,
             lastName: formData.lastName,
@@ -177,17 +174,17 @@ function App() {
       console.warn('n8n Webhook URL is not configured.');
     }
 
-    // 3. Complete Submission UI Feedback
+    // 3. UI Feedback
     if (supabaseSuccess || n8nSuccess) {
-      setFormData({ 
-        firstName: '', 
-        lastName: '', 
-        email: '', 
-        company: '', 
-        companySize: '', 
-        industry: '', 
-        message: '', 
-        gdprConsent: false 
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        company: '',
+        companySize: '',
+        industry: '',
+        message: '',
+        gdprConsent: false
       });
       setTouched({});
       setErrors({});
@@ -195,7 +192,7 @@ function App() {
     } else {
       alert('There was an error submitting your inquiry. Please try again.');
     }
-    
+
     setIsSubmitting(false);
   };
 
@@ -213,7 +210,7 @@ function App() {
     <div className="min-h-screen bg-black text-white selection:bg-amber-400 selection:text-black">
       <Cursor />
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-      
+
       <main>
         <Hero />
         <ImpactWidget />
@@ -222,14 +219,14 @@ function App() {
         <Process />
         <WhyUs />
         <BookCall />
-        <Contact 
-          formData={formData} 
+        <Contact
+          formData={formData}
           errors={errors}
           touched={touched}
-          handleInputChange={handleInputChange} 
+          handleInputChange={handleInputChange}
           handleBlur={handleBlur}
-          handleSubmit={handleSubmit} 
-          isSubmitting={isSubmitting} 
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
         />
       </main>
 
@@ -240,7 +237,7 @@ function App() {
         </div>
       </footer>
 
-      {/* Modals with Progressive Disclosure */}
+      {/* Modals */}
       <Modal isOpen={isWEEEModalOpen} onClose={() => setIsWEEEModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">
@@ -250,7 +247,6 @@ function App() {
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">WEEE Waste Management</h2>
           </div>
 
-          {/* Modal Tab Bar */}
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
             {(['overview', 'process', 'security'] as const).map((tab) => (
               <button
@@ -262,7 +258,7 @@ function App() {
               >
                 {tab}
                 {weeeTab === tab && (
-                  <motion.div 
+                  <motion.div
                     layoutId="weeeActiveTab"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
                   />
@@ -271,7 +267,6 @@ function App() {
             ))}
           </div>
 
-          {/* Modal Tab Contents */}
           <div className="min-h-[280px]">
             {weeeTab === 'overview' && (
               <div className="space-y-4">
@@ -353,7 +348,6 @@ function App() {
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Tech Consulting Services</h2>
           </div>
 
-          {/* Modal Tab Bar */}
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-xs mx-auto">
             {(['overview', 'web', 'ai'] as const).map((tab) => (
               <button
@@ -365,7 +359,7 @@ function App() {
               >
                 {tab}
                 {techTab === tab && (
-                  <motion.div 
+                  <motion.div
                     layoutId="techActiveTab"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
                   />
@@ -374,7 +368,6 @@ function App() {
             ))}
           </div>
 
-          {/* Modal Tab Contents */}
           <div className="min-h-[250px]">
             {techTab === 'overview' && (
               <div className="space-y-4 text-center">

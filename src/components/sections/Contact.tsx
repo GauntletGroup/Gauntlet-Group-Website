@@ -13,14 +13,14 @@ interface ContactProps {
   isSubmitting: boolean;
 }
 
-export const Contact: React.FC<ContactProps> = ({ 
-  formData, 
+export const Contact: React.FC<ContactProps> = ({
+  formData,
   errors,
   touched,
-  handleInputChange, 
+  handleInputChange,
   handleBlur,
-  handleSubmit, 
-  isSubmitting 
+  handleSubmit,
+  isSubmitting
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const contactInfo = [
@@ -34,10 +34,10 @@ export const Contact: React.FC<ContactProps> = ({
       return 'border-red-500/50 focus:ring-red-500/30';
     }
     if (
-      touched[fieldName] && 
-      !errors[fieldName] && 
-      formData[fieldName] !== undefined && 
-      formData[fieldName] !== '' && 
+      touched[fieldName] &&
+      !errors[fieldName] &&
+      formData[fieldName] !== undefined &&
+      formData[fieldName] !== '' &&
       formData[fieldName] !== false
     ) {
       return 'border-emerald-500/50 focus:ring-emerald-500/30';
@@ -49,7 +49,7 @@ export const Contact: React.FC<ContactProps> = ({
     <section id="contact" className="py-24 bg-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -61,7 +61,7 @@ export const Contact: React.FC<ContactProps> = ({
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Form */}
-          <motion.div 
+          <motion.div
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -101,7 +101,7 @@ export const Contact: React.FC<ContactProps> = ({
                   )}
                 </div>
               </div>
-              
+
               {/* Email and Company */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
@@ -225,7 +225,7 @@ export const Contact: React.FC<ContactProps> = ({
 
           {/* Info */}
           <div className="space-y-12">
-            <motion.div 
+            <motion.div
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -239,7 +239,7 @@ export const Contact: React.FC<ContactProps> = ({
                     Office: 'text-white border-white/20 bg-white/5'
                   };
                   const colorClass = colors[info.title as keyof typeof colors] || 'text-amber-400 border-white/5 bg-[#151B28]';
-                  
+
                   return (
                     <div key={i} className="flex items-start space-x-6 group">
                       <div className={`p-4 rounded-2xl border transition-all duration-300 ${shouldReduceMotion ? '' : 'group-hover:scale-110'} ${colorClass}`}>
@@ -255,7 +255,7 @@ export const Contact: React.FC<ContactProps> = ({
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -269,16 +269,16 @@ export const Contact: React.FC<ContactProps> = ({
             </motion.div>
 
             {/* Compliance Logo */}
-            <motion.div 
+            <motion.div
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="flex flex-col items-center lg:items-start space-y-4"
             >
               <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Certified Compliance</span>
-              <img 
-                src="/ISO27701COMBINED.jpg" 
-                alt="ISO Accelerator Certified" 
+              <img
+                src="/ISO27701COMBINED.jpg"
+                alt="ISO Accelerator Certified"
                 className="h-24 w-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer"
               />
             </motion.div>

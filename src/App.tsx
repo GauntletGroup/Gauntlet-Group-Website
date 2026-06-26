@@ -29,6 +29,7 @@ function App() {
     firstName: '',
     lastName: '',
     email: '',
+    phoneNumber: '',
     company: '',
     companySize: '',
     industry: '',
@@ -131,7 +132,7 @@ function App() {
       const inquiryData: ContactInquiry = {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
-        contact_number: null,
+        contact_number: formData.phoneNumber || null,
         company: formData.company || null,
         message: `${formData.message}\n\n---\nCompany Size: ${formData.companySize || 'Not specified'}\nIndustry: ${formData.industry || 'Not specified'}\nGDPR Consent: Yes`
       };
@@ -158,6 +159,7 @@ function App() {
             firstName: formData.firstName,
             lastName: formData.lastName,
             email: formData.email,
+            phoneNumber: formData.phoneNumber || null,
             company: formData.company || null,
             companySize: formData.companySize || null,
             industry: formData.industry || null,
@@ -180,6 +182,7 @@ function App() {
         firstName: '',
         lastName: '',
         email: '',
+        phoneNumber: '',
         company: '',
         companySize: '',
         industry: '',

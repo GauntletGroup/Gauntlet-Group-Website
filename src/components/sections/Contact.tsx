@@ -102,7 +102,7 @@ export const Contact: React.FC<ContactProps> = ({
                 </div>
               </div>
 
-              {/* Email and Company */}
+              {/* Email and Phone */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Email Address *</label>
@@ -120,16 +120,33 @@ export const Contact: React.FC<ContactProps> = ({
                   )}
                 </div>
                 <div className="space-y-3">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company Name</label>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Phone Number</label>
                   <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
+                    type="tel"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
-                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('company')}`}
+                    placeholder="+44 7000 000000"
+                    className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('phoneNumber')}`}
                   />
+                  {touched.phoneNumber && errors.phoneNumber && (
+                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.phoneNumber}</p>
+                  )}
                 </div>
+              </div>
+
+              {/* Company Name */}
+              <div className="space-y-3">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company Name</label>
+                <input
+                  type="text"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('company')}`}
+                />
               </div>
 
               {/* Company Size and Industry */}

@@ -143,8 +143,10 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
                     : `border-white/5 ${ac.border}`
                 }`}
               >
+                {/* Glow */}
                 <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${ac.glow}`} />
 
+                {/* Featured badge */}
                 {service.badge && (
                   <div className="absolute top-5 right-5">
                     <span className="bg-amber-400/15 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-400/30 uppercase tracking-wider">

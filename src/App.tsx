@@ -325,6 +325,7 @@ function App() {
             )}
           </div>
 
+          {/* Callout */}
           <div className="mt-6 bg-amber-400/5 border border-amber-400/20 rounded-xl px-5 py-4">
             <p className="text-amber-300 text-xs leading-relaxed text-center">
               <strong>Demonstration implementation:</strong> Azure Monitor → AI Summary &amp; Severity Classification → Microsoft Teams / Outlook → Audit Log. Contact us to discuss implementation for your environment.

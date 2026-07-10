@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { Zap, ArrowRight, MousePointer2 } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { FloatingParticles, FloatingTechIcons } from '../ui/Particles';
+import { HeroBackground } from '../ui/HeroBackground';
 import { openCalendlyPopup } from '../../hooks/useCalendlyScript';
 
 const integrations = [
@@ -38,26 +38,11 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden mesh-gradient">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-black/40" />
-        {!shouldReduceMotion && <FloatingParticles />}
-        {!shouldReduceMotion && <FloatingTechIcons />}
-        {!shouldReduceMotion && (
-          <>
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute top-20 right-20 w-32 h-32 border border-amber-400/20 rotate-45"
-            />
-            <motion.div
-              animate={{ y: [0, 20, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-20 left-20 w-24 h-24 border border-blue-400/20 rotate-12"
-            />
-          </>
-        )}
+        <HeroBackground />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       <motion.div

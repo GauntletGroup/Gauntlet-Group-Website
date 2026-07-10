@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from './lib/supabase';
 import type { ContactInquiry } from './lib/supabase';
-import { Recycle, Activity } from 'lucide-react';
+import { Recycle, Activity, Headphones, Users, MessageSquare, GitBranch } from 'lucide-react';
 
 // Layout & UI
 import { Navbar } from './components/layout/Navbar';
 import { Cursor } from './components/ui/Cursor';
 import { Modal } from './components/ui/Modal';
+import { Button } from './components/ui/Button';
 
 // Sections
 import { Hero } from './components/sections/Hero';
@@ -26,6 +27,10 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [isHelpdeskModalOpen, setIsHelpdeskModalOpen] = useState(false);
+  const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);
+  const [isCustomWorkflowModalOpen, setIsCustomWorkflowModalOpen] = useState(false);
+  const [isAIAssistantModalOpen, setIsAIAssistantModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -46,7 +51,9 @@ function App() {
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const [weeeTab, setWeeeTab] = useState<'overview' | 'process' | 'security'>('overview');
-  const [alertTab, setAlertTab] = useState<'overview' | 'integrations' | 'how-it-works'>('overview');
+  const [alertTab, setAlertTab] = useState<'overview' | 'demo' | 'integrations' | 'how-it-works'>('overview');
+  const [helpdeskTab, setHelpdeskTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
+  const [onboardingTab, setOnboardingTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
 
   const validateField = (name: string, value: any) => {
     let error = '';
@@ -198,6 +205,16 @@ function App() {
     } else if (title === 'WEEE & IT Asset Lifecycle Services') {
       setWeeeTab('overview');
       setIsWEEEModalOpen(true);
+    } else if (title === 'IT Helpdesk Automation') {
+      setHelpdeskTab('overview');
+      setIsHelpdeskModalOpen(true);
+    } else if (title === 'Employee Onboarding Automation') {
+      setOnboardingTab('overview');
+      setIsOnboardingModalOpen(true);
+    } else if (title === 'Custom Workflow Automation') {
+      setIsCustomWorkflowModalOpen(true);
+    } else if (title === 'AI Knowledge & Support Assistants') {
+      setIsAIAssistantModalOpen(true);
     }
   };
 
@@ -252,7 +269,7 @@ function App() {
           </div>
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
-            {(['overview', 'integrations', 'how-it-works'] as const).map((tab) => (
+            {(['overview', 'demo', 'integrations', 'how-it-works'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setAlertTab(tab)}
@@ -260,7 +277,7 @@ function App() {
                   ${alertTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
                 `}
               >
-                {tab === 'how-it-works' ? 'How It Works' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {alertTab === tab && (
                   <motion.div
                     layoutId="alertActiveTab"
@@ -290,6 +307,21 @@ function App() {
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {alertTab === 'demo' && (
+              <div>
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/ALERT_VIDEO_ID"
+                    allowFullScreen
+                    frameBorder="0"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="AI Alert Triage Demo"
+                  />
+                </div>
+                <p className="text-gray-500 text-xs text-center mt-3">Live demonstration of the AI Alert Triage workflow — Azure Monitor → AI Summary → Teams notification → Audit Log</p>
               </div>
             )}
 
@@ -436,6 +468,270 @@ function App() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </Modal>
+
+      {/* IT Helpdesk Automation Modal */}
+      <Modal isOpen={isHelpdeskModalOpen} onClose={() => setIsHelpdeskModalOpen(false)}>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className="bg-amber-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-500/30">
+              <Headphones className="text-amber-400" size={32} />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">IT Helpdesk Automation</h2>
+          </div>
+
+          <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
+            {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setHelpdeskTab(tab)}
+                className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap
+                  ${helpdeskTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                `}
+              >
+                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {helpdeskTab === tab && (
+                  <motion.div
+                    layoutId="helpdeskActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+
+          <div className="min-h-[280px]">
+            {helpdeskTab === 'overview' && (
+              <div className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    { title: 'Password Reset Automation', desc: 'Users submit a form with their email. The workflow authenticates with Azure, resets the password, generates a secure temporary credential, and emails the user — all without IT involvement.' },
+                    { title: 'Ticket Classification', desc: 'Incoming support requests are automatically categorised by type and urgency, and routed to the correct team or queue.' },
+                    { title: 'Access Request Handling', desc: 'Staff submit access requests through a form. The workflow validates, logs, and notifies the approver — eliminating manual chasing.' },
+                    { title: 'Self-Service Knowledge', desc: 'Common questions answered automatically via an AI assistant trained on your documentation, before a ticket is ever raised.' }
+                  ].map((s, i) => (
+                    <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                      <h4 className="font-bold text-amber-400 text-sm mb-1">{s.title}</h4>
+                      <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {helpdeskTab === 'demo' && (
+              <div>
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/HELPDESK_VIDEO_ID"
+                    allowFullScreen
+                    frameBorder="0"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="IT Helpdesk Automation Demo"
+                  />
+                </div>
+                <p className="text-gray-500 text-xs text-center mt-3">Live demonstration of the Password Reset Automation — Tally form → Azure AD → Microsoft Graph API → Automated email → Audit Log</p>
+              </div>
+            )}
+
+            {helpdeskTab === 'how-it-works' && (
+              <div className="space-y-4 max-w-xl mx-auto">
+                <div className="space-y-3">
+                  {[
+                    { step: '1. Request Submitted', desc: 'Staff submit a self-service form with their details. No ticket raised, no IT contact needed.' },
+                    { step: '2. Workflow Executes', desc: 'n8n authenticates with Azure, locates the account, performs the action, and generates a response.' },
+                    { step: '3. User Notified & Logged', desc: 'The staff member receives an instant email. Every action is logged with a timestamp for audit purposes.' }
+                  ].map((p, i) => (
+                    <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                      <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
+                      <p className="text-gray-400 text-xs leading-relaxed">{p.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 bg-amber-400/5 border border-amber-400/20 rounded-xl px-5 py-4">
+            <p className="text-amber-300 text-xs leading-relaxed text-center">
+              <strong>Demonstration implementation:</strong> Tally Form → n8n → Azure Active Directory → Microsoft Graph API → Outlook Email → Google Sheets Audit Log. Contact us to discuss implementation for your environment.
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Employee Onboarding Automation Modal */}
+      <Modal isOpen={isOnboardingModalOpen} onClose={() => setIsOnboardingModalOpen(false)}>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+              <Users className="text-blue-400" size={32} />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Employee Onboarding Automation</h2>
+          </div>
+
+          <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
+            {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setOnboardingTab(tab)}
+                className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap
+                  ${onboardingTab === tab ? 'text-blue-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                `}
+              >
+                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {onboardingTab === tab && (
+                  <motion.div
+                    layoutId="onboardingActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+
+          <div className="min-h-[280px]">
+            {onboardingTab === 'overview' && (
+              <div className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    { title: 'Azure AD Account Creation', desc: 'New starter accounts created in Azure Active Directory automatically from form data — username, temporary password, and forced password change on first login.' },
+                    { title: 'Welcome Email', desc: 'A personalised welcome email sent to the new starter\'s personal address with login credentials and first-day information, timed to account creation.' },
+                    { title: 'IT Team Notification', desc: 'IT receives an onboarding checklist notification the moment the account is created — equipment, licences, and access requests listed clearly.' },
+                    { title: 'Duplicate Detection', desc: 'If the account already exists or creation fails, the workflow catches it, logs the failure, and notifies IT immediately rather than silently failing.' }
+                  ].map((s, i) => (
+                    <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                      <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
+                      <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {onboardingTab === 'demo' && (
+              <div>
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/ONBOARDING_VIDEO_ID"
+                    allowFullScreen
+                    frameBorder="0"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="Employee Onboarding Demo"
+                  />
+                </div>
+                <p className="text-gray-500 text-xs text-center mt-3">Live demonstration of the New Starter Onboarding Automation — Tally form → Azure AD account creation → Welcome email → IT notification → Audit Log</p>
+              </div>
+            )}
+
+            {onboardingTab === 'how-it-works' && (
+              <div className="space-y-4 max-w-xl mx-auto">
+                <div className="space-y-3">
+                  {[
+                    { step: '1. Manager Submits Form', desc: 'A manager completes the new starter form — name, email, department, job title, and start date. One action triggers everything.' },
+                    { step: '2. Account Created in Azure', desc: 'The workflow authenticates with Microsoft Azure and creates the user account in Azure Active Directory via Microsoft Graph API within seconds.' },
+                    { step: '3. Notifications & Logging', desc: 'The new starter receives a welcome email. IT is notified with an onboarding checklist. The full event is logged to Google Sheets.' }
+                  ].map((p, i) => (
+                    <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                      <div className="font-bold text-blue-400 text-sm mb-1">{p.step}</div>
+                      <p className="text-gray-400 text-xs leading-relaxed">{p.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
+            <p className="text-blue-300 text-xs leading-relaxed text-center">
+              <strong>Demonstration implementation:</strong> Tally Form → n8n → Azure Active Directory → Microsoft Graph API → Outlook Email (welcome + IT checklist) → Google Sheets Audit Log.
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Custom Workflow Automation Modal */}
+      <Modal isOpen={isCustomWorkflowModalOpen} onClose={() => setIsCustomWorkflowModalOpen(false)}>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+              <GitBranch className="text-blue-400" size={32} />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Custom Workflow Automation</h2>
+            <p className="text-gray-400 text-center mb-8">If it involves copying data or waiting for a human to trigger the next step — we can automate it.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            {[
+              { title: 'CRM & Sales Ops', desc: 'Lead capture → CRM entry → follow-up sequence → team notification. No manual data entry.' },
+              { title: 'Finance & Reporting', desc: 'Scheduled data pulls, formatted reports, and automated distribution to stakeholders.' },
+              { title: 'HR & People Ops', desc: 'Absence requests, approval workflows, and system updates coordinated automatically.' },
+              { title: 'IT Operations', desc: 'Patch management notifications, asset tracking, licence audits, and routine maintenance reminders.' }
+            ].map((s, i) => (
+              <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
+            <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Form / Trigger</span>
+            <span className="text-amber-400">→</span>
+            <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">n8n</span>
+            <span className="text-amber-400">→</span>
+            <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Your Apps</span>
+            <span className="text-amber-400">→</span>
+            <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Notification</span>
+            <span className="text-amber-400">→</span>
+            <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Log</span>
+          </div>
+
+          <div className="mt-6 bg-amber-400/5 border border-amber-400/20 rounded-xl px-5 py-4">
+            <p className="text-amber-300 text-xs leading-relaxed text-center">
+              Every custom automation starts with a free 30-minute scoping call. We'll map your process, identify the tools involved, and give you a fixed-price quote before any work begins.
+            </p>
+          </div>
+
+          <div className="flex justify-center mt-6">
+            <Button variant="primary" onClick={() => { setIsCustomWorkflowModalOpen(false); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}>
+              Book a Free Scoping Call
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* AI Knowledge & Support Assistants Modal */}
+      <Modal isOpen={isAIAssistantModalOpen} onClose={() => setIsAIAssistantModalOpen(false)}>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+              <MessageSquare className="text-blue-400" size={32} />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">AI Knowledge & Support Assistants</h2>
+            <p className="text-gray-400 text-center mb-8">Give your team or customers instant answers from your own documentation — 24/7, without extra headcount.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { title: 'Trained on Your Docs', desc: 'Connect your existing knowledge base, policy documents, or FAQ library. The assistant answers from your content — not generic training data.' },
+              { title: 'Multi-Platform', desc: 'Deploy across Microsoft Teams, Slack, your website, or a custom portal. One knowledge base, multiple access points.' },
+              { title: 'Escalation Routing', desc: 'When the assistant can\'t answer confidently, it routes to a human agent or raises a ticket — no dead ends.' },
+              { title: 'Usage Analytics', desc: 'See what your team or customers ask most. Use the data to identify knowledge gaps and improve your documentation.' }
+            ].map((s, i) => (
+              <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
+            <p className="text-blue-300 text-xs leading-relaxed text-center">
+              This service is currently in active development. Contact us to join the early access list and shape the implementation around your use case.
+            </p>
           </div>
         </div>
       </Modal>

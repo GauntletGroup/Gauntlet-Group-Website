@@ -19,6 +19,8 @@ import { Process } from './components/sections/Process';
 import { BookCall } from './components/sections/BookCall';
 import { Contact } from './components/sections/Contact';
 import { ImpactWidget } from './components/ui/ImpactWidget';
+import { StickyBookCTA } from './components/ui/StickyBookCTA';
+import { FAQ } from './components/sections/FAQ';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -212,6 +214,7 @@ function App() {
         <Services onServiceClick={handleServiceClick} />
         <Process />
         <WhyUs />
+        <FAQ />
         <BookCall />
         <Contact
           formData={formData}
@@ -238,6 +241,7 @@ function App() {
       </footer>
 
       {/* AI Alert Triage Modal */}
+      <StickyBookCTA />
       <Modal isOpen={isAlertModalOpen} onClose={() => setIsAlertModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">

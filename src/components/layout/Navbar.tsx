@@ -32,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => 
               {navItems.map((item, index) => (
                 <motion.a 
                   key={item}
-                  href={`#${item === 'Why Us' ? 'why-choose-us' : item.toLowerCase().replace(' ', '-')}`}
+                  href={`#${item === 'Why Us' ? 'why-us' : item.toLowerCase().replace(' ', '-')}`}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -81,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => 
           {navItems.map((item) => (
             <a 
               key={item}
-              href={`#${item === 'Why Us' ? 'why-choose-us' : item.toLowerCase().replace(' ', '-')}`}
+              href={`#${item === 'Why Us' ? 'why-us' : item.toLowerCase().replace(' ', '-')}`}
               className="text-gray-300 hover:text-amber-400 block px-3 py-2 text-base font-medium transition-all duration-300 transform hover:translate-x-2"
               onClick={() => setIsMenuOpen(false)}
             >

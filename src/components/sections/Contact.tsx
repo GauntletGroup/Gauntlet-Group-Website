@@ -55,8 +55,16 @@ export const Contact: React.FC<ContactProps> = ({
             viewport={{ once: true }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
           >
-            Get in <span className="bg-gradient-to-r from-amber-400 to-blue-500 bg-clip-text text-transparent">Touch</span>
+            Start the <span className="bg-gradient-to-r from-amber-400 to-blue-500 bg-clip-text text-transparent">Conversation</span>
           </motion.h2>
+          <motion.p
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-gray-400 max-w-xl mx-auto"
+          >
+            Ready to automate your first IT workflow? Fill in the form and we will get back to you within one working day.
+          </motion.p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -146,6 +154,42 @@ export const Contact: React.FC<ContactProps> = ({
                   onChange={handleInputChange}
                   onBlur={handleBlur}
                   className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('company')}`}
+                />
+              </div>
+
+              {/* Automation Type */}
+              <div className="space-y-3">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">What would you like to automate?</label>
+                <select
+                  name="automationType"
+                  value={formData.automationType}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all appearance-none cursor-pointer placeholder:text-gray-600 ${getBorderClass('automationType')}`}
+                >
+                  <option value="" className="bg-[#151B28]">Select an area (optional)</option>
+                  <option value="it-alerts" className="bg-[#151B28]">IT alerting and incident escalation</option>
+                  <option value="helpdesk" className="bg-[#151B28]">Helpdesk or password reset processes</option>
+                  <option value="onboarding" className="bg-[#151B28]">Employee onboarding or offboarding</option>
+                  <option value="chatbot" className="bg-[#151B28]">AI chatbot or knowledge assistant</option>
+                  <option value="workflows" className="bg-[#151B28]">Data entry or reporting workflows</option>
+                  <option value="integrations" className="bg-[#151B28]">System integrations</option>
+                  <option value="weee" className="bg-[#151B28]">WEEE or IT asset disposal</option>
+                  <option value="unsure" className="bg-[#151B28]">Not sure — I need advice</option>
+                </select>
+              </div>
+
+              {/* Current Tools */}
+              <div className="space-y-3">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Which tools do you currently use?</label>
+                <input
+                  type="text"
+                  name="currentTools"
+                  value={formData.currentTools}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  placeholder="e.g. Microsoft 365, Teams, Azure, Slack, Jira, ServiceNow, HubSpot"
+                  className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('currentTools')}`}
                 />
               </div>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Calendar, AlertCircle } from 'lucide-react';
+import { Calendar, AlertCircle, Clock, Zap, CheckCircle } from 'lucide-react';
 import { useCalendlyScript } from '../../hooks/useCalendlyScript';
 
 interface BookCallProps {
@@ -101,23 +101,47 @@ export const BookCall: React.FC<BookCallProps> = ({ prefill }) => {
             <Calendar className="text-amber-400 mr-2" size={16} />
             <span className="text-amber-400 text-xs font-semibold uppercase tracking-widest">Schedule Instantly</span>
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-display"
           >
-            Book a <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-blue-500 bg-clip-text text-transparent">Consultation</span>
+            Book a Free 20-Minute{' '}
+            <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-blue-500 bg-clip-text text-transparent">Automation Review</span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-gray-400 max-w-2xl mx-auto text-lg"
+            className="text-gray-400 max-w-2xl mx-auto text-lg mb-10"
           >
-            Choose a date and time that matches your schedule. Our experts are ready to review your web projects, AI chatbot requirements, or ISO waste recycling.
+            Tell us about your current IT processes and we will identify where automation can save your team the most time. No commitment, no pressure — just a practical conversation.
           </motion.p>
+
+          {/* Benefit tiles */}
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
+            className="flex flex-wrap justify-center gap-4 mb-4"
+          >
+            {[
+              { icon: Clock, label: '20 minutes', sub: 'A focused, structured conversation — not a sales pitch.' },
+              { icon: Zap, label: 'Same-week availability', sub: 'We aim to book within 3–5 working days.' },
+              { icon: CheckCircle, label: 'Actionable output', sub: 'You will leave with at least one clear automation recommendation.' }
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3 bg-gray-800/30 border border-white/5 rounded-2xl px-5 py-4 max-w-xs text-left">
+                <item.icon className="text-amber-400 shrink-0 mt-0.5" size={18} />
+                <div>
+                  <div className="text-white text-sm font-bold">{item.label}</div>
+                  <div className="text-gray-500 text-xs mt-0.5 leading-snug">{item.sub}</div>
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
 
         {/* Container for Calendly Widget */}
@@ -154,7 +178,7 @@ export const BookCall: React.FC<BookCallProps> = ({ prefill }) => {
                 rel="noopener noreferrer" 
                 className="bg-gradient-to-r from-amber-500 to-blue-700 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:from-amber-400 hover:to-blue-600 transition-all transform hover:scale-105"
               >
-                Book Directly on Calendly
+                Book Your Free Review
               </a>
             </div>
           )}

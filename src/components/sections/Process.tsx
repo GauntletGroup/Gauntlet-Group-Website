@@ -1,44 +1,87 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Truck, ShieldCheck, Recycle, Leaf } from 'lucide-react';
+import { Search, Zap, Rocket, TrendingUp } from 'lucide-react';
+
+const steps = [
+  {
+    icon: Search,
+    title: 'Free Automation Review',
+    description: 'We spend 20 minutes understanding your current IT workflows, alert processes, and repetitive tasks. You leave with a clear picture of what can be automated and where to start.'
+  },
+  {
+    icon: Zap,
+    title: 'Pilot Workflow',
+    description: 'We build one focused automation around your highest-value process. Typically delivered within one to two weeks. You test it with your team and we refine it before full deployment.'
+  },
+  {
+    icon: Rocket,
+    title: 'Launch & Integrate',
+    description: 'We deploy the workflow into your environment using your own credentials and systems. We document it fully and walk your team through how it works.'
+  },
+  {
+    icon: TrendingUp,
+    title: 'Optimise & Scale',
+    description: 'We monitor performance, improve the workflow based on real usage, and begin planning the next automation. Monthly support and optimisation available.'
+  }
+];
 
 export const Process: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
-  const steps = [
-    { icon: Truck, title: 'Secure Collection', description: 'Nationwide pickup using tracked vehicles and vetted staff.' },
-    { icon: ShieldCheck, title: 'Data Destruction', description: 'Full data sanitization with certificates of destruction.' },
-    { icon: Recycle, title: 'Sustainable Processing', description: 'Components are recovered or recycled with zero-to-landfill policy.' },
-    { icon: Leaf, title: 'Circular Economy', description: 'Refurbished assets find new life, closing the technology loop.' }
-  ];
 
   return (
-    <section className="py-24 bg-black relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="process" className="py-24 bg-black relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/30 to-black pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            The <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">Sustainability Journey</span>
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">How we manage your technology lifecycle responsibly.</p>
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center bg-gray-800/30 border border-amber-500/30 rounded-full px-5 py-2 mb-4"
+          >
+            <span className="text-amber-400 text-xs font-semibold uppercase tracking-widest">Our Process</span>
+          </motion.div>
+
+          <motion.h2
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-white mb-4"
+          >
+            How We{' '}
+            <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">Work Together</span>
+          </motion.h2>
+
+          <motion.p
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-gray-400 max-w-2xl mx-auto"
+          >
+            A low-risk engagement model designed to prove value quickly before committing to larger automation.
+          </motion.p>
         </div>
 
         <div className="relative">
-          {/* Connecting Line */}
           {!shouldReduceMotion && (
-            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-800 hidden lg:block -translate-y-1/2" />
+            <div className="absolute top-10 left-0 w-full h-0.5 bg-gray-800 hidden lg:block" />
           )}
-          
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 relative z-10">
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 relative z-10">
             {steps.map((step, index) => (
-              <motion.div 
+              <motion.div
                 key={index}
                 initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: shouldReduceMotion ? 0 : index * 0.2 }}
+                transition={{ delay: shouldReduceMotion ? 0 : index * 0.15 }}
                 className="flex flex-col items-center text-center group"
               >
-                <div className="w-20 h-20 bg-gray-900 border-4 border-gray-800 rounded-full flex items-center justify-center mb-6 group-hover:border-amber-400/50 transition-colors duration-500 bg-black relative">
-                  <step.icon className="text-amber-400" size={32} />
+                <div className="relative mb-8">
+                  <div className="w-20 h-20 bg-[#0B1120] border-2 border-gray-800 group-hover:border-amber-400/50 rounded-full flex items-center justify-center transition-colors duration-500">
+                    <step.icon className="text-amber-400" size={28} />
+                  </div>
                   <div className="absolute -top-2 -right-2 bg-amber-400 text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                     {index + 1}
                   </div>

@@ -22,6 +22,7 @@ import { Contact } from './components/sections/Contact';
 import { ImpactWidget } from './components/ui/ImpactWidget';
 import { StickyBookCTA } from './components/ui/StickyBookCTA';
 import { FAQ } from './components/sections/FAQ';
+import { WorkflowDiagram } from './components/sections/WorkflowDiagram';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -229,6 +230,7 @@ function App() {
         <Problems />
         <About />
         <Services onServiceClick={handleServiceClick} />
+        <WorkflowDiagram />
         <Process />
         <WhyUs />
         <FAQ />

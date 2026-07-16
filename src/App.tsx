@@ -288,9 +288,19 @@ function App() {
 
           <div className="min-h-[280px]">
             {alertTab === 'overview' && (
-              <p className="text-gray-400 text-sm leading-relaxed text-center">
-                Your team stops firefighting. Alerts arrive, AI summarises them in plain English, classifies urgency, and routes to the right person — automatically.
-              </p>
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { title: 'AI Incident Summary', desc: 'Technical alerts translated into plain English your whole team can act on.' },
+                  { title: 'Severity Classification', desc: 'Critical, Medium, and Low urgency auto-assigned by configurable rules.' },
+                  { title: 'Smart Routing', desc: 'Critical alerts hit Teams and email instantly. Lower-severity events are logged or batched.' },
+                  { title: 'Audit Logging', desc: 'Every alert, classification, and notification recorded for compliance.' },
+                ].map((s, i) => (
+                  <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                    <h4 className="font-bold text-amber-400 text-sm mb-2">{s.title}</h4>
+                    <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
+                  </div>
+                ))}
+              </div>
             )}
 
             {alertTab === 'demo' && (

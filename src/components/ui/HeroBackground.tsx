@@ -8,7 +8,7 @@ interface Node {
   vy: number;
   radius: number;
   pulsePhase: number;
-  type: 'cyan' | 'blue';
+  type: 'amber' | 'blue';
 }
 
 interface Packet {
@@ -21,7 +21,7 @@ interface Packet {
 }
 
 const NODE_COUNT = 18;
-const CYAN_COUNT = 12;
+const AMBER_COUNT = 12;
 const CONNECT_DIST = 220;
 const MAX_PACKETS = 6;
 const PACKET_INTERVAL = 1800;
@@ -39,7 +39,7 @@ function initNodes(width: number, height: number): Node[] {
     vy: randomBetween(-0.2, 0.2),
     radius: 3,
     pulsePhase: Math.random() * Math.PI * 2,
-    type: i < CYAN_COUNT ? 'cyan' : 'blue',
+    type: i < AMBER_COUNT ? 'amber' : 'blue',
   }));
 }
 
@@ -87,7 +87,7 @@ export const HeroBackground: React.FC = () => {
         width * 0.15, height * 0.2, 0,
         width * 0.15, height * 0.2, 400
       );
-      g1.addColorStop(0, 'rgba(34,211,238,0.08)');
+      g1.addColorStop(0, 'rgba(184,134,11,0.08)');
       g1.addColorStop(1, 'transparent');
       ctx.fillStyle = g1;
       ctx.fillRect(0, 0, width, height);
@@ -105,7 +105,7 @@ export const HeroBackground: React.FC = () => {
     function drawGrid() {
       if (!ctx) return;
       const spacing = 60;
-      ctx.fillStyle = 'rgba(34,211,238,0.12)';
+      ctx.fillStyle = 'rgba(251,191,36,0.12)';
       for (let x = spacing; x < width; x += spacing) {
         for (let y = spacing; y < height; y += spacing) {
           ctx.beginPath();
@@ -117,17 +117,17 @@ export const HeroBackground: React.FC = () => {
 
     function drawNode(node: Node, time: number) {
       if (!ctx) return;
-      const isCyan = node.type === 'cyan';
+      const isAmber = node.type === 'amber';
       const pulseRadius = 6 + 8 * (0.5 + 0.5 * Math.sin(time * 0.0008 + node.pulsePhase));
 
       ctx.beginPath();
       ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
-      ctx.fillStyle = isCyan ? 'rgba(34,211,238,0.15)' : 'rgba(96,165,250,0.15)';
+      ctx.fillStyle = isAmber ? 'rgba(251,191,36,0.15)' : 'rgba(96,165,250,0.15)';
       ctx.fill();
 
       ctx.beginPath();
       ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-      ctx.fillStyle = isCyan ? 'rgba(34,211,238,0.6)' : 'rgba(96,165,250,0.6)';
+      ctx.fillStyle = isAmber ? 'rgba(251,191,36,0.6)' : 'rgba(96,165,250,0.6)';
       ctx.fill();
     }
 
@@ -144,8 +144,8 @@ export const HeroBackground: React.FC = () => {
 
           const alpha = 0.18 * (1 - dist / CONNECT_DIST);
           let color: string;
-          if (a.type === 'cyan' && b.type === 'cyan') {
-            color = `rgba(34,211,238,${alpha})`;
+          if (a.type === 'amber' && b.type === 'amber') {
+            color = `rgba(251,191,36,${alpha})`;
           } else if (a.type === 'blue' && b.type === 'blue') {
             color = `rgba(96,165,250,${alpha})`;
           } else {
@@ -204,13 +204,13 @@ export const HeroBackground: React.FC = () => {
           const ty = from.y + (to.y - from.y) * tTrail;
           ctx.beginPath();
           ctx.arc(tx, ty, 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(34,211,238,${trailOpacities[k]})`;
+          ctx.fillStyle = `rgba(251,191,36,${trailOpacities[k]})`;
           ctx.fill();
         }
 
         ctx.beginPath();
         ctx.arc(x, y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(34,211,238,0.9)';
+        ctx.fillStyle = 'rgba(251,191,36,0.9)';
         ctx.fill();
       }
     }

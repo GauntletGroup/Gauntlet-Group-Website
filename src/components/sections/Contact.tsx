@@ -24,7 +24,7 @@ export const Contact: React.FC<ContactProps> = ({
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const contactInfo = [
-    { icon: Mail, title: 'Email', detail: 'imran.ishaq@gauntlet-group.com', color: 'cyan' },
+    { icon: Mail, title: 'Email', detail: 'imran.ishaq@gauntlet-group.com', color: 'amber' },
     { icon: Phone, title: 'Phone', detail: '+44 7800 721443', color: 'emerald' },
     { icon: MapPin, title: 'Office', detail: 'Peterborough, United Kingdom', color: 'blue' }
   ];
@@ -42,7 +42,7 @@ export const Contact: React.FC<ContactProps> = ({
     ) {
       return 'border-emerald-500/50 focus:ring-emerald-500/30';
     }
-    return 'border-white/10 focus:ring-cyan-500/30 focus:border-cyan-500';
+    return 'border-white/10 focus:ring-amber-500/30 focus:border-amber-500';
   };
 
   return (
@@ -55,17 +55,15 @@ export const Contact: React.FC<ContactProps> = ({
             viewport={{ once: true }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
           >
-            Let's{' '}
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Automate</span>{' '}
-            Something Today.
+            Start the <span className="bg-gradient-to-r from-amber-400 to-blue-500 bg-clip-text text-transparent">Conversation</span>
           </motion.h2>
           <motion.p
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-gray-400 max-w-xl mx-auto text-lg"
+            className="text-gray-400 max-w-xl mx-auto"
           >
-            Tell us what's slowing your team down. We'll show you how to fix it.
+            Ready to automate your first IT workflow? Fill in the form and we will get back to you within one working day.
           </motion.p>
         </div>
 
@@ -263,7 +261,7 @@ export const Contact: React.FC<ContactProps> = ({
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     required
-                    className="mt-1 h-5 w-5 rounded border-white/10 bg-[#151B28] text-cyan-500 focus:ring-cyan-500/30 cursor-pointer"
+                    className="mt-1 h-5 w-5 rounded border-white/10 bg-[#151B28] text-amber-500 focus:ring-amber-500/30 cursor-pointer"
                   />
                   <label htmlFor="gdprConsent" className="text-sm text-gray-400 leading-snug cursor-pointer select-none">
                     I consent to Gauntlet Group storing my submitted information in compliance with GDPR guidelines to process my assessment request. *
@@ -279,7 +277,7 @@ export const Contact: React.FC<ContactProps> = ({
                 whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-cyan-500 text-white font-bold py-5 rounded-full shadow-[0_10px_20px_-5px_rgba(34,211,238,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(34,211,238,0.4)] transition-all duration-300 disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-amber-500 via-amber-600 to-blue-600 text-white font-bold py-5 rounded-full shadow-[0_10px_20px_-5px_rgba(184,134,11,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(184,134,11,0.4)] transition-all duration-300 disabled:opacity-50"
               >
                 {isSubmitting ? 'Sending...' : 'Send Inquiry'}
               </motion.button>
@@ -297,11 +295,11 @@ export const Contact: React.FC<ContactProps> = ({
               <div className="space-y-8">
                 {contactInfo.map((info, i) => {
                   const colors = {
-                    Email: 'text-cyan-400 border-cyan-400/30 bg-cyan-400/5',
+                    Email: 'text-amber-400 border-amber-400/30 bg-amber-400/5',
                     Phone: 'text-emerald-400 border-emerald-400/30 bg-emerald-400/5',
                     Office: 'text-white border-white/20 bg-white/5'
                   };
-                  const colorClass = colors[info.title as keyof typeof colors] || 'text-cyan-400 border-white/5 bg-[#151B28]';
+                  const colorClass = colors[info.title as keyof typeof colors] || 'text-amber-400 border-white/5 bg-[#151B28]';
 
                   return (
                     <div key={i} className="flex items-start space-x-6 group">
@@ -326,7 +324,7 @@ export const Contact: React.FC<ContactProps> = ({
             >
               <h4 className="text-white font-bold text-xl mb-3">Ready to Get Started?</h4>
               <p className="text-gray-400 mb-6 leading-relaxed">Schedule a free consultation to discuss your technology and sustainability goals.</p>
-              <a href="#book-call" className={`text-cyan-400 font-bold inline-flex items-center ${shouldReduceMotion ? '' : 'hover:translate-x-2'} transition-transform`}>
+              <a href="#book-call" className={`text-amber-400 font-bold inline-flex items-center ${shouldReduceMotion ? '' : 'hover:translate-x-2'} transition-transform`}>
                 Book a consultation <ArrowRight className="ml-2" size={18} />
               </a>
             </motion.div>

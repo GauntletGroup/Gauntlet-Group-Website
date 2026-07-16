@@ -37,7 +37,7 @@ export const Cursor: React.FC = () => {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full bg-amber-400/20 border border-amber-400/50 pointer-events-none z-[9999] mix-blend-difference hidden md:block"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full bg-cyan-400/20 border border-cyan-400/50 pointer-events-none z-[9999] mix-blend-difference hidden md:block"
         style={{
           x: cursorX,
           y: cursorY,
@@ -46,7 +46,7 @@ export const Cursor: React.FC = () => {
         transition={{ scale: { type: 'spring', ...springConfig } }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-amber-400 pointer-events-none z-[9999] hidden md:block"
+        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-cyan-400 pointer-events-none z-[9999] hidden md:block"
         style={{
           x: mousePosition.x - 3,
           y: mousePosition.y - 3,

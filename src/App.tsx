@@ -379,49 +379,76 @@ function App() {
 
           <div className="min-h-[280px]">
             {weeeTab === 'overview' && (
-              <div className="grid md:grid-cols-2 gap-4">
-                {[
-                  { title: 'Zero-cost disposal', desc: 'Free collection for qualifying assets.' },
-                  { title: 'Asset recovery', desc: 'Reclaim value from retired equipment.' },
-                  { title: 'Refurbishment', desc: 'Extend hardware lifecycles.' },
-                  { title: 'Nationwide collection', desc: 'Tracked collection from any UK site.' },
-                ].map((s, i) => (
-                  <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                    <h4 className="font-bold text-white text-sm mb-1">{s.title}</h4>
-                    <p className="text-gray-400 text-xs">{s.desc}</p>
-                  </div>
-                ))}
+              <div className="space-y-6">
+                <div className="rounded-2xl overflow-hidden border border-white/10">
+                  <img
+                    src="https://images.pexels.com/photos/4794426/pexels-photo-4794426.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    alt="IT equipment ready for recycling"
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    { title: 'Zero-cost disposal', desc: 'Free collection for qualifying assets.' },
+                    { title: 'Asset recovery', desc: 'Reclaim value from retired equipment.' },
+                    { title: 'Refurbishment', desc: 'Extend hardware lifecycles.' },
+                    { title: 'Nationwide collection', desc: 'Tracked collection from any UK site.' },
+                  ].map((s, i) => (
+                    <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                      <h4 className="font-bold text-white text-sm mb-1">{s.title}</h4>
+                      <p className="text-gray-400 text-xs">{s.desc}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
             {weeeTab === 'process' && (
-              <div className="space-y-3 max-w-xl mx-auto">
-                {[
-                  { step: 'Secure logistics', desc: 'Assets collected in secure containers.' },
-                  { step: 'Audited processing', desc: 'Items registered, weighed, serialized.' },
-                  { step: 'Materials sorting', desc: 'Zero-to-landfill policy.' },
-                ].map((p, i) => (
-                  <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
-                    <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
-                    <p className="text-gray-400 text-xs">{p.desc}</p>
-                  </div>
-                ))}
+              <div className="space-y-6">
+                <div className="rounded-2xl overflow-hidden border border-white/10">
+                  <img
+                    src="https://images.pexels.com/photos/6163576/pexels-photo-6163576.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    alt="Electronics processing facility"
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+                <div className="space-y-3 max-w-xl mx-auto">
+                  {[
+                    { step: 'Secure logistics', desc: 'Assets collected in secure containers.' },
+                    { step: 'Audited processing', desc: 'Items registered, weighed, serialized.' },
+                    { step: 'Materials sorting', desc: 'Zero-to-landfill policy.' },
+                  ].map((p, i) => (
+                    <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                      <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
+                      <p className="text-gray-400 text-xs">{p.desc}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
             {weeeTab === 'security' && (
-              <div className="grid md:grid-cols-2 gap-4">
-                {[
-                  { title: 'Data sanitization', desc: 'NIST 800-88 compliant erasure.' },
-                  { title: 'Drive shredding', desc: 'Physical destruction of disks.' },
-                  { title: 'Destruction certificates', desc: 'Full regulatory audit trail.' },
-                  { title: 'Asset de-branding', desc: 'Logos and tags removed.' },
-                ].map((s, i) => (
-                  <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                    <h4 className="font-bold text-white text-sm mb-1">{s.title}</h4>
-                    <p className="text-gray-400 text-xs">{s.desc}</p>
-                  </div>
-                ))}
+              <div className="space-y-6">
+                <div className="rounded-2xl overflow-hidden border border-white/10">
+                  <img
+                    src="https://images.pexels.com/photos/6056722/pexels-photo-6056722.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    alt="Hard drive destruction and data security"
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    { title: 'Data sanitization', desc: 'NIST 800-88 compliant erasure.' },
+                    { title: 'Drive shredding', desc: 'Physical destruction of disks.' },
+                    { title: 'Destruction certificates', desc: 'Full regulatory audit trail.' },
+                    { title: 'Asset de-branding', desc: 'Logos and tags removed.' },
+                  ].map((s, i) => (
+                    <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                      <h4 className="font-bold text-white text-sm mb-1">{s.title}</h4>
+                      <p className="text-gray-400 text-xs">{s.desc}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

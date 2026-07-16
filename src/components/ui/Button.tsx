@@ -39,9 +39,9 @@ export const Button: React.FC<ButtonProps> = ({
   const baseStyles = "relative px-8 py-4 rounded-full font-semibold transition-all duration-300 overflow-hidden group";
   
   const variants = {
-    primary: "bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-400 hover:to-blue-500 shadow-lg hover:shadow-cyan-500/50",
+    primary: "bg-gradient-to-r from-amber-500 to-blue-700 text-white hover:from-amber-400 hover:to-blue-600 shadow-lg hover:shadow-amber-500/50",
     secondary: "bg-gradient-to-r from-emerald-500 to-green-700 text-white hover:from-emerald-400 hover:to-green-600 shadow-lg hover:shadow-emerald-500/50",
-    outline: "border-2 border-cyan-400/50 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400"
+    outline: "border-2 border-amber-400/50 text-amber-400 hover:bg-amber-400/10 hover:border-amber-400"
   };
 
   return (
@@ -61,7 +61,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       <span className="relative z-10 block">{children}</span>
       {variant !== 'outline' && !shouldReduceMotion && (
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-blue-600 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
       )}
     </motion.button>
   );

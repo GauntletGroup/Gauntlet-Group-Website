@@ -12,11 +12,17 @@ import { Button } from './components/ui/Button';
 
 // Sections
 import { Hero } from './components/sections/Hero';
+import { Problems } from './components/sections/Problems';
 import { About } from './components/sections/About';
 import { Services } from './components/sections/Services';
 import { WhyUs } from './components/sections/WhyUs';
+import { Process } from './components/sections/Process';
+import { BookCall } from './components/sections/BookCall';
 import { Contact } from './components/sections/Contact';
+import { ImpactWidget } from './components/ui/ImpactWidget';
 import { StickyBookCTA } from './components/ui/StickyBookCTA';
+import { FAQ } from './components/sections/FAQ';
+import { WorkflowDiagram } from './components/sections/WorkflowDiagram';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -112,6 +118,7 @@ function App() {
     let supabaseSuccess = false;
     let n8nSuccess = false;
 
+    // 1. Send to Supabase
     try {
       const messageParts = [
         formData.message,
@@ -136,6 +143,7 @@ function App() {
       console.error('Supabase submission failed:', supabaseError);
     }
 
+    // 2. Send to n8n Webhook
     const n8nWebhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL || import.meta.env.VITE_N8N_WEBOOK_URL;
     if (n8nWebhookUrl) {
       try {
@@ -166,11 +174,20 @@ function App() {
       console.warn('n8n Webhook URL is not configured.');
     }
 
+    // 3. UI Feedback
     if (supabaseSuccess || n8nSuccess) {
       setFormData({
-        firstName: '', lastName: '', email: '', phoneNumber: '',
-        company: '', companySize: '', industry: '', automationType: '',
-        currentTools: '', message: '', gdprConsent: false
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        company: '',
+        companySize: '',
+        industry: '',
+        automationType: '',
+        currentTools: '',
+        message: '',
+        gdprConsent: false
       });
       setTouched({});
       setErrors({});
@@ -203,15 +220,21 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-cyan-400 selection:text-black">
+    <div className="min-h-screen bg-black text-white selection:bg-amber-400 selection:text-black">
       <Cursor />
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
       <main>
         <Hero />
+        <ImpactWidget />
+        <Problems />
         <About />
         <Services onServiceClick={handleServiceClick} />
+        <WorkflowDiagram />
+        <Process />
         <WhyUs />
+        <FAQ />
+        <BookCall />
         <Contact
           formData={formData}
           errors={errors}
@@ -228,8 +251,8 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
           <p className="text-gray-500 text-sm">AI &amp; IT Automation for Growing Businesses</p>
           <div className="flex justify-center gap-6 text-xs">
-            <a href="#services" className="text-gray-600 hover:text-cyan-400 transition-colors duration-200">Automation Services</a>
-            <a href="#contact" className="text-gray-600 hover:text-cyan-400 transition-colors duration-200">Book a Review</a>
+            <a href="#services" className="text-gray-600 hover:text-amber-400 transition-colors duration-200">Automation Services</a>
+            <a href="#contact" className="text-gray-600 hover:text-amber-400 transition-colors duration-200">Book a Review</a>
             <a href="#services" className="text-gray-600 hover:text-emerald-400 transition-colors duration-200">WEEE Services</a>
           </div>
           <p className="text-gray-700 text-xs">&copy; {new Date().getFullYear()} Gauntlet Group. All rights reserved.</p>
@@ -241,8 +264,8 @@ function App() {
       <Modal isOpen={isAlertModalOpen} onClose={() => setIsAlertModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">
-            <div className="bg-cyan-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-cyan-500/30">
-              <Activity className="text-cyan-400" size={32} />
+            <div className="bg-amber-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-500/30">
+              <Activity className="text-amber-400" size={32} />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">AI Alert Triage &amp; Incident Escalation</h2>
           </div>
@@ -253,12 +276,15 @@ function App() {
                 key={tab}
                 onClick={() => setAlertTab(tab)}
                 className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap
-                  ${alertTab === tab ? 'text-cyan-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                  ${alertTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
                 `}
               >
                 {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {alertTab === tab && (
-                  <motion.div layoutId="alertActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />
+                  <motion.div
+                    layoutId="alertActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                  />
                 )}
               </button>
             ))}
@@ -278,7 +304,7 @@ function App() {
                     { title: 'Audit Logging', desc: 'Every alert, classification, and notification recorded for reporting and compliance.' }
                   ].map((s, i) => (
                     <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                      <h4 className="font-bold text-cyan-400 text-sm mb-1">{s.title}</h4>
+                      <h4 className="font-bold text-amber-400 text-sm mb-1">{s.title}</h4>
                       <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
                     </div>
                   ))}
@@ -289,9 +315,13 @@ function App() {
             {alertTab === 'demo' && (
               <div>
                 <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                  <iframe src="https://www.youtube.com/embed/ALERT_VIDEO_ID" allowFullScreen frameBorder="0"
+                  <iframe
+                    src="https://www.youtube.com/embed/ALERT_VIDEO_ID"
+                    allowFullScreen
+                    frameBorder="0"
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="AI Alert Triage Demo" />
+                    title="AI Alert Triage Demo"
+                  />
                 </div>
                 <p className="text-gray-500 text-xs text-center mt-3">Live demonstration of the AI Alert Triage workflow — Azure Monitor → AI Summary → Teams notification → Audit Log</p>
               </div>
@@ -303,7 +333,8 @@ function App() {
                   Works with the monitoring and communication tools your team already uses.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {['Azure Monitor', 'Microsoft Teams', 'Outlook / Email', 'Slack',
+                  {[
+                    'Azure Monitor', 'Microsoft Teams', 'Outlook / Email', 'Slack',
                     'Jira Service Management', 'Google Gemini AI', 'PagerDuty / Opsgenie', 'ServiceNow'
                   ].map((tool, i) => (
                     <div key={i} className="bg-gray-800/30 border border-white/5 rounded-xl px-4 py-3 text-center">
@@ -323,7 +354,7 @@ function App() {
                     { step: '3. Notify & Log', desc: 'Critical alerts are sent immediately to the right channel. All events are logged to your chosen audit store.' }
                   ].map((p, i) => (
                     <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
-                      <div className="font-bold text-cyan-400 text-sm mb-1">{p.step}</div>
+                      <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
                       <p className="text-gray-400 text-xs leading-relaxed">{p.desc}</p>
                     </div>
                   ))}
@@ -332,8 +363,9 @@ function App() {
             )}
           </div>
 
-          <div className="mt-6 bg-cyan-400/5 border border-cyan-400/20 rounded-xl px-5 py-4">
-            <p className="text-cyan-300 text-xs leading-relaxed text-center">
+          {/* Callout */}
+          <div className="mt-6 bg-amber-400/5 border border-amber-400/20 rounded-xl px-5 py-4">
+            <p className="text-amber-300 text-xs leading-relaxed text-center">
               <strong>Demonstration implementation:</strong> Azure Monitor → AI Summary &amp; Severity Classification → Microsoft Teams / Outlook → Audit Log. Contact us to discuss implementation for your environment.
             </p>
           </div>
@@ -352,12 +384,19 @@ function App() {
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
             {(['overview', 'process', 'security'] as const).map((tab) => (
-              <button key={tab} onClick={() => setWeeeTab(tab)}
+              <button
+                key={tab}
+                onClick={() => setWeeeTab(tab)}
                 className={`relative px-5 py-3 text-sm font-semibold capitalize transition-colors duration-300
-                  ${weeeTab === tab ? 'text-emerald-400 font-bold' : 'text-gray-400 hover:text-gray-300'}`}>
+                  ${weeeTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                `}
+              >
                 {tab}
                 {weeeTab === tab && (
-                  <motion.div layoutId="weeeActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400" />
+                  <motion.div
+                    layoutId="weeeActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                  />
                 )}
               </button>
             ))}
@@ -400,7 +439,7 @@ function App() {
                     { step: '3. Materials Sorting', desc: 'Metals, plastics, and reusable modules are sorted with zero-to-landfill policy.' }
                   ].map((p, i) => (
                     <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
-                      <div className="font-bold text-emerald-400 text-sm mb-1">{p.step}</div>
+                      <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
                       <p className="text-gray-400 text-xs leading-relaxed">{p.desc}</p>
                     </div>
                   ))}
@@ -439,20 +478,27 @@ function App() {
       <Modal isOpen={isHelpdeskModalOpen} onClose={() => setIsHelpdeskModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">
-            <div className="bg-cyan-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-cyan-500/30">
-              <Headphones className="text-cyan-400" size={32} />
+            <div className="bg-amber-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-500/30">
+              <Headphones className="text-amber-400" size={32} />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">IT Helpdesk Automation</h2>
           </div>
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
             {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
-              <button key={tab} onClick={() => setHelpdeskTab(tab)}
+              <button
+                key={tab}
+                onClick={() => setHelpdeskTab(tab)}
                 className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap
-                  ${helpdeskTab === tab ? 'text-cyan-400 font-bold' : 'text-gray-400 hover:text-gray-300'}`}>
+                  ${helpdeskTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                `}
+              >
                 {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {helpdeskTab === tab && (
-                  <motion.div layoutId="helpdeskActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />
+                  <motion.div
+                    layoutId="helpdeskActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                  />
                 )}
               </button>
             ))}
@@ -469,7 +515,7 @@ function App() {
                     { title: 'Self-Service Knowledge', desc: 'Common questions answered automatically via an AI assistant trained on your documentation, before a ticket is ever raised.' }
                   ].map((s, i) => (
                     <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                      <h4 className="font-bold text-cyan-400 text-sm mb-1">{s.title}</h4>
+                      <h4 className="font-bold text-amber-400 text-sm mb-1">{s.title}</h4>
                       <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
                     </div>
                   ))}
@@ -480,9 +526,13 @@ function App() {
             {helpdeskTab === 'demo' && (
               <div>
                 <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                  <iframe src="https://www.youtube.com/embed/HELPDESK_VIDEO_ID" allowFullScreen frameBorder="0"
+                  <iframe
+                    src="https://www.youtube.com/embed/HELPDESK_VIDEO_ID"
+                    allowFullScreen
+                    frameBorder="0"
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="IT Helpdesk Automation Demo" />
+                    title="IT Helpdesk Automation Demo"
+                  />
                 </div>
                 <p className="text-gray-500 text-xs text-center mt-3">Live demonstration of the Password Reset Automation — Tally form → Azure AD → Microsoft Graph API → Automated email → Audit Log</p>
               </div>
@@ -497,7 +547,7 @@ function App() {
                     { step: '3. User Notified & Logged', desc: 'The staff member receives an instant email. Every action is logged with a timestamp for audit purposes.' }
                   ].map((p, i) => (
                     <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
-                      <div className="font-bold text-cyan-400 text-sm mb-1">{p.step}</div>
+                      <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
                       <p className="text-gray-400 text-xs leading-relaxed">{p.desc}</p>
                     </div>
                   ))}
@@ -506,8 +556,8 @@ function App() {
             )}
           </div>
 
-          <div className="mt-6 bg-cyan-400/5 border border-cyan-400/20 rounded-xl px-5 py-4">
-            <p className="text-cyan-300 text-xs leading-relaxed text-center">
+          <div className="mt-6 bg-amber-400/5 border border-amber-400/20 rounded-xl px-5 py-4">
+            <p className="text-amber-300 text-xs leading-relaxed text-center">
               <strong>Demonstration implementation:</strong> Tally Form → n8n → Azure Active Directory → Microsoft Graph API → Outlook Email → Google Sheets Audit Log. Contact us to discuss implementation for your environment.
             </p>
           </div>
@@ -518,20 +568,27 @@ function App() {
       <Modal isOpen={isOnboardingModalOpen} onClose={() => setIsOnboardingModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">
-            <div className="bg-cyan-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-cyan-500/30">
-              <Users className="text-cyan-400" size={32} />
+            <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+              <Users className="text-blue-400" size={32} />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Employee Onboarding Automation</h2>
           </div>
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
             {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
-              <button key={tab} onClick={() => setOnboardingTab(tab)}
+              <button
+                key={tab}
+                onClick={() => setOnboardingTab(tab)}
                 className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap
-                  ${onboardingTab === tab ? 'text-cyan-400 font-bold' : 'text-gray-400 hover:text-gray-300'}`}>
+                  ${onboardingTab === tab ? 'text-blue-400 font-bold' : 'text-gray-400 hover:text-gray-300'}
+                `}
+              >
                 {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {onboardingTab === tab && (
-                  <motion.div layoutId="onboardingActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />
+                  <motion.div
+                    layoutId="onboardingActiveTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400"
+                  />
                 )}
               </button>
             ))}
@@ -548,7 +605,7 @@ function App() {
                     { title: 'Duplicate Detection', desc: 'If the account already exists or creation fails, the workflow catches it, logs the failure, and notifies IT immediately rather than silently failing.' }
                   ].map((s, i) => (
                     <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                      <h4 className="font-bold text-cyan-400 text-sm mb-1">{s.title}</h4>
+                      <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
                       <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
                     </div>
                   ))}
@@ -559,9 +616,13 @@ function App() {
             {onboardingTab === 'demo' && (
               <div>
                 <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                  <iframe src="https://www.youtube.com/embed/ONBOARDING_VIDEO_ID" allowFullScreen frameBorder="0"
+                  <iframe
+                    src="https://www.youtube.com/embed/ONBOARDING_VIDEO_ID"
+                    allowFullScreen
+                    frameBorder="0"
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="Employee Onboarding Demo" />
+                    title="Employee Onboarding Demo"
+                  />
                 </div>
                 <p className="text-gray-500 text-xs text-center mt-3">Live demonstration of the New Starter Onboarding Automation — Tally form → Azure AD account creation → Welcome email → IT notification → Audit Log</p>
               </div>
@@ -576,7 +637,7 @@ function App() {
                     { step: '3. Notifications & Logging', desc: 'The new starter receives a welcome email. IT is notified with an onboarding checklist. The full event is logged to Google Sheets.' }
                   ].map((p, i) => (
                     <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
-                      <div className="font-bold text-cyan-400 text-sm mb-1">{p.step}</div>
+                      <div className="font-bold text-blue-400 text-sm mb-1">{p.step}</div>
                       <p className="text-gray-400 text-xs leading-relaxed">{p.desc}</p>
                     </div>
                   ))}
@@ -585,8 +646,8 @@ function App() {
             )}
           </div>
 
-          <div className="mt-6 bg-cyan-400/5 border border-cyan-400/20 rounded-xl px-5 py-4">
-            <p className="text-cyan-300 text-xs leading-relaxed text-center">
+          <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
+            <p className="text-blue-300 text-xs leading-relaxed text-center">
               <strong>Demonstration implementation:</strong> Tally Form → n8n → Azure Active Directory → Microsoft Graph API → Outlook Email (welcome + IT checklist) → Google Sheets Audit Log.
             </p>
           </div>
@@ -597,8 +658,8 @@ function App() {
       <Modal isOpen={isCustomWorkflowModalOpen} onClose={() => setIsCustomWorkflowModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">
-            <div className="bg-cyan-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-cyan-500/30">
-              <GitBranch className="text-cyan-400" size={32} />
+            <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+              <GitBranch className="text-blue-400" size={32} />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Custom Workflow Automation</h2>
             <p className="text-gray-400 text-center mb-8">If it involves copying data or waiting for a human to trigger the next step — we can automate it.</p>
@@ -612,7 +673,7 @@ function App() {
               { title: 'IT Operations', desc: 'Patch management notifications, asset tracking, licence audits, and routine maintenance reminders.' }
             ].map((s, i) => (
               <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                <h4 className="font-bold text-cyan-400 text-sm mb-1">{s.title}</h4>
+                <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
                 <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
               </div>
             ))}
@@ -620,18 +681,18 @@ function App() {
 
           <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
             <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Form / Trigger</span>
-            <span className="text-cyan-400">→</span>
+            <span className="text-amber-400">→</span>
             <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">n8n</span>
-            <span className="text-cyan-400">→</span>
+            <span className="text-amber-400">→</span>
             <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Your Apps</span>
-            <span className="text-cyan-400">→</span>
+            <span className="text-amber-400">→</span>
             <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Notification</span>
-            <span className="text-cyan-400">→</span>
+            <span className="text-amber-400">→</span>
             <span className="bg-gray-800/50 border border-white/10 text-gray-400 text-xs px-3 py-1.5 rounded-full">Log</span>
           </div>
 
-          <div className="mt-6 bg-cyan-400/5 border border-cyan-400/20 rounded-xl px-5 py-4">
-            <p className="text-cyan-300 text-xs leading-relaxed text-center">
+          <div className="mt-6 bg-amber-400/5 border border-amber-400/20 rounded-xl px-5 py-4">
+            <p className="text-amber-300 text-xs leading-relaxed text-center">
               Every custom automation starts with a free 30-minute scoping call. We'll map your process, identify the tools involved, and give you a fixed-price quote before any work begins.
             </p>
           </div>
@@ -648,8 +709,8 @@ function App() {
       <Modal isOpen={isAIAssistantModalOpen} onClose={() => setIsAIAssistantModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">
-            <div className="bg-cyan-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-cyan-500/30">
-              <MessageSquare className="text-cyan-400" size={32} />
+            <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+              <MessageSquare className="text-blue-400" size={32} />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">AI Knowledge & Support Assistants</h2>
             <p className="text-gray-400 text-center mb-8">Give your team or customers instant answers from your own documentation — 24/7, without extra headcount.</p>
@@ -663,14 +724,14 @@ function App() {
               { title: 'Usage Analytics', desc: 'See what your team or customers ask most. Use the data to identify knowledge gaps and improve your documentation.' }
             ].map((s, i) => (
               <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                <h4 className="font-bold text-cyan-400 text-sm mb-1">{s.title}</h4>
+                <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
                 <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 bg-cyan-400/5 border border-cyan-400/20 rounded-xl px-5 py-4">
-            <p className="text-cyan-300 text-xs leading-relaxed text-center">
+          <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
+            <p className="text-blue-300 text-xs leading-relaxed text-center">
               This service is currently in active development. Contact us to join the early access list and shape the implementation around your use case.
             </p>
           </div>

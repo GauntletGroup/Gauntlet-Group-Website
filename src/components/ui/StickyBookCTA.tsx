@@ -27,11 +27,15 @@ export const StickyBookCTA: React.FC = () => {
           className="fixed bottom-6 right-6 z-50"
         >
           <div className="relative">
-            {/* Pulse ring */}
-            <div className="absolute inset-0 rounded-full bg-amber-400/30 animate-ping" />
+            {!shouldReduceMotion && (
+              <>
+                <div className="absolute inset-0 rounded-full bg-amber-400/30 animate-ping" style={{ animationDuration: '2s' }} />
+                <div className="absolute -inset-2 rounded-full bg-amber-400/10 blur-lg animate-pulse" style={{ animationDuration: '2.5s' }} />
+              </>
+            )}
             <button
               onClick={handleClick}
-              className="relative flex items-center gap-2 bg-amber-400 text-black font-bold rounded-full px-6 py-3 shadow-2xl hover:scale-105 transition-transform duration-200"
+              className="relative flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold rounded-full px-6 py-3 shadow-2xl hover:from-amber-400 hover:to-amber-500 transition-all duration-200 hover:scale-105"
             >
               <Calendar size={16} />
               Book a Free Review

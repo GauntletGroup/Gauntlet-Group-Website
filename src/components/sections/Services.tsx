@@ -6,6 +6,7 @@ interface Service {
   icon: any;
   title: string;
   description: string;
+  hoverStat: string;
   accent: 'amber' | 'blue' | 'emerald';
   featured?: boolean;
   badge?: string;
@@ -19,48 +20,54 @@ interface ServicesProps {
 const services: Service[] = [
   {
     icon: Activity,
-    title: 'AI Alert Triage & Incident Escalation',
-    description: 'Turn technical monitoring alerts into plain-English summaries. Classify urgency, suppress noise, and automatically notify the right people through Teams, Slack, email, or your ticketing system.',
+    title: 'AI Alert Triage',
+    description: 'Alerts triaged and routed before your team sees them.',
+    hoverStat: '~3 sec end-to-end',
     accent: 'amber',
     featured: true,
-    badge: 'Featured Automation',
-    delay: 0.1
+    badge: 'Featured',
+    delay: 0.1,
   },
   {
     icon: Headphones,
     title: 'IT Helpdesk Automation',
-    description: 'Automate repetitive support tasks — password resets, ticket classification, access requests, and employee self-service — reducing load on IT teams and improving response times.',
+    description: 'Password resets handled without a single ticket.',
+    hoverStat: 'Zero IT involvement',
     accent: 'amber',
-    delay: 0.2
+    delay: 0.2,
   },
   {
     icon: Users,
-    title: 'Employee Onboarding Automation',
-    description: 'Coordinate accounts, system access, equipment, notifications, and welcome tasks for new starters automatically — no more manual chasing across email and spreadsheets.',
+    title: 'Employee Onboarding',
+    description: 'New starters ready on day one — accounts, access, welcome email.',
+    hoverStat: 'Accounts in seconds',
     accent: 'amber',
-    delay: 0.3
+    delay: 0.3,
   },
   {
     icon: MessageSquare,
-    title: 'AI Knowledge & Support Assistants',
-    description: 'Give staff or customers fast, accurate answers drawn from your own documentation, policies, and knowledge base — available 24/7 without extra headcount.',
+    title: 'AI Support Assistants',
+    description: 'Instant answers from your own docs — 24/7, no extra headcount.',
+    hoverStat: 'Answers in seconds',
     accent: 'blue',
-    delay: 0.4
+    delay: 0.4,
   },
   {
     icon: GitBranch,
-    title: 'Custom Workflow Automation',
-    description: 'Connect your existing apps and eliminate repetitive steps across IT, operations, sales, and support. If it involves copying data or waiting for a human to trigger the next step — we can automate it.',
+    title: 'Custom Workflows',
+    description: 'If it involves copying data or waiting for a human — we automate it.',
+    hoverStat: 'Any tool, any process',
     accent: 'blue',
-    delay: 0.5
+    delay: 0.5,
   },
   {
     icon: Recycle,
-    title: 'WEEE & IT Asset Lifecycle Services',
-    description: 'Responsible collection, reuse, recycling, and data-secure disposal of IT equipment. Certified, zero-cost logistics for qualifying assets. Helping organisations manage the full technology lifecycle sustainably.',
+    title: 'WEEE & IT Asset Disposal',
+    description: 'Secure, certified, zero-cost IT asset recycling and disposal.',
+    hoverStat: 'Zero-to-landfill',
     accent: 'emerald',
-    delay: 0.6
-  }
+    delay: 0.6,
+  },
 ];
 
 export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
@@ -71,20 +78,23 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
       icon: 'text-amber-400 border-amber-400/20 bg-amber-400/5 group-hover:border-amber-400/50',
       glow: 'bg-gradient-to-br from-amber-500/5 to-transparent',
       text: 'text-amber-400 group-hover:text-amber-300',
-      border: 'hover:border-amber-400/30'
+      border: 'hover:border-amber-400/30',
+      stat: 'text-amber-400',
     },
     blue: {
       icon: 'text-blue-400 border-blue-400/20 bg-blue-400/5 group-hover:border-blue-400/50',
       glow: 'bg-gradient-to-br from-blue-500/5 to-transparent',
       text: 'text-blue-400 group-hover:text-blue-300',
-      border: 'hover:border-blue-400/30'
+      border: 'hover:border-blue-400/30',
+      stat: 'text-blue-400',
     },
     emerald: {
       icon: 'text-emerald-400 border-emerald-400/20 bg-emerald-400/5 group-hover:border-emerald-400/50',
       glow: 'bg-gradient-to-br from-emerald-500/5 to-transparent',
       text: 'text-emerald-400 group-hover:text-emerald-300',
-      border: 'hover:border-emerald-400/30'
-    }
+      border: 'hover:border-emerald-400/30',
+      stat: 'text-emerald-400',
+    },
   };
 
   return (
@@ -97,10 +107,10 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center bg-gray-800/50 border border-amber-500/30 rounded-full px-6 py-2 mb-8"
+            className="inline-flex items-center bg-gray-800/50 border border-amber-500/30 rounded-full px-5 py-2 mb-6"
           >
-            <Zap className="text-amber-400 mr-2" size={16} />
-            <span className="text-amber-400 text-sm font-medium uppercase tracking-widest">What We Automate</span>
+            <Zap className="text-amber-400 mr-2" size={14} />
+            <span className="text-amber-400 text-xs font-semibold uppercase tracking-widest">What We Automate</span>
           </motion.div>
 
           <motion.h2
@@ -108,20 +118,20 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: shouldReduceMotion ? 0 : 0.1 }}
-            className="text-4xl md:text-5xl font-bold text-white mb-6"
+            className="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight"
           >
             Automation &amp;{' '}
             <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">AI Services</span>
           </motion.h2>
 
           <motion.p
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
-            className="text-lg text-gray-400 max-w-2xl mx-auto"
+            className="text-sm text-gray-500 max-w-xl mx-auto"
           >
-            Practical, proven automations built for growing businesses and SaaS teams.
+            Six proven workflows. One pilot to start.
           </motion.p>
         </div>
 
@@ -149,26 +159,36 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
                 {/* Featured badge */}
                 {service.badge && (
                   <div className="absolute top-5 right-5">
-                    <span className="bg-amber-400/15 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-400/30 uppercase tracking-wider">
+                    <span className="bg-amber-400/15 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-400/30 uppercase tracking-wider">
                       {service.badge}
                     </span>
                   </div>
                 )}
 
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 border transition-all duration-500 ${ac.icon}`}>
-                  <service.icon size={28} />
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 border transition-all duration-500 ${ac.icon}`}>
+                  <service.icon size={26} />
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-300 pr-4">
+                <h3 className="text-lg font-bold text-white mb-2 transition-colors duration-300">
                   {service.title}
                 </h3>
 
-                <p className="text-gray-400 leading-relaxed mb-6 text-sm group-hover:text-gray-300 transition-colors duration-300">
+                <p className="text-gray-400 leading-relaxed mb-4 text-sm group-hover:text-gray-300 transition-colors duration-300">
                   {service.description}
                 </p>
 
-                <div className={`flex items-center font-semibold text-sm transition-all duration-300 ${ac.text}`}>
-                  Learn More <ArrowRight className="ml-2 group-hover:translate-x-2 transition-transform duration-300" size={15} />
+                {/* Hover outcome stat */}
+                <div className="flex items-center justify-between">
+                  <div className={`flex items-center gap-1.5 text-xs font-semibold transition-all duration-300 ${ac.text}`}>
+                    Learn More <ArrowRight className="group-hover:translate-x-2 transition-transform duration-300" size={14} />
+                  </div>
+                  <motion.span
+                    initial={{ opacity: 0, x: 10 }}
+                    whileHover={{ opacity: 1 }}
+                    className={`text-[11px] font-bold ${ac.stat} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                  >
+                    {service.hoverStat}
+                  </motion.span>
                 </div>
               </motion.div>
             );

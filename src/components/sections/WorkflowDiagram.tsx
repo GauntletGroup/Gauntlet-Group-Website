@@ -226,11 +226,12 @@ export function WorkflowDiagram() {
           <p className="text-amber-400 uppercase tracking-widest text-xs font-semibold mb-3">
             AUTOMATION IN ACTION
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            See How the Workflows Run
+          <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight">
+            Workflows That{' '}
+            <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">Run Themselves</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-center">
-            Each automation fires in seconds. No manual steps. No delays. Just trigger &rarr; outcome.
+          <p className="text-sm text-gray-500 max-w-xl mx-auto text-center">
+            Trigger &rarr; outcome. In seconds. No manual steps.
           </p>
         </div>
 

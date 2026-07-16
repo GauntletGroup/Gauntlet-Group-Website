@@ -3,26 +3,10 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Search, Zap, Rocket, TrendingUp } from 'lucide-react';
 
 const steps = [
-  {
-    icon: Search,
-    title: 'Free Automation Review',
-    description: 'We spend 20 minutes understanding your current IT workflows, alert processes, and repetitive tasks. You leave with a clear picture of what can be automated and where to start.'
-  },
-  {
-    icon: Zap,
-    title: 'Pilot Workflow',
-    description: 'We build one focused automation around your highest-value process. Typically delivered within one to two weeks. You test it with your team and we refine it before full deployment.'
-  },
-  {
-    icon: Rocket,
-    title: 'Launch & Integrate',
-    description: 'We deploy the workflow into your environment using your own credentials and systems. We document it fully and walk your team through how it works.'
-  },
-  {
-    icon: TrendingUp,
-    title: 'Optimise & Scale',
-    description: 'We monitor performance, improve the workflow based on real usage, and begin planning the next automation. Monthly support and optimisation available.'
-  }
+  { icon: Search, title: 'Review', description: '20 minutes. We find your highest-impact automation.' },
+  { icon: Zap, title: 'Pilot', description: 'One workflow built. Delivered in 48 hours to 2 weeks.' },
+  { icon: Rocket, title: 'Launch', description: 'Deployed in your environment. Your credentials, your systems.' },
+  { icon: TrendingUp, title: 'Scale', description: 'Monitor, refine, then automate the next process.' },
 ];
 
 export const Process: React.FC = () => {
@@ -47,19 +31,19 @@ export const Process: React.FC = () => {
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-white mb-4"
+            className="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight"
           >
             How We{' '}
-            <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">Work Together</span>
+            <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">Work</span>
           </motion.h2>
 
           <motion.p
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-gray-400 max-w-2xl mx-auto"
+            className="text-sm text-gray-500 max-w-xl mx-auto"
           >
-            A low-risk engagement model designed to prove value quickly before committing to larger automation.
+            Low risk. Fast results. Prove value before scaling.
           </motion.p>
         </div>
 
@@ -78,7 +62,7 @@ export const Process: React.FC = () => {
                 transition={{ delay: shouldReduceMotion ? 0 : index * 0.15 }}
                 className="flex flex-col items-center text-center group"
               >
-                <div className="relative mb-8">
+                <div className="relative mb-6">
                   <div className="w-20 h-20 bg-[#0B1120] border-2 border-gray-800 group-hover:border-amber-400/50 rounded-full flex items-center justify-center transition-colors duration-500">
                     <step.icon className="text-amber-400" size={28} />
                   </div>
@@ -86,8 +70,8 @@ export const Process: React.FC = () => {
                     {index + 1}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{step.description}</p>
+                <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
+                <p className="text-gray-500 text-xs leading-relaxed max-w-[200px]">{step.description}</p>
               </motion.div>
             ))}
           </div>

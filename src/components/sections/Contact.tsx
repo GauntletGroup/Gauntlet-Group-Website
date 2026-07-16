@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
-import { Button } from '../ui/Button';
 
 interface ContactProps {
   formData: any;
@@ -20,28 +19,19 @@ export const Contact: React.FC<ContactProps> = ({
   handleInputChange,
   handleBlur,
   handleSubmit,
-  isSubmitting
+  isSubmitting,
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const contactInfo = [
-    { icon: Mail, title: 'Email', detail: 'imran.ishaq@gauntlet-group.com', color: 'amber' },
-    { icon: Phone, title: 'Phone', detail: '+44 7800 721443', color: 'emerald' },
-    { icon: MapPin, title: 'Office', detail: 'Peterborough, United Kingdom', color: 'blue' }
+    { icon: Mail, title: 'Email', detail: 'imran.ishaq@gauntlet-group.com' },
+    { icon: Phone, title: 'Phone', detail: '+44 7800 721443' },
+    { icon: MapPin, title: 'Office', detail: 'Peterborough, UK' },
   ];
 
   const getBorderClass = (fieldName: string) => {
-    if (touched[fieldName] && errors[fieldName]) {
-      return 'border-red-500/50 focus:ring-red-500/30';
-    }
-    if (
-      touched[fieldName] &&
-      !errors[fieldName] &&
-      formData[fieldName] !== undefined &&
-      formData[fieldName] !== '' &&
-      formData[fieldName] !== false
-    ) {
+    if (touched[fieldName] && errors[fieldName]) return 'border-red-500/50 focus:ring-red-500/30';
+    if (touched[fieldName] && !errors[fieldName] && formData[fieldName] !== undefined && formData[fieldName] !== '' && formData[fieldName] !== false)
       return 'border-emerald-500/50 focus:ring-emerald-500/30';
-    }
     return 'border-white/10 focus:ring-amber-500/30 focus:border-amber-500';
   };
 
@@ -53,17 +43,18 @@ export const Contact: React.FC<ContactProps> = ({
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
+            className="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight"
           >
-            Start the <span className="bg-gradient-to-r from-amber-400 to-blue-500 bg-clip-text text-transparent">Conversation</span>
+            Start the{' '}
+            <span className="bg-gradient-to-r from-amber-400 to-blue-500 bg-clip-text text-transparent">Conversation</span>
           </motion.h2>
           <motion.p
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-gray-400 max-w-xl mx-auto"
+            className="text-sm text-gray-500 max-w-lg mx-auto"
           >
-            Ready to automate your first IT workflow? Fill in the form and we will get back to you within one working day.
+            Ready to automate? We'll respond within one working day.
           </motion.p>
         </div>
 
@@ -75,10 +66,10 @@ export const Contact: React.FC<ContactProps> = ({
             viewport={{ once: true }}
             className="bg-[#0B1120] p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-2xl"
           >
-            <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               {/* Names */}
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">First Name *</label>
                   <input
                     type="text"
@@ -89,11 +80,9 @@ export const Contact: React.FC<ContactProps> = ({
                     required
                     className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('firstName')}`}
                   />
-                  {touched.firstName && errors.firstName && (
-                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.firstName}</p>
-                  )}
+                  {touched.firstName && errors.firstName && <p className="text-red-400 text-xs mt-1 ml-1">{errors.firstName}</p>}
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Last Name *</label>
                   <input
                     type="text"
@@ -104,16 +93,14 @@ export const Contact: React.FC<ContactProps> = ({
                     required
                     className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('lastName')}`}
                   />
-                  {touched.lastName && errors.lastName && (
-                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.lastName}</p>
-                  )}
+                  {touched.lastName && errors.lastName && <p className="text-red-400 text-xs mt-1 ml-1">{errors.lastName}</p>}
                 </div>
               </div>
 
               {/* Email and Phone */}
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Email Address *</label>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Email *</label>
                   <input
                     type="email"
                     name="email"
@@ -123,12 +110,10 @@ export const Contact: React.FC<ContactProps> = ({
                     required
                     className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('email')}`}
                   />
-                  {touched.email && errors.email && (
-                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>
-                  )}
+                  {touched.email && errors.email && <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>}
                 </div>
-                <div className="space-y-3">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Phone Number</label>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Phone</label>
                   <input
                     type="tel"
                     name="phoneNumber"
@@ -138,15 +123,13 @@ export const Contact: React.FC<ContactProps> = ({
                     placeholder="+44 7000 000000"
                     className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('phoneNumber')}`}
                   />
-                  {touched.phoneNumber && errors.phoneNumber && (
-                    <p className="text-red-400 text-xs mt-1 ml-1">{errors.phoneNumber}</p>
-                  )}
+                  {touched.phoneNumber && errors.phoneNumber && <p className="text-red-400 text-xs mt-1 ml-1">{errors.phoneNumber}</p>}
                 </div>
               </div>
 
               {/* Company Name */}
-              <div className="space-y-3">
-                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company Name</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company</label>
                 <input
                   type="text"
                   name="company"
@@ -158,8 +141,8 @@ export const Contact: React.FC<ContactProps> = ({
               </div>
 
               {/* Automation Type */}
-              <div className="space-y-3">
-                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">What would you like to automate?</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">What to automate?</label>
                 <select
                   name="automationType"
                   value={formData.automationType}
@@ -168,35 +151,35 @@ export const Contact: React.FC<ContactProps> = ({
                   className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all appearance-none cursor-pointer placeholder:text-gray-600 ${getBorderClass('automationType')}`}
                 >
                   <option value="" className="bg-[#151B28]">Select an area (optional)</option>
-                  <option value="it-alerts" className="bg-[#151B28]">IT alerting and incident escalation</option>
-                  <option value="helpdesk" className="bg-[#151B28]">Helpdesk or password reset processes</option>
-                  <option value="onboarding" className="bg-[#151B28]">Employee onboarding or offboarding</option>
-                  <option value="chatbot" className="bg-[#151B28]">AI chatbot or knowledge assistant</option>
-                  <option value="workflows" className="bg-[#151B28]">Data entry or reporting workflows</option>
+                  <option value="it-alerts" className="bg-[#151B28]">IT alert triage</option>
+                  <option value="helpdesk" className="bg-[#151B28]">Helpdesk / password resets</option>
+                  <option value="onboarding" className="bg-[#151B28]">Employee onboarding</option>
+                  <option value="chatbot" className="bg-[#151B28]">AI assistant</option>
+                  <option value="workflows" className="bg-[#151B28]">Data / reporting workflows</option>
                   <option value="integrations" className="bg-[#151B28]">System integrations</option>
-                  <option value="weee" className="bg-[#151B28]">WEEE or IT asset disposal</option>
-                  <option value="unsure" className="bg-[#151B28]">Not sure — I need advice</option>
+                  <option value="weee" className="bg-[#151B28]">WEEE / IT asset disposal</option>
+                  <option value="unsure" className="bg-[#151B28]">Not sure — need advice</option>
                 </select>
               </div>
 
               {/* Current Tools */}
-              <div className="space-y-3">
-                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Which tools do you currently use?</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Current tools</label>
                 <input
                   type="text"
                   name="currentTools"
                   value={formData.currentTools}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  placeholder="e.g. Microsoft 365, Teams, Azure, Slack, Jira, ServiceNow, HubSpot"
+                  placeholder="e.g. Microsoft 365, Teams, Azure, Slack, Jira"
                   className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all placeholder:text-gray-600 ${getBorderClass('currentTools')}`}
                 />
               </div>
 
               {/* Company Size and Industry */}
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company Size</label>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Company size</label>
                   <select
                     name="companySize"
                     value={formData.companySize}
@@ -204,14 +187,14 @@ export const Contact: React.FC<ContactProps> = ({
                     onBlur={handleBlur}
                     className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all appearance-none cursor-pointer placeholder:text-gray-600 ${getBorderClass('companySize')}`}
                   >
-                    <option value="" disabled className="bg-[#151B28]">Select size...</option>
-                    <option value="Under 10 employees" className="bg-[#151B28]">Under 10 employees</option>
-                    <option value="10 - 49 employees" className="bg-[#151B28]">10 - 49 employees</option>
-                    <option value="50 - 249 employees" className="bg-[#151B28]">50 - 249 employees</option>
-                    <option value="250+ employees" className="bg-[#151B28]">250+ employees</option>
+                    <option value="" disabled className="bg-[#151B28]">Select...</option>
+                    <option value="Under 10 employees" className="bg-[#151B28]">Under 10</option>
+                    <option value="10 - 49 employees" className="bg-[#151B28]">10–49</option>
+                    <option value="50 - 249 employees" className="bg-[#151B28]">50–249</option>
+                    <option value="250+ employees" className="bg-[#151B28]">250+</option>
                   </select>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Industry</label>
                   <select
                     name="industry"
@@ -220,7 +203,7 @@ export const Contact: React.FC<ContactProps> = ({
                     onBlur={handleBlur}
                     className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all appearance-none cursor-pointer placeholder:text-gray-600 ${getBorderClass('industry')}`}
                   >
-                    <option value="" disabled className="bg-[#151B28]">Select industry...</option>
+                    <option value="" disabled className="bg-[#151B28]">Select...</option>
                     <option value="Technology & IT" className="bg-[#151B28]">Technology & IT</option>
                     <option value="Professional Services" className="bg-[#151B28]">Professional Services</option>
                     <option value="Financial Services" className="bg-[#151B28]">Financial Services</option>
@@ -234,7 +217,7 @@ export const Contact: React.FC<ContactProps> = ({
               </div>
 
               {/* Message */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Message *</label>
                 <textarea
                   name="message"
@@ -245,14 +228,12 @@ export const Contact: React.FC<ContactProps> = ({
                   rows={4}
                   className={`w-full bg-[#151B28] border rounded-2xl px-6 py-4 text-white focus:ring-2 outline-none transition-all resize-none placeholder:text-gray-600 ${getBorderClass('message')}`}
                 />
-                {touched.message && errors.message && (
-                  <p className="text-red-400 text-xs mt-1 ml-1">{errors.message}</p>
-                )}
+                {touched.message && errors.message && <p className="text-red-400 text-xs mt-1 ml-1">{errors.message}</p>}
               </div>
 
-              {/* GDPR Compliance Checkbox */}
-              <div className="space-y-3">
-                <div className="flex items-start space-x-3 mt-4">
+              {/* GDPR */}
+              <div className="space-y-2">
+                <div className="flex items-start space-x-3 mt-2">
                   <input
                     type="checkbox"
                     name="gdprConsent"
@@ -263,13 +244,11 @@ export const Contact: React.FC<ContactProps> = ({
                     required
                     className="mt-1 h-5 w-5 rounded border-white/10 bg-[#151B28] text-amber-500 focus:ring-amber-500/30 cursor-pointer"
                   />
-                  <label htmlFor="gdprConsent" className="text-sm text-gray-400 leading-snug cursor-pointer select-none">
-                    I consent to Gauntlet Group storing my submitted information in compliance with GDPR guidelines to process my assessment request. *
+                  <label htmlFor="gdprConsent" className="text-xs text-gray-400 leading-snug cursor-pointer select-none">
+                    I consent to Gauntlet Group storing my information to process this request. *
                   </label>
                 </div>
-                {touched.gdprConsent && errors.gdprConsent && (
-                  <p className="text-red-400 text-xs mt-1 ml-1">{errors.gdprConsent}</p>
-                )}
+                {touched.gdprConsent && errors.gdprConsent && <p className="text-red-400 text-xs mt-1 ml-1">{errors.gdprConsent}</p>}
               </div>
 
               <motion.button
@@ -285,30 +264,29 @@ export const Contact: React.FC<ContactProps> = ({
           </motion.div>
 
           {/* Info */}
-          <div className="space-y-12">
+          <div className="space-y-8">
             <motion.div
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-bold text-white mb-10">Contact Information</h3>
-              <div className="space-y-8">
+              <h3 className="text-xl font-bold text-white mb-8">Contact Info</h3>
+              <div className="space-y-6">
                 {contactInfo.map((info, i) => {
                   const colors = {
                     Email: 'text-amber-400 border-amber-400/30 bg-amber-400/5',
                     Phone: 'text-emerald-400 border-emerald-400/30 bg-emerald-400/5',
-                    Office: 'text-white border-white/20 bg-white/5'
+                    Office: 'text-white border-white/20 bg-white/5',
                   };
                   const colorClass = colors[info.title as keyof typeof colors] || 'text-amber-400 border-white/5 bg-[#151B28]';
-
                   return (
-                    <div key={i} className="flex items-start space-x-6 group">
+                    <div key={i} className="flex items-start space-x-5 group">
                       <div className={`p-4 rounded-2xl border transition-all duration-300 ${shouldReduceMotion ? '' : 'group-hover:scale-110'} ${colorClass}`}>
-                        <info.icon size={24} />
+                        <info.icon size={22} />
                       </div>
                       <div>
-                        <h4 className="text-white font-bold text-lg mb-1">{info.title}</h4>
-                        <p className="text-gray-400">{info.detail}</p>
+                        <h4 className="text-white font-bold text-base mb-1">{info.title}</h4>
+                        <p className="text-gray-400 text-sm">{info.detail}</p>
                       </div>
                     </div>
                   );
@@ -320,12 +298,12 @@ export const Contact: React.FC<ContactProps> = ({
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-[#0B1120] p-8 rounded-3xl border border-white/5"
+              className="bg-[#0B1120] p-6 rounded-3xl border border-white/5"
             >
-              <h4 className="text-white font-bold text-xl mb-3">Ready to Get Started?</h4>
-              <p className="text-gray-400 mb-6 leading-relaxed">Schedule a free consultation to discuss your technology and sustainability goals.</p>
-              <a href="#book-call" className={`text-amber-400 font-bold inline-flex items-center ${shouldReduceMotion ? '' : 'hover:translate-x-2'} transition-transform`}>
-                Book a consultation <ArrowRight className="ml-2" size={18} />
+              <h4 className="text-white font-bold text-lg mb-2">Ready to start?</h4>
+              <p className="text-gray-500 text-sm mb-4">Book a free 20-minute automation review.</p>
+              <a href="#book-call" className={`text-amber-400 font-bold inline-flex items-center ${shouldReduceMotion ? '' : 'hover:translate-x-2'} transition-transform text-sm`}>
+                Book a consultation <ArrowRight className="ml-2" size={16} />
               </a>
             </motion.div>
 
@@ -334,13 +312,13 @@ export const Contact: React.FC<ContactProps> = ({
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center lg:items-start space-y-4"
+              className="flex flex-col items-center lg:items-start space-y-3"
             >
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Certified Compliance</span>
+              <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Certified Compliance</span>
               <img
                 src="/ISO27701COMBINED.jpg"
                 alt="ISO Accelerator Certified"
-                className="h-24 w-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer"
+                className="h-20 w-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer"
               />
             </motion.div>
           </div>

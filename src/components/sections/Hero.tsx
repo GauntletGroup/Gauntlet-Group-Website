@@ -63,8 +63,8 @@ export const Hero: React.FC = () => {
 
         {/* Headline */}
         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 leading-[0.9] tracking-tight">
-          IT Automation<br />
-          <span className="bg-gradient-to-r from-amber-400 via-blue-500 to-amber-600 bg-clip-text text-transparent">That Actually Works</span>
+          Automate the Busywork.<br />
+          <span className="bg-gradient-to-r from-amber-400 via-blue-500 to-amber-600 bg-clip-text text-transparent">Focus on Growth</span>
         </motion.h1>
 
         {/* Subheadline */}

@@ -324,17 +324,17 @@ export const Contact: React.FC<ContactProps> = ({
                 <img
                   src="/n8n101.png"
                   alt="n8n Workflow 1"
-                  className="h-28 w-auto rounded-lg border border-white/10 object-contain bg-white/5 p-2"
+                  className="h-44 w-full max-w-[200px] rounded-lg border border-white/10 object-contain bg-white/5 p-2"
                 />
                 <img
                   src="/n8n102.png"
                   alt="n8n Workflow 2"
-                  className="h-28 w-auto rounded-lg border border-white/10 object-contain bg-white/5 p-2"
+                  className="h-44 w-full max-w-[200px] rounded-lg border border-white/10 object-contain bg-white/5 p-2"
                 />
                 <img
                   src="/n8n103.png"
                   alt="n8n Workflow 3"
-                  className="h-28 w-auto rounded-lg border border-white/10 object-contain bg-white/5 p-2"
+                  className="h-44 w-full max-w-[200px] rounded-lg border border-white/10 object-contain bg-white/5 p-2"
                 />
               </div>
             </motion.div>

@@ -320,6 +320,23 @@ export const Contact: React.FC<ContactProps> = ({
                 alt="ISO Accelerator Certified"
                 className="h-20 w-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer"
               />
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                <img
+                  src="/n8n101.png"
+                  alt="n8n Workflow 1"
+                  className="h-16 w-auto rounded-lg border border-white/10 object-contain bg-white/5 p-1"
+                />
+                <img
+                  src="/n8n102.png"
+                  alt="n8n Workflow 2"
+                  className="h-16 w-auto rounded-lg border border-white/10 object-contain bg-white/5 p-1"
+                />
+                <img
+                  src="/n8n103.png"
+                  alt="n8n Workflow 3"
+                  className="h-16 w-auto rounded-lg border border-white/10 object-contain bg-white/5 p-1"
+                />
+              </div>
             </motion.div>
           </div>
         </div>

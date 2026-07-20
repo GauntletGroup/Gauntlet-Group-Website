@@ -4,31 +4,37 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Preconnect & preload fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <title>Gauntlet Group | AI &amp; IT Automation for Growing Businesses</title>
     <meta name="description" content="Gauntlet Group designs and implements AI-powered IT automations — alert triage, helpdesk workflows, employee onboarding, and custom integrations using Microsoft 365, Azure, n8n, and more.">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gauntlet-group.com/">
     <meta property="og:title" content="Gauntlet Group | AI &amp; IT Automation for Growing Businesses">
     <meta property="og:description" content="Gauntlet Group designs and implements AI-powered IT automations — alert triage, helpdesk workflows, employee onboarding, and custom integrations using Microsoft 365, Azure, n8n, and more.">
-    <meta property="og:image" content="/og-image.png">
+    <meta property="og:image" content="https://gauntlet-group.com/og-image.png">
+    <meta property="og:site_name" content="Gauntlet Group">
+    <meta property="og:locale" content="en_GB">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://gauntlet-group.com/">
-    <meta property="twitter:title" content="Gauntlet Group | AI &amp; IT Automation for Growing Businesses">
-    <meta property="twitter:description" content="Gauntlet Group designs and implements AI-powered IT automations — alert triage, helpdesk workflows, employee onboarding, and custom integrations using Microsoft 365, Azure, n8n, and more.">
-    <meta property="twitter:image" content="/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://gauntlet-group.com/">
+    <meta name="twitter:title" content="Gauntlet Group | AI &amp; IT Automation for Growing Businesses">
+    <meta name="twitter:description" content="Gauntlet Group designs and implements AI-powered IT automations — alert triage, helpdesk workflows, employee onboarding, and custom integrations using Microsoft 365, Azure, n8n, and more.">
+    <meta name="twitter:image" content="https://gauntlet-group.com/og-image.png">
 
     <!-- Theme & Icons -->
     <meta name="theme-color" content="#b8860b">
     <link rel="canonical" href="https://gauntlet-group.com/">
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Structured Data: Organization + LocalBusiness -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -48,6 +54,50 @@
       "sameAs": [
         "https://www.linkedin.com/company/gauntlet-group"
       ]
+    }
+    </script>
+
+    <!-- Structured Data: WebSite (enables sitelinks search box) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Gauntlet Group",
+      "url": "https://gauntlet-group.com/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Gauntlet Group"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://gauntlet-group.com/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Structured Data: LocalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Gauntlet Group",
+      "url": "https://gauntlet-group.com/",
+      "image": "https://gauntlet-group.com/og-image.png",
+      "telephone": "+44-7800-721443",
+      "email": "imran.ishaq@gauntlet-group.com",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "GB"
+      },
+      "areaServed": "GB",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "17:00"
+      }
     }
     </script>
 

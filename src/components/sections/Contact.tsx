@@ -317,23 +317,39 @@ export const Contact: React.FC<ContactProps> = ({
               <span className="text-xs font-bold text-gray-600 uppercase tracking-widest">Certified Compliance</span>
               <img
                 src="/ISO27701COMBINED.jpg"
-                alt="ISO Accelerator Certified"
+                alt="ISO 27701 Certification - Gauntlet Group Certified Compliance Badge"
+                width="240"
+                height="128"
+                loading="lazy"
+                decoding="async"
                 className="h-32 w-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer"
               />
               <div className="grid grid-cols-3 gap-3 mt-3">
                 <img
                   src="/n8n101.png"
-                  alt="n8n Workflow 1"
+                  alt="n8n automation workflow demonstrating AI alert triage integration"
+                  width="200"
+                  height="176"
+                  loading="lazy"
+                  decoding="async"
                   className="h-44 w-full max-w-[200px] rounded-lg border border-white/10 object-contain bg-white/5 p-2"
                 />
                 <img
                   src="/n8n102.png"
-                  alt="n8n Workflow 2"
+                  alt="n8n automation workflow showing IT helpdesk automation process"
+                  width="200"
+                  height="176"
+                  loading="lazy"
+                  decoding="async"
                   className="h-44 w-full max-w-[200px] rounded-lg border border-white/10 object-contain bg-white/5 p-2"
                 />
                 <img
                   src="/n8n103.png"
-                  alt="n8n Workflow 3"
+                  alt="n8n automation workflow for employee onboarding and custom integrations"
+                  width="200"
+                  height="176"
+                  loading="lazy"
+                  decoding="async"
                   className="h-44 w-full max-w-[200px] rounded-lg border border-white/10 object-contain bg-white/5 p-2"
                 />
               </div>

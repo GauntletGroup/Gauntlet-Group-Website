@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from './lib/supabase';
 import type { ContactInquiry } from './lib/supabase';
-import { Recycle, Activity, Headphones, Users, MessageSquare, GitBranch } from 'lucide-react';
+import { Recycle, Activity, Headphones, Users, MessageSquare, GitBranch, Mail, Linkedin, Shield, ArrowUp } from 'lucide-react';
 
 // Layout & UI
 import { Navbar } from './components/layout/Navbar';
 import { Cursor } from './components/ui/Cursor';
 import { Modal } from './components/ui/Modal';
 import { Button } from './components/ui/Button';
+import { IntroOverlay } from './components/ui/IntroOverlay';
+import { TechStackStrip } from './components/ui/TechStackStrip';
 
 // Sections
 import { Hero } from './components/sections/Hero';
@@ -22,10 +24,14 @@ import { WhyUs } from './components/sections/WhyUs';
 import { FAQ } from './components/sections/FAQ';
 import { BookCall } from './components/sections/BookCall';
 import { Contact } from './components/sections/Contact';
+import { FounderQuote } from './components/sections/FounderQuote';
 import { StickyBookCTA } from './components/ui/StickyBookCTA';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [introComplete, setIntroComplete] = useState(false);
+
+  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
   const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isHelpdeskModalOpen, setIsHelpdeskModalOpen] = useState(false);
@@ -221,18 +227,21 @@ function App() {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-amber-400 selection:text-black">
+      <IntroOverlay onComplete={handleIntroComplete} />
       <Cursor />
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
       <main>
         <Hero />
         <ImpactWidget />
+        <TechStackStrip />
         <Problems />
         <Services onServiceClick={handleServiceClick} />
         <WorkflowDiagram />
         <About />
         <Process />
         <WhyUs />
+        <FounderQuote />
         <FAQ />
         <BookCall />
         <Contact
@@ -247,15 +256,55 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="py-12 bg-black border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 text-center space-y-3">
-          <p className="text-gray-600 text-xs">AI &amp; IT Automation for Growing Businesses</p>
-          <div className="flex justify-center gap-6 text-xs">
-            <a href="#services" className="text-gray-600 hover:text-amber-400 transition-colors duration-200">Services</a>
-            <a href="#contact" className="text-gray-600 hover:text-amber-400 transition-colors duration-200">Book a Review</a>
-            <a href="#services" className="text-gray-600 hover:text-emerald-400 transition-colors duration-200">WEEE</a>
+      <footer className="relative bg-black border-t border-white/5 overflow-hidden">
+        {/* Large tagline */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-6">
+              <div className="w-12 h-12 rounded-xl border border-amber-400/30 flex items-center justify-center bg-amber-400/5">
+                <Shield className="text-amber-400" size={24} strokeWidth={1.5} />
+              </div>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-display font-extrabold text-gray-800 tracking-tight leading-none mb-4">
+              Always automating.
+            </h2>
+            <a
+              href="mailto:imran.ishaq@gauntlet-group.com"
+              className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 text-lg font-semibold transition-colors"
+            >
+              <Mail size={18} />
+              imran.ishaq@gauntlet-group.com
+            </a>
           </div>
-          <p className="text-gray-700 text-[10px]">&copy; {new Date().getFullYear()} Gauntlet Group. All rights reserved.</p>
+
+          {/* Bottom bar */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/5">
+            <div className="flex gap-6 text-xs">
+              <a href="#services" className="text-gray-600 hover:text-amber-400 transition-colors">Services</a>
+              <a href="#about" className="text-gray-600 hover:text-amber-400 transition-colors">About</a>
+              <a href="#contact" className="text-gray-600 hover:text-amber-400 transition-colors">Book a Review</a>
+              <a href="#faq" className="text-gray-600 hover:text-amber-400 transition-colors">FAQ</a>
+            </div>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://www.linkedin.com/company/gauntlet-group"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-amber-400 transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={18} />
+              </a>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="text-gray-600 hover:text-amber-400 transition-colors"
+                aria-label="Back to top"
+              >
+                <ArrowUp size={18} />
+              </button>
+            </div>
+          </div>
+          <p className="text-gray-700 text-[10px] text-center mt-6">&copy; {new Date().getFullYear()} Gauntlet Group. All rights reserved.</p>
         </div>
       </footer>
 

@@ -1,95 +1,149 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Shield, X, Mail, Linkedin } from 'lucide-react';
 
 interface NavbarProps {
   isMenuOpen: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
 }
 
+const navItems = [
+  { label: 'About', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Why Us', href: '#why-us' },
+  { label: 'Book Call', href: '#book-call' },
+  { label: 'Contact', href: '#contact' },
+];
+
 export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => {
-  const navItems = ['About', 'Services', 'Why Us', 'Book Call', 'Contact'];
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-xl z-40 border-b border-cyan-500/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          <div className="flex items-center">
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="flex-shrink-0 group cursor-pointer"
+    <>
+      <nav className="fixed top-0 w-full z-50 transition-all duration-500">
+        <div
+          className={`absolute inset-0 transition-all duration-500 ${
+            isMenuOpen ? 'bg-black/95 backdrop-blur-xl' : 'bg-black/0'
+          }`}
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo — icon placeholder */}
+            <a
+              href="#hero"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 group cursor-pointer"
             >
-              <img 
-                src="/Gauntlet Brand Transparent Background copy.png" 
-                alt="Gauntlet Group" 
-                className="h-12 w-auto transition-all duration-300 group-hover:drop-shadow-[0_0_20px_rgba(184,134,11,0.5)]"
-              />
-            </motion.div>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
-              {navItems.map((item, index) => (
-                <motion.a 
-                  key={item}
-                  href={`#${item === 'Why Us' ? 'why-us' : item.toLowerCase().replace(' ', '-')}`}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="relative text-gray-300 hover:text-amber-400 px-3 py-2 text-sm font-medium transition-all duration-300 group"
-                >
-                  <span className="relative z-10">{item}</span>
-                  <div className="absolute inset-0 bg-amber-400/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300" />
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-blue-700 group-hover:w-full transition-all duration-300" />
-                </motion.a>
-              ))}
-              <motion.a 
-                href="#contact" 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative bg-gradient-to-r from-amber-500 to-blue-700 text-white px-6 py-3 rounded-full text-sm font-medium hover:from-amber-400 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-amber-500/50 group overflow-hidden"
-              >
-                <span className="relative z-10">Get Assessment</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-blue-600 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
-              </motion.a>
-            </div>
-          </div>
+              <div className="w-10 h-10 rounded-xl border border-amber-400/40 flex items-center justify-center bg-amber-400/5 group-hover:border-amber-400/70 transition-all duration-300">
+                <Shield className="text-amber-400" size={22} strokeWidth={1.5} />
+              </div>
+              <span className="text-white font-display font-bold text-sm tracking-wider hidden sm:block">
+                GAUNTLET GROUP
+              </span>
+            </a>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+            {/* Menu toggle button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-300 hover:text-cyan-400 focus:outline-none transition-all duration-300 transform hover:scale-110"
+              className="relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 group z-50"
+              aria-label="Toggle menu"
             >
-              <div className="relative w-6 h-6">
-                <span className={`absolute block w-6 h-0.5 bg-current transform transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-0' : '-translate-y-2'}`} />
-                <span className={`absolute block w-6 h-0.5 bg-current transform transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-                <span className={`absolute block w-6 h-0.5 bg-current transform transition-all duration-300 ${isMenuOpen ? '-rotate-45 translate-y-0' : 'translate-y-2'}`} />
-              </div>
+              <span
+                className={`block h-0.5 bg-white transition-all duration-300 ${
+                  isMenuOpen ? 'w-6 rotate-45 translate-y-[3px]' : 'w-5 group-hover:w-6'
+                }`}
+              />
+              <span
+                className={`block h-0.5 bg-white transition-all duration-300 ${
+                  isMenuOpen ? 'opacity-0' : 'w-4 group-hover:w-6'
+                }`}
+              />
+              <span
+                className={`block h-0.5 bg-white transition-all duration-300 ${
+                  isMenuOpen ? 'w-6 -rotate-45 -translate-y-[3px]' : 'w-5 group-hover:w-6'
+                }`}
+              />
             </button>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Navigation */}
-      <motion.div 
-        initial={false}
-        animate={{ height: isMenuOpen ? 'auto' : 0, opacity: isMenuOpen ? 1 : 0 }}
-        className="md:hidden overflow-hidden bg-black/90 border-t border-cyan-500/20"
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {navItems.map((item) => (
-            <a 
-              key={item}
-              href={`#${item === 'Why Us' ? 'why-us' : item.toLowerCase().replace(' ', '-')}`}
-              className="text-gray-300 hover:text-amber-400 block px-3 py-2 text-base font-medium transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setIsMenuOpen(false)}
+      {/* Full-screen overlay menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-black flex flex-col"
+          >
+            {/* Background accent */}
+            <div className="absolute top-1/4 right-0 w-96 h-96 rounded-full bg-amber-400/5 blur-[100px] pointer-events-none" />
+
+            <div className="flex-1 flex flex-col justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+              <nav className="space-y-2">
+                {navItems.map((item, i) => (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -40 }}
+                    animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
+                    transition={{
+                      delay: shouldReduceMotion ? 0 : 0.1 + i * 0.08,
+                      duration: 0.4,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="group block"
+                  >
+                    <div className="flex items-baseline gap-4">
+                      <span className="text-amber-400/40 text-xs font-mono group-hover:text-amber-400 transition-colors">
+                        0{i + 1}
+                      </span>
+                      <span className="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold text-gray-700 group-hover:text-white tracking-tight transition-colors duration-300">
+                        {item.label}
+                      </span>
+                    </div>
+                  </motion.a>
+                ))}
+              </nav>
+            </div>
+
+            {/* Bottom bar with socials */}
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              transition={{ delay: shouldReduceMotion ? 0 : 0.5, duration: 0.4 }}
+              className="border-t border-white/10 py-6 px-4 sm:px-6 lg:px-8"
             >
-              {item}
-            </a>
-          ))}
-        </div>
-      </motion.div>
-    </nav>
+              <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <a
+                  href="mailto:imran.ishaq@gauntlet-group.com"
+                  className="text-gray-500 hover:text-amber-400 text-sm flex items-center gap-2 transition-colors"
+                >
+                  <Mail size={16} />
+                  imran.ishaq@gauntlet-group.com
+                </a>
+                <div className="flex items-center gap-6">
+                  <a
+                    href="https://www.linkedin.com/company/gauntlet-group"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-500 hover:text-amber-400 transition-colors"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin size={20} />
+                  </a>
+                  <span className="text-gray-700 text-xs">
+                    &copy; {new Date().getFullYear()} Gauntlet Group
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };

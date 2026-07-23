@@ -196,6 +196,12 @@
   background-size: 50px 50px, 50px 50px, 50px 50px;
 }
 
+/* Marquee scroll animation */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;

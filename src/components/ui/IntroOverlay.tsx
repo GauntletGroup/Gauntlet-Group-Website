@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Shield } from 'lucide-react';
 
 interface IntroOverlayProps {
   onComplete: () => void;
@@ -44,7 +43,7 @@ export const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
             className="absolute w-[400px] h-[400px] rounded-full bg-amber-400/10 blur-[80px]"
           />
 
-          {/* Logo mark — shield icon placeholder */}
+          {/* Logo mark — Gauntlet brand logo */}
           <div className="relative flex flex-col items-center">
             <motion.div
               initial={{ scale: 0, rotate: -180, opacity: 0 }}
@@ -52,9 +51,11 @@ export const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="relative"
             >
-              <div className="w-20 h-20 rounded-2xl border-2 border-amber-400/40 flex items-center justify-center bg-amber-400/5">
-                <Shield className="text-amber-400" size={40} strokeWidth={1.5} />
-              </div>
+              <img
+                src="/Gauntlet Brand Transparent Background copy.png"
+                alt="Gauntlet Group"
+                className="w-28 h-28 object-contain drop-shadow-[0_0_25px_rgba(245,158,11,0.3)]"
+              />
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
-import { ArrowRight, MousePointer2, Shield } from 'lucide-react';
+import { ArrowRight, MousePointer2 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { HeroBackground } from '../ui/HeroBackground';
 import { Marquee } from '../ui/Marquee';
@@ -71,10 +71,12 @@ export const Hero: React.FC = () => {
               whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
               className="relative group inline-block"
             >
-              <div className="w-20 h-20 rounded-2xl border-2 border-amber-400/40 flex items-center justify-center bg-amber-400/5 drop-shadow-[0_0_30px_rgba(245,158,11,0.2)] mx-auto">
-                <Shield className="text-amber-400" size={40} strokeWidth={1.5} />
-              </div>
-              <div className="absolute inset-0 bg-amber-400/10 rounded-2xl blur-2xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <img
+                src="/Gauntlet Brand Transparent Background copy.png"
+                alt="Gauntlet Group"
+                className="w-24 h-24 object-contain drop-shadow-[0_0_30px_rgba(245,158,11,0.2)] mx-auto"
+              />
+              <div className="absolute inset-0 bg-amber-400/10 blur-2xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
             </motion.div>
           </motion.div>
 

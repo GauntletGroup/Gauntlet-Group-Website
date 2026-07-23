@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from './lib/supabase';
 import type { ContactInquiry } from './lib/supabase';
-import { Recycle, Activity, Headphones, Users, MessageSquare, GitBranch, Mail, Linkedin, Shield, ArrowUp } from 'lucide-react';
+import { Recycle, Activity, Headphones, Users, MessageSquare, GitBranch, Mail, Linkedin, ArrowUp } from 'lucide-react';
 
 // Layout & UI
 import { Navbar } from './components/layout/Navbar';
@@ -261,9 +261,11 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
           <div className="text-center mb-12">
             <div className="flex justify-center mb-6">
-              <div className="w-12 h-12 rounded-xl border border-amber-400/30 flex items-center justify-center bg-amber-400/5">
-                <Shield className="text-amber-400" size={24} strokeWidth={1.5} />
-              </div>
+              <img
+                src="/Gauntlet Brand Transparent Background copy.png"
+                alt="Gauntlet Group"
+                className="w-12 h-12 object-contain"
+              />
             </div>
             <h2 className="text-5xl md:text-7xl font-display font-extrabold text-gray-800 tracking-tight leading-none mb-4">
               Always automating.

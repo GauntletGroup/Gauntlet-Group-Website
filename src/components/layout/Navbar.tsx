@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Shield, X, Mail, Linkedin } from 'lucide-react';
+import { X, Mail, Linkedin } from 'lucide-react';
 
 interface NavbarProps {
   isMenuOpen: boolean;
@@ -34,9 +34,11 @@ export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => 
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center gap-3 group cursor-pointer"
             >
-              <div className="w-10 h-10 rounded-xl border border-amber-400/40 flex items-center justify-center bg-amber-400/5 group-hover:border-amber-400/70 transition-all duration-300">
-                <Shield className="text-amber-400" size={22} strokeWidth={1.5} />
-              </div>
+              <img
+                src="/Gauntlet Brand Transparent Background copy.png"
+                alt="Gauntlet Group"
+                className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+              />
               <span className="text-white font-display font-bold text-sm tracking-wider hidden sm:block">
                 GAUNTLET GROUP
               </span>

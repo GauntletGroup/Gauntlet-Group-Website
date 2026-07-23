@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Shield } from 'lucide-react';
 
 export const FounderQuote: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -20,9 +19,11 @@ export const FounderQuote: React.FC = () => {
           className="flex justify-center mb-10"
         >
           <div className="relative">
-            <div className="w-28 h-28 rounded-full border-2 border-amber-400/30 flex items-center justify-center bg-gradient-to-br from-amber-400/10 to-transparent">
-              <Shield className="text-amber-400/60" size={48} strokeWidth={1} />
-            </div>
+            <img
+              src="/Gauntlet Brand Transparent Background copy.png"
+              alt="Gauntlet Group"
+              className="w-28 h-28 object-contain drop-shadow-[0_0_20px_rgba(245,158,11,0.15)]"
+            />
             <div className="absolute inset-0 rounded-full border border-amber-400/10 animate-pulse-slow" />
           </div>
         </motion.div>

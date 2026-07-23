@@ -68,15 +68,15 @@ export const Hero: React.FC = () => {
           {/* Logo — icon placeholder */}
           <motion.div variants={itemVariants} className="mb-10">
             <motion.div
-              whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+              whileHover={shouldReduceMotion ? {} : { scale: 1.03 }}
               className="relative group inline-block"
             >
               <img
-                src="/Gauntlet Brand Transparent Background copy.png"
+                src="/Gauntlet_Brand_Transparent_Background.png"
                 alt="Gauntlet Group"
-                className="w-24 h-24 object-contain drop-shadow-[0_0_30px_rgba(245,158,11,0.2)] mx-auto"
+                className="w-72 md:w-96 object-contain drop-shadow-[0_0_60px_rgba(245,158,11,0.25)] mx-auto"
               />
-              <div className="absolute inset-0 bg-amber-400/10 blur-2xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
+              <div className="absolute inset-0 bg-amber-400/5 blur-3xl scale-125 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full" />
             </motion.div>
           </motion.div>
 

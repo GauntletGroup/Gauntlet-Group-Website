@@ -20,9 +20,9 @@ export const FounderQuote: React.FC = () => {
         >
           <div className="relative">
             <img
-              src="/Gauntlet Brand Transparent Background copy.png"
+              src="/Gauntlet_Logo_Transparent_Background.png"
               alt="Gauntlet Group"
-              className="w-28 h-28 object-contain drop-shadow-[0_0_20px_rgba(245,158,11,0.15)]"
+              className="w-24 h-24 object-contain drop-shadow-[0_0_20px_rgba(245,158,11,0.2)]"
             />
             <div className="absolute inset-0 rounded-full border border-amber-400/10 animate-pulse-slow" />
           </div>

@@ -35,13 +35,10 @@ export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => 
               className="flex items-center gap-3 group cursor-pointer"
             >
               <img
-                src="/Gauntlet Brand Transparent Background copy.png"
+                src="/Gauntlet_Logo_Transparent_Background.png"
                 alt="Gauntlet Group"
-                className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+                className="w-14 h-14 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(245,158,11,0.25)]"
               />
-              <span className="text-white font-display font-bold text-sm tracking-wider hidden sm:block">
-                GAUNTLET GROUP
-              </span>
             </a>
 
             {/* Menu toggle button */}

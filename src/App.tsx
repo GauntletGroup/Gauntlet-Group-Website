@@ -262,9 +262,9 @@ function App() {
           <div className="text-center mb-12">
             <div className="flex justify-center mb-6">
               <img
-                src="/Gauntlet_Logo_Transparent_Background.png"
+                src="/Gauntlet_Brand_Transparent_Background copy copy copy.png"
                 alt="Gauntlet Group"
-                className="w-20 h-20 object-contain drop-shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+                className="w-64 object-contain drop-shadow-[0_0_20px_rgba(245,158,11,0.15)]"
               />
             </div>
             <h2 className="text-5xl md:text-7xl font-display font-extrabold text-gray-800 tracking-tight leading-none mb-4">

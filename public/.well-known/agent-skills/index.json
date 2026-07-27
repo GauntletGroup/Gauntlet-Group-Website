@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "gauntlet-services",
+      "type": "skill-md",
+      "description": "Discover and explore Gauntlet Group's IT automation services (alert triage, helpdesk automation, onboarding, AI assistants, custom workflows, IT asset disposal) via the MCP server. Use when a user asks what Gauntlet Group offers or wants details on a specific service.",
+      "url": "/.well-known/agent-skills/gauntlet-services/SKILL.md",
+      "digest": "sha256:fcfc43f7b0d8ca60bf6ae2f44f6fc77f0e4161e27daf078607d370ae797b0db3"
+    },
+    {
+      "name": "gauntlet-inquiry",
+      "type": "skill-md",
+      "description": "Submit a contact inquiry to Gauntlet Group on behalf of a visitor via the MCP server. Use when a user wants to contact Gauntlet Group, request a callback, or ask about their automation services.",
+      "url": "/.well-known/agent-skills/gauntlet-inquiry/SKILL.md",
+      "digest": "sha256:648fc011f725d384801026249345d95f1b9a5eea1dbb8d37c2cf37cfe6232d0b"
+    }
+  ]
+}

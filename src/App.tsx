@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from './lib/supabase';
 import type { ContactInquiry } from './lib/supabase';
+import { useWebMCP } from './hooks/useWebMCP';
 import { Recycle, Activity, Headphones, Users, MessageSquare, GitBranch, Mail, Linkedin, ArrowUp } from 'lucide-react';
 
 // Layout & UI
@@ -61,6 +62,73 @@ function App() {
   const [alertTab, setAlertTab] = useState<'overview' | 'demo' | 'integrations' | 'how-it-works'>('overview');
   const [helpdeskTab, setHelpdeskTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
   const [onboardingTab, setOnboardingTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
+  const [bookingPrefill, setBookingPrefill] = useState<{ name?: string; email?: string; company?: string; contactNumber?: string } | undefined>(undefined);
+
+  const navigateToSection = useCallback((sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
+  const submitInquiry = useCallback(async (inquiry: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    message: string;
+    phoneNumber?: string;
+    company?: string;
+    companySize?: string;
+    industry?: string;
+    automationType?: string;
+    currentTools?: string;
+  }) => {
+    let supabaseSuccess = false;
+    let n8nSuccess = false;
+    try {
+      const messageParts = [
+        inquiry.message,
+        '---',
+        `Company Size: ${inquiry.companySize || 'Not specified'}`,
+        `Industry: ${inquiry.industry || 'Not specified'}`,
+        `Automation Type: ${inquiry.automationType || 'Not specified'}`,
+        `Current Tools: ${inquiry.currentTools || 'Not specified'}`,
+        'GDPR Consent: Yes (via WebMCP agent)',
+      ];
+      const inquiryData: ContactInquiry = {
+        name: `${inquiry.firstName} ${inquiry.lastName}`,
+        email: inquiry.email,
+        contact_number: inquiry.phoneNumber || null,
+        company: inquiry.company || null,
+        message: messageParts.join('\n'),
+      };
+      const { error } = await supabase.from('contact_inquiries').insert([inquiryData]);
+      if (error) throw error;
+      supabaseSuccess = true;
+    } catch (supabaseError) {
+      console.error('Supabase submission failed:', supabaseError);
+    }
+
+    const n8nWebhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL || import.meta.env.VITE_N8N_WEBOOK_URL;
+    if (n8nWebhookUrl) {
+      try {
+        await fetch(n8nWebhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...inquiry,
+            gdprConsent: true,
+            submittedAt: new Date().toISOString(),
+          }),
+        });
+        n8nSuccess = true;
+      } catch (webhookError) {
+        console.error('Failed to send data to n8n webhook:', webhookError);
+      }
+    }
+
+    if (supabaseSuccess || n8nSuccess) return { success: true };
+    return { success: false, error: 'Failed to submit inquiry' };
+  }, []);
 
   const validateField = (name: string, value: any) => {
     let error = '';
@@ -225,6 +293,16 @@ function App() {
     }
   };
 
+  useWebMCP({
+    navigateToSection,
+    openServiceDetails: handleServiceClick,
+    startBooking: (prefill) => {
+      setBookingPrefill(prefill);
+      navigateToSection('book-call');
+    },
+    sendInquiry: submitInquiry,
+  });
+
   return (
     <div className="min-h-screen bg-black text-white selection:bg-amber-400 selection:text-black">
       <IntroOverlay onComplete={handleIntroComplete} />
@@ -243,7 +321,7 @@ function App() {
         <WhyUs />
         <FounderQuote />
         <FAQ />
-        <BookCall />
+        <BookCall prefill={bookingPrefill} />
         <Contact
           formData={formData}
           errors={errors}

@@ -1,5 +1,17 @@
 /*
-  Link: </.well-known/agent-skills.json>; rel="service-doc"; type="application/json", </sitemap.xml>; rel="sitemap"; type="application/xml", </robots.txt>; rel="robots"; type="text/plain"
+  Link: </.well-known/agent-skills.json>; rel="service-doc"; type="application/json", </.well-known/ai-catalog.json>; rel="service-doc"; type="application/json", </.well-known/mcp/server-card.json>; rel="service-doc"; type="application/json", </sitemap.xml>; rel="sitemap"; type="application/xml", </robots.txt>; rel="robots"; type="text/plain"
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
+
+/.well-known/mcp/server-card.json
+  Content-Type: application/mcp-server-card+json
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Accept
+
+/.well-known/ai-catalog.json
+  Content-Type: application/ai-catalog+json
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Accept

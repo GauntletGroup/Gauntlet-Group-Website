@@ -5,3 +5,7 @@
 [[edge_functions]]
   function = "markdown-for-agents"
   path = "/*"
+
+[[edge_functions]]
+  function = "mcp-server"
+  path = "/mcp"

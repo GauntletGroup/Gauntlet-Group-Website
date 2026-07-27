@@ -1,0 +1,25 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+  "name": "com.gauntlet-group/mcp",
+  "version": "1.0.0",
+  "title": "Gauntlet Group MCP Server",
+  "description": "AI-powered IT automations for growing businesses — alert triage, helpdesk workflows, employee onboarding, and custom integrations. Use this MCP server to list services, get service details, retrieve organization info, and submit contact inquiries.",
+  "websiteUrl": "https://gauntlet-group.com/",
+  "serverInfo": {
+    "name": "com.gauntlet-group/mcp",
+    "version": "1.0.0"
+  },
+  "endpoint": "/mcp",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gauntlet-group.com/mcp",
+      "supportedProtocolVersions": ["2025-06-18"]
+    }
+  ]
+}

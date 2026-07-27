@@ -1,0 +1,5 @@
+/*
+  Link: </.well-known/agent-skills.json>; rel="service-doc"; type="application/json", </sitemap.xml>; rel="sitemap"; type="application/xml", </robots.txt>; rel="robots"; type="text/plain"
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin

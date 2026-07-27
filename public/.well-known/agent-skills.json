@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "organization": {
+    "name": "Gauntlet Group",
+    "url": "https://gauntlet-group.com/",
+    "description": "Gauntlet Group designs and implements AI-powered IT automations for growing businesses — alert triage, helpdesk workflows, employee onboarding, and custom integrations using Microsoft 365, Azure, n8n, and more.",
+    "contact": {
+      "email": "imran.ishaq@gauntlet-group.com",
+      "phone": "+44-7800-721443",
+      "linkedin": "https://www.linkedin.com/company/gauntlet-group"
+    },
+    "serviceArea": "GB",
+    "hours": "Mon-Fri 09:00-17:00 GMT"
+  },
+  "services": [
+    {
+      "name": "AI Alert Triage",
+      "description": "Automated triage and routing of IT alerts. Alerts are classified, deduplicated, and routed to the right team in roughly 3 seconds end-to-end.",
+      "keywords": ["alert triage", "monitoring", "incident routing", "azure", "teams"],
+      "url": "https://gauntlet-group.com/#services"
+    },
+    {
+      "name": "IT Helpdesk Automation",
+      "description": "Automated handling of common helpdesk requests such as password resets, handled without a single support ticket.",
+      "keywords": ["helpdesk", "password reset", "ticket automation", "microsoft 365"],
+      "url": "https://gauntlet-group.com/#services"
+    },
+    {
+      "name": "Employee Onboarding",
+      "description": "Automated onboarding of new starters — accounts, access, and welcome email ready on day one in seconds.",
+      "keywords": ["onboarding", "provisioning", "microsoft 365", "azure ad"],
+      "url": "https://gauntlet-group.com/#services"
+    },
+    {
+      "name": "AI Support Assistants",
+      "description": "RAG-based AI assistants that answer questions from your own documentation, available 24/7 with no extra headcount.",
+      "keywords": ["ai assistant", "rag", "chatbot", "knowledge base", "teams"],
+      "url": "https://gauntlet-group.com/#services"
+    },
+    {
+      "name": "Custom Workflows",
+      "description": "Bespoke automation of any process that involves copying data or waiting for a human. Any tool, any process.",
+      "keywords": ["custom workflow", "automation", "n8n", "integration"],
+      "url": "https://gauntlet-group.com/#services"
+    },
+    {
+      "name": "WEEE & IT Asset Disposal",
+      "description": "Secure, certified, zero-to-landfill IT asset recycling and disposal.",
+      "keywords": ["weee", "it asset disposal", "recycling", "certified disposal"],
+      "url": "https://gauntlet-group.com/#services"
+    }
+  ],
+  "howToEngage": {
+    "bookCall": "https://gauntlet-group.com/#book-call",
+    "contactForm": "https://gauntlet-group.com/#contact",
+    "email": "imran.ishaq@gauntlet-group.com"
+  },
+  "compliance": {
+    "certifications": ["ISO 27701"],
+    "privacy": "GDPR compliant"
+  }
+}

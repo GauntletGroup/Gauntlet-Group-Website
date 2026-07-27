@@ -1,0 +1,177 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Gauntlet Group MCP Server",
+    "description": "AI-powered IT automations for growing businesses. This MCP server exposes tools to list services, get service details, retrieve organization info, and submit contact inquiries. Communicates via JSON-RPC 2.0 over the MCP Streamable HTTP transport.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Gauntlet Group",
+      "url": "https://gauntlet-group.com/",
+      "email": "imran.ishaq@gauntlet-group.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://gauntlet-group.com/mcp",
+      "description": "MCP Streamable HTTP endpoint"
+    }
+  ],
+  "paths": {
+    "/mcp": {
+      "post": {
+        "summary": "MCP JSON-RPC endpoint",
+        "description": "Accepts MCP protocol messages over the Streamable HTTP transport. Clients must send an initialize request first, then call tools/list to discover available tools, and tools/call to invoke them.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["jsonrpc", "id", "method"],
+                "properties": {
+                  "jsonrpc": { "type": "string", "enum": ["2.0"] },
+                  "id": { "type": ["string", "number", "null"] },
+                  "method": { "type": "string" },
+                  "params": { "type": "object" }
+                }
+              },
+              "examples": {
+                "initialize": {
+                  "value": {
+                    "jsonrpc": "2.0",
+                    "id": 1,
+                    "method": "initialize",
+                    "params": {
+                      "protocolVersion": "2025-06-18",
+                      "capabilities": {},
+                      "clientInfo": { "name": "example-client", "version": "1.0.0" }
+                    }
+                  }
+                },
+                "tools_list": {
+                  "value": { "jsonrpc": "2.0", "id": 2, "method": "tools/list" }
+                },
+                "tools_call": {
+                  "value": {
+                    "jsonrpc": "2.0",
+                    "id": 3,
+                    "method": "tools/call",
+                    "params": {
+                      "name": "list_services",
+                      "arguments": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON-RPC response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["jsonrpc", "id"],
+                  "properties": {
+                    "jsonrpc": { "type": "string", "enum": ["2.0"] },
+                    "id": { "type": ["string", "number", "null"] },
+                    "result": { "type": "object" },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "integer" },
+                        "message": { "type": "string" },
+                        "data": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed (use POST)"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Service": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      },
+      "ServiceDetails": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "overview": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string" },
+                "desc": { "type": "string" }
+              }
+            }
+          },
+          "integrations": { "type": "array", "items": { "type": "string" } },
+          "howItWorks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "step": { "type": "string" },
+                "desc": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "OrganizationInfo": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "url": { "type": "string" },
+          "description": { "type": "string" },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "email": { "type": "string" },
+              "phone": { "type": "string" },
+              "linkedin": { "type": "string" }
+            }
+          },
+          "serviceArea": { "type": "string" },
+          "hours": { "type": "string" },
+          "compliance": {
+            "type": "object",
+            "properties": {
+              "certifications": { "type": "array", "items": { "type": "string" } },
+              "privacy": { "type": "string" }
+            }
+          }
+        }
+      },
+      "Inquiry": {
+        "type": "object",
+        "required": ["firstName", "lastName", "email", "message"],
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "message": { "type": "string", "minLength": 10 },
+          "phoneNumber": { "type": "string" },
+          "company": { "type": "string" }
+        }
+      }
+    }
+  }
+}

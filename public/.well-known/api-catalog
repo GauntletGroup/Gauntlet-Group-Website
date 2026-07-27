@@ -1,0 +1,25 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://gauntlet-group.com/mcp",
+      "service-desc": [
+        {
+          "href": "https://gauntlet-group.com/api/mcp-openapi.json",
+          "type": "application/json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://gauntlet-group.com/#services",
+          "type": "text/html"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://gauntlet-group.com/api/status.json",
+          "type": "application/json"
+        }
+      ]
+    }
+  ]
+}

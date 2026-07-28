@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
 
+# All agent-facing APIs on this site are public and require no authentication.
+# No OAuth/OIDC provider is operated and no agent registration is needed.
+# See /.well-known/api-auth.md for details.
+
 Content-Signal: ai-train=no, search=yes, ai-input=no
 
 Sitemap: https://gauntlet-group.com/sitemap.xml

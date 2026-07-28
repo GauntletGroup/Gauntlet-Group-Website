@@ -1,0 +1,16 @@
+{
+  "issuer": "https://gauntlet-group.com",
+  "service_documentation": "https://gauntlet-group.com/auth.md",
+  "agent_auth": {
+    "skill": "https://isitagentready.com/.well-known/agent-skills/auth-md/SKILL.md",
+    "register_uri": "https://gauntlet-group.com/auth.md",
+    "registration_not_required": true,
+    "identity_types_supported": ["anonymous"],
+    "anonymous": {
+      "credential_types_supported": ["none"],
+      "claim_uri": "https://gauntlet-group.com/auth.md"
+    },
+    "methods_supported": ["anonymous"],
+    "notes": "All endpoints are public. No registration, credentials, or tokens are required to access any Gauntlet Group API."
+  }
+}

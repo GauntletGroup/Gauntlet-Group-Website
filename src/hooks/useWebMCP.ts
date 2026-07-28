@@ -250,6 +250,3 @@ export function useWebMCP(handlers: WebMCPHandlers) {
     };
   }, []);
 }
-
-
-export { useWebMCP }

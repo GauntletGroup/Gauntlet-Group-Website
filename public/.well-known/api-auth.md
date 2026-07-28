@@ -1,5 +1,7 @@
 # API Authentication
 
+> Agent registration discovery is published at [`/auth.md`](https://gauntlet-group.com/auth.md).
+
 ## Status: Public — No Authentication Required
 
 All agent-facing APIs and resources published by Gauntlet Group are **public** and require **no authentication, no access tokens, and no agent registration**.

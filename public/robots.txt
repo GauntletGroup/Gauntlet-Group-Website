@@ -3,7 +3,8 @@ Allow: /
 
 # All agent-facing APIs on this site are public and require no authentication.
 # No OAuth/OIDC provider is operated and no agent registration is needed.
-# See /.well-known/api-auth.md for details.
+# See /auth.md for agent registration details.
+# See /.well-known/api-auth.md for API authentication details.
 
 Content-Signal: ai-train=no, search=yes, ai-input=no
 

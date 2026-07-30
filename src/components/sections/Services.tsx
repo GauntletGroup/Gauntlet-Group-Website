@@ -46,9 +46,9 @@ const services: Service[] = [
   },
   {
     icon: MessageSquare,
-    title: 'AI Support Assistants',
-    description: 'Instant answers from your own docs — 24/7, no extra headcount.',
-    hoverStat: 'Answers in seconds',
+    title: 'AI Knowledge & Support Assistant (RAG chatbot)',
+    description: 'Answers from your own documents — live in Teams, 24/7, no extra headcount.',
+    hoverStat: 'Live in Teams',
     accent: 'blue',
     delay: 0.4,
   },

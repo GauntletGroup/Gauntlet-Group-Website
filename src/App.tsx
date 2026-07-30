@@ -62,6 +62,7 @@ function App() {
   const [alertTab, setAlertTab] = useState<'overview' | 'demo' | 'integrations' | 'how-it-works'>('overview');
   const [helpdeskTab, setHelpdeskTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
   const [onboardingTab, setOnboardingTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
+  const [aiAssistantTab, setAiAssistantTab] = useState<'overview' | 'how-it-works'>('overview');
   const [bookingPrefill, setBookingPrefill] = useState<{ name?: string; email?: string; company?: string; contactNumber?: string } | undefined>(undefined);
 
   const navigateToSection = useCallback((sectionId: string) => {
@@ -288,7 +289,8 @@ function App() {
       setIsOnboardingModalOpen(true);
     } else if (title === 'Custom Workflows') {
       setIsCustomWorkflowModalOpen(true);
-    } else if (title === 'AI Support Assistants') {
+    } else if (title === 'AI Knowledge & Support Assistant (RAG chatbot)') {
+      setAiAssistantTab('overview');
       setIsAIAssistantModalOpen(true);
     }
   };
@@ -776,34 +778,68 @@ function App() {
         </div>
       </Modal>
 
-      {/* AI Support Assistants Modal */}
+      {/* AI Knowledge & Support Assistant Modal */}
       <Modal isOpen={isAIAssistantModalOpen} onClose={() => setIsAIAssistantModalOpen(false)}>
         <div className="p-8">
           <div className="text-center mb-6">
             <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
               <MessageSquare className="text-blue-400" size={32} />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">AI Support Assistants</h2>
-            <p className="text-gray-400 text-sm text-center mb-8">Instant answers from your docs — 24/7, no extra headcount.</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">AI Knowledge &amp; Support Assistant (RAG chatbot)</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {[
-              { title: 'Trained on your docs', desc: 'Answers from your content, not generic AI.' },
-              { title: 'Multi-platform', desc: 'Teams, Slack, web, or custom portal.' },
-              { title: 'Escalation routing', desc: 'Can\'t answer? Routes to a human. No dead ends.' },
-              { title: 'Usage analytics', desc: 'See what people ask. Find knowledge gaps.' },
-            ].map((s, i) => (
-              <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
-                <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
-                <p className="text-gray-400 text-xs">{s.desc}</p>
-              </div>
+          <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
+            {(['overview', 'how-it-works'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setAiAssistantTab(tab)}
+                className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap ${
+                  aiAssistantTab === tab ? 'text-blue-400 font-bold' : 'text-gray-400 hover:text-gray-300'
+                }`}
+              >
+                {tab === 'how-it-works' ? 'How It Works' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {aiAssistantTab === tab && <motion.div layoutId="aiAssistantActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400" />}
+              </button>
             ))}
+          </div>
+
+          <div className="min-h-[280px]">
+            {aiAssistantTab === 'overview' && (
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { title: 'Trained on your docs', desc: 'Answers grounded in your own content — not generic AI.' },
+                  { title: 'Teams Q&A', desc: 'Live in Microsoft Teams via Azure Bot Service.' },
+                  { title: 'pgvector retrieval', desc: 'Gemini embeddings stored in Supabase pgvector for fast, relevant answers.' },
+                  { title: 'Escalation routing', desc: 'Can\'t answer? Routes to a human. No dead ends.' },
+                ].map((s, i) => (
+                  <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                    <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
+                    <p className="text-gray-400 text-xs">{s.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {aiAssistantTab === 'how-it-works' && (
+              <div className="space-y-3 max-w-xl mx-auto">
+                {[
+                  { step: 'Document upload', desc: 'PDF/Word files submitted via Tally.' },
+                  { step: 'Chunking', desc: 'Documents split into searchable chunks.' },
+                  { step: 'Gemini embeddings', desc: 'Each chunk embedded and stored in Supabase (pgvector).' },
+                  { step: 'Teams Q&A', desc: 'Azure Bot Service answers questions in Teams from the vector store.' },
+                ].map((p, i) => (
+                  <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                    <div className="font-bold text-blue-400 text-sm mb-1">{p.step}</div>
+                    <p className="text-gray-400 text-xs">{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
             <p className="text-blue-300 text-xs text-center">
-              In active development. Contact us to join early access.
+              <strong>Live:</strong> Tally → Gemini → Supabase pgvector → Teams. Contact us to discuss your setup.
             </p>
           </div>
         </div>

@@ -44,24 +44,33 @@ export const Navbar: React.FC<NavbarProps> = ({ isMenuOpen, setIsMenuOpen }) => 
             {/* Menu toggle button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 group z-50"
+              className="relative flex items-center gap-2 group z-50"
               aria-label="Toggle menu"
             >
               <span
-                className={`block h-0.5 bg-white transition-all duration-300 ${
-                  isMenuOpen ? 'w-6 rotate-45 translate-y-[3px]' : 'w-5 group-hover:w-6'
+                className={`text-sm font-medium tracking-wide uppercase text-gray-300 transition-all duration-300 ${
+                  isMenuOpen ? 'opacity-0' : 'opacity-100 group-hover:text-white'
                 }`}
-              />
-              <span
-                className={`block h-0.5 bg-white transition-all duration-300 ${
-                  isMenuOpen ? 'opacity-0' : 'w-4 group-hover:w-6'
-                }`}
-              />
-              <span
-                className={`block h-0.5 bg-white transition-all duration-300 ${
-                  isMenuOpen ? 'w-6 -rotate-45 -translate-y-[3px]' : 'w-5 group-hover:w-6'
-                }`}
-              />
+              >
+                Navigate
+              </span>
+              <span className="relative w-10 h-10 flex flex-col items-center justify-center gap-1.5">
+                <span
+                  className={`block h-0.5 bg-white transition-all duration-300 ${
+                    isMenuOpen ? 'w-6 rotate-45 translate-y-[3px]' : 'w-5 group-hover:w-6'
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 bg-white transition-all duration-300 ${
+                    isMenuOpen ? 'opacity-0' : 'w-4 group-hover:w-6'
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 bg-white transition-all duration-300 ${
+                    isMenuOpen ? 'w-6 -rotate-45 -translate-y-[3px]' : 'w-5 group-hover:w-6'
+                  }`}
+                />
+              </span>
             </button>
           </div>
         </div>

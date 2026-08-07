@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Activity, Headphones, Users, MessageSquare, GitBranch, Recycle, ArrowRight, Zap } from 'lucide-react';
+import { Activity, Headphones, Users, UserMinus, MessageSquare, GitBranch, Recycle, ArrowRight, Zap, Link2 } from 'lucide-react';
 
 interface Service {
   icon: any;
@@ -10,6 +10,7 @@ interface Service {
   accent: 'amber' | 'blue' | 'emerald';
   featured?: boolean;
   badge?: string;
+  pairsWith?: string;
   delay: number;
 }
 
@@ -42,7 +43,17 @@ const services: Service[] = [
     description: 'New starters ready on day one — accounts, access, welcome email.',
     hoverStat: 'Accounts in seconds',
     accent: 'amber',
+    pairsWith: 'Employee Offboarding',
     delay: 0.3,
+  },
+  {
+    icon: UserMinus,
+    title: 'Employee Offboarding',
+    description: 'Access revoked the moment someone leaves — account disabled, sessions killed, licences and groups removed, mailbox configured — all gated behind IT approval with a full audit trail.',
+    hoverStat: 'Zero orphaned accounts',
+    accent: 'amber',
+    pairsWith: 'Employee Onboarding',
+    delay: 0.35,
   },
   {
     icon: MessageSquare,
@@ -176,6 +187,16 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
                 <p className="text-gray-400 leading-relaxed mb-4 text-sm group-hover:text-gray-300 transition-colors duration-300">
                   {service.description}
                 </p>
+
+                {/* Pairs-with cross-reference badge */}
+                {service.pairsWith && (
+                  <div className="mb-3">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-amber-400/70 bg-amber-400/5 border border-amber-400/15 px-2.5 py-1 rounded-full">
+                      <Link2 size={11} />
+                      Pairs with {service.pairsWith.replace('Employee ', '')}
+                    </span>
+                  </div>
+                )}
 
                 {/* Hover outcome stat */}
                 <div className="flex items-center justify-between">

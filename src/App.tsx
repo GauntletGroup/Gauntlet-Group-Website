@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { supabase } from './lib/supabase';
 import type { ContactInquiry } from './lib/supabase';
 import { useWebMCP } from './hooks/useWebMCP';
-import { Recycle, Activity, Headphones, Users, MessageSquare, GitBranch, Mail, Linkedin, ArrowUp } from 'lucide-react';
+import { Recycle, Activity, Headphones, Users, UserMinus, MessageSquare, GitBranch, Mail, Linkedin, ArrowUp } from 'lucide-react';
 
 // Layout & UI
 import { Navbar } from './components/layout/Navbar';
@@ -37,6 +37,7 @@ function App() {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isHelpdeskModalOpen, setIsHelpdeskModalOpen] = useState(false);
   const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);
+  const [isOffboardingModalOpen, setIsOffboardingModalOpen] = useState(false);
   const [isCustomWorkflowModalOpen, setIsCustomWorkflowModalOpen] = useState(false);
   const [isAIAssistantModalOpen, setIsAIAssistantModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,6 +63,7 @@ function App() {
   const [alertTab, setAlertTab] = useState<'overview' | 'demo' | 'integrations' | 'how-it-works'>('overview');
   const [helpdeskTab, setHelpdeskTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
   const [onboardingTab, setOnboardingTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
+  const [offboardingTab, setOffboardingTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
   const [aiAssistantTab, setAiAssistantTab] = useState<'overview' | 'how-it-works'>('overview');
   const [bookingPrefill, setBookingPrefill] = useState<{ name?: string; email?: string; company?: string; contactNumber?: string } | undefined>(undefined);
 
@@ -287,6 +289,9 @@ function App() {
     } else if (title === 'Employee Onboarding') {
       setOnboardingTab('overview');
       setIsOnboardingModalOpen(true);
+    } else if (title === 'Employee Offboarding') {
+      setOffboardingTab('overview');
+      setIsOffboardingModalOpen(true);
     } else if (title === 'Custom Workflows') {
       setIsCustomWorkflowModalOpen(true);
     } else if (title === 'AI Knowledge & Support Assistant (RAG chatbot)') {
@@ -725,6 +730,91 @@ function App() {
           <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
             <p className="text-blue-300 text-xs text-center">
               <strong>Demo:</strong> Tally → n8n → Azure AD → Graph API → Outlook → Sheets.
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Employee Offboarding Modal */}
+      <Modal isOpen={isOffboardingModalOpen} onClose={() => setIsOffboardingModalOpen(false)}>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className="bg-amber-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-500/30">
+              <UserMinus className="text-amber-400" size={32} />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Employee Offboarding</h2>
+          </div>
+
+          <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
+            {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setOffboardingTab(tab)}
+                className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap ${
+                  offboardingTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'
+                }`}
+              >
+                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {offboardingTab === tab && <motion.div layoutId="offboardingActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400" />}
+              </button>
+            ))}
+          </div>
+
+          <div className="min-h-[280px]">
+            {offboardingTab === 'overview' && (
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { title: 'Account disabled', desc: 'Azure AD account deactivated instantly on approval.' },
+                  { title: 'Sessions revoked', desc: 'All active sessions and tokens killed immediately.' },
+                  { title: 'Licences & groups removed', desc: 'Microsoft 365 licences reclaimed, group memberships stripped.' },
+                  { title: 'Mailbox configured', desc: 'Auto-reply set, access delegated to manager or successor.' },
+                  { title: 'IT approval gate', desc: 'Nothing destructive runs without explicit IT sign-off.' },
+                  { title: 'Full audit trail', desc: 'Every action logged with timestamp and actor for compliance.' },
+                ].map((s, i) => (
+                  <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                    <h4 className="font-bold text-amber-400 text-sm mb-1">{s.title}</h4>
+                    <p className="text-gray-400 text-xs">{s.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {offboardingTab === 'demo' && (
+              <div>
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/OFFBOARDING_VIDEO_ID"
+                    allowFullScreen
+                    frameBorder="0"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="Employee Offboarding Demo"
+                  />
+                </div>
+                <p className="text-gray-500 text-xs text-center mt-3">Tally → IT Approval → Azure AD → Graph API → Audit Log</p>
+              </div>
+            )}
+
+            {offboardingTab === 'how-it-works' && (
+              <div className="space-y-3 max-w-xl mx-auto">
+                {[
+                  { step: 'Offboarding request submitted', desc: 'HR or manager submits leaver details via Tally form.' },
+                  { step: 'IT approves', desc: 'Approval gate ensures nothing destructive runs without sign-off.' },
+                  { step: 'Account disabled & sessions revoked', desc: 'Azure AD account disabled, all active sessions killed.' },
+                  { step: 'Licences & groups removed', desc: 'M365 licences reclaimed, group memberships stripped, mailbox configured.' },
+                  { step: 'Completion checklist logged & emailed', desc: 'Full audit trail recorded and checklist sent to IT and HR.' },
+                ].map((p, i) => (
+                  <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                    <div className="font-bold text-amber-400 text-sm mb-1">{p.step}</div>
+                    <p className="text-gray-400 text-xs">{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 bg-amber-400/5 border border-amber-400/20 rounded-xl px-5 py-4">
+            <p className="text-amber-300 text-xs text-center">
+              <strong>Demo:</strong> Tally → IT Approval → Azure AD → Graph API → Outlook → Sheets.
             </p>
           </div>
         </div>

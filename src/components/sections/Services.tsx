@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Activity, Headphones, Users, UserMinus, MessageSquare, GitBranch, Recycle, ArrowRight, Zap, Link2 } from 'lucide-react';
+import { Activity, Headphones, Users, UserMinus, MessageSquare, GitBranch, Recycle, ArrowRight, Zap, Link2, ShieldCheck } from 'lucide-react';
 
 interface Service {
   icon: any;
@@ -62,6 +62,14 @@ const services: Service[] = [
     hoverStat: 'Live in Teams',
     accent: 'blue',
     delay: 0.4,
+  },
+  {
+    icon: ShieldCheck,
+    title: 'A.I. License & Compliance Auditor',
+    description: 'Automated Microsoft 365 / Azure AD compliance auditing — tracks wasted licences, flags stale guest accounts, monitors security posture (MFA, sign-in activity), and delivers daily digest reports to Teams and email with estimated £ cost of licence waste.',
+    hoverStat: 'Read-only, zero write access',
+    accent: 'blue',
+    delay: 0.45,
   },
   {
     icon: GitBranch,

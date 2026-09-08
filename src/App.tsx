@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { supabase } from './lib/supabase';
 import type { ContactInquiry } from './lib/supabase';
 import { useWebMCP } from './hooks/useWebMCP';
-import { Recycle, Activity, Headphones, Users, UserMinus, MessageSquare, GitBranch, Mail, Linkedin, ArrowUp } from 'lucide-react';
+import { Recycle, Activity, Headphones, Users, UserMinus, MessageSquare, GitBranch, Mail, Linkedin, ArrowUp, ShieldCheck } from 'lucide-react';
 
 // Layout & UI
 import { Navbar } from './components/layout/Navbar';
@@ -40,6 +40,7 @@ function App() {
   const [isOffboardingModalOpen, setIsOffboardingModalOpen] = useState(false);
   const [isCustomWorkflowModalOpen, setIsCustomWorkflowModalOpen] = useState(false);
   const [isAIAssistantModalOpen, setIsAIAssistantModalOpen] = useState(false);
+  const [isComplianceModalOpen, setIsComplianceModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -65,6 +66,7 @@ function App() {
   const [onboardingTab, setOnboardingTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
   const [offboardingTab, setOffboardingTab] = useState<'overview' | 'demo' | 'how-it-works'>('overview');
   const [aiAssistantTab, setAiAssistantTab] = useState<'overview' | 'how-it-works'>('overview');
+  const [complianceTab, setComplianceTab] = useState<'overview' | 'how-it-works'>('overview');
   const [bookingPrefill, setBookingPrefill] = useState<{ name?: string; email?: string; company?: string; contactNumber?: string } | undefined>(undefined);
 
   const navigateToSection = useCallback((sectionId: string) => {
@@ -297,6 +299,9 @@ function App() {
     } else if (title === 'AI Knowledge & Support Assistant (RAG chatbot)') {
       setAiAssistantTab('overview');
       setIsAIAssistantModalOpen(true);
+    } else if (title === 'A.I. License & Compliance Auditor') {
+      setComplianceTab('overview');
+      setIsComplianceModalOpen(true);
     }
   };
 
@@ -930,6 +935,77 @@ function App() {
           <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
             <p className="text-blue-300 text-xs text-center">
               <strong>Live:</strong> Tally → Gemini → Supabase pgvector → Teams. Contact us to discuss your setup.
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      {/* A.I. License & Compliance Auditor Modal */}
+      <Modal isOpen={isComplianceModalOpen} onClose={() => setIsComplianceModalOpen(false)}>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className="bg-blue-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+              <ShieldCheck className="text-blue-400" size={32} />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">A.I. License &amp; Compliance Auditor</h2>
+          </div>
+
+          <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
+            {(['overview', 'how-it-works'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setComplianceTab(tab)}
+                className={`relative px-4 py-3 text-sm font-semibold capitalize transition-colors duration-300 whitespace-nowrap ${
+                  complianceTab === tab ? 'text-blue-400 font-bold' : 'text-gray-400 hover:text-gray-300'
+                }`}
+              >
+                {tab === 'how-it-works' ? 'How It Works' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {complianceTab === tab && <motion.div layoutId="complianceActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400" />}
+              </button>
+            ))}
+          </div>
+
+          <div className="min-h-[280px]">
+            {complianceTab === 'overview' && (
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { title: 'Licence usage & waste tracking', desc: 'Tracks assigned vs. active usage across all Microsoft 365 SKUs.' },
+                  { title: 'Guest account staleness detection', desc: 'Flags stale guest accounts with severity: Low / Medium / High / Critical.' },
+                  { title: 'MFA & sign-in activity checks', desc: 'Monitors MFA registration and sign-in activity where tenant licensing supports it.' },
+                  { title: 'Estimated £ cost of waste', desc: 'Calculates monthly and annual £ cost of wasted licences.' },
+                  { title: 'Daily/weekly digest', desc: 'Automated reports delivered via Microsoft Teams and Outlook email.' },
+                  { title: 'Full audit trail', desc: 'Every scan and finding logged to Google Sheets for compliance.' },
+                  { title: 'Read-only Azure AD access', desc: 'Dedicated, isolated App Registration per client — no write access to their tenant required.' },
+                ].map((s, i) => (
+                  <div key={i} className="bg-gray-800/30 p-5 rounded-2xl border border-white/5">
+                    <h4 className="font-bold text-blue-400 text-sm mb-1">{s.title}</h4>
+                    <p className="text-gray-400 text-xs">{s.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {complianceTab === 'how-it-works' && (
+              <div className="space-y-3 max-w-xl mx-auto">
+                {[
+                  { step: 'Read-only scan runs', desc: 'n8n queries Azure AD / Graph API via dedicated read-only App Registration.' },
+                  { step: 'Licence & guest analysis', desc: 'Compares assigned vs. active licences, flags stale guests by severity, checks MFA and sign-in activity.' },
+                  { step: 'Cost estimate calculated', desc: 'Estimated monthly/annual £ cost of wasted licences computed per SKU.' },
+                  { step: 'Digest delivered', desc: 'Summary report sent to Microsoft Teams and Outlook email on a daily or weekly schedule.' },
+                  { step: 'Audit logged', desc: 'Every scan and finding recorded in Google Sheets for compliance.' },
+                ].map((p, i) => (
+                  <div key={i} className="bg-gray-800/20 p-4 rounded-xl border border-white/5">
+                    <div className="font-bold text-blue-400 text-sm mb-1">{p.step}</div>
+                    <p className="text-gray-400 text-xs">{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl px-5 py-4">
+            <p className="text-blue-300 text-xs text-center">
+              <strong>Demo:</strong> Azure AD (read-only) → n8n → Graph API → Teams + Outlook → Google Sheets. Contact us to discuss your setup.
             </p>
           </div>
         </div>

@@ -66,7 +66,7 @@ const services: Service[] = [
   {
     icon: ShieldCheck,
     title: 'A.I. License & Compliance Auditor',
-    description: 'Automated Microsoft 365 / Azure AD compliance auditing — tracks wasted licences, flags stale guest accounts, monitors security posture (MFA, sign-in activity), and delivers daily digest reports to Teams and email with estimated £ cost of licence waste.',
+    description: 'Licences tracked, stale accounts flagged, and security gaps surfaced automatically.',
     hoverStat: 'Read-only, zero write access',
     accent: 'blue',
     delay: 0.45,

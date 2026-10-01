@@ -67,6 +67,17 @@ export const Contact: React.FC<ContactProps> = ({
             className="bg-[#0B1120] p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-2xl"
           >
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+              <input
+                type="text"
+                name="website"
+                value={formData.website || ''}
+                onChange={handleInputChange}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute -left-[9999px] h-px w-px opacity-0"
+              />
+
               {/* Names */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">

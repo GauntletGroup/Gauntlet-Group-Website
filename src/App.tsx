@@ -28,6 +28,8 @@ import { Contact } from './components/sections/Contact';
 import { FounderQuote } from './components/sections/FounderQuote';
 import { StickyBookCTA } from './components/ui/StickyBookCTA';
 
+const leadWebhookUrl = import.meta.env.VITE_LEAD_WEBHOOK_URL || 'https://n8n-gt11s75hpakmln8m2nnyoia3.34.89.96.245.sslip.io/webhook/website-lead';
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
@@ -55,6 +57,7 @@ function App() {
     currentTools: '',
     message: '',
     gdprConsent: false,
+    website: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -197,7 +200,6 @@ function App() {
     if (hasErrors) return;
 
     setIsSubmitting(true);
-    let supabaseSuccess = false;
     let n8nSuccess = false;
 
     try {
@@ -219,42 +221,36 @@ function App() {
       };
       const { error } = await supabase.from('contact_inquiries').insert([inquiryData]);
       if (error) throw error;
-      supabaseSuccess = true;
-    } catch (supabaseError) {
-      console.error('Supabase submission failed:', supabaseError);
+    } catch {
     }
 
-    const n8nWebhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL || import.meta.env.VITE_N8N_WEBOOK_URL;
-    if (n8nWebhookUrl) {
-      try {
-        await fetch(n8nWebhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            phoneNumber: formData.phoneNumber || null,
-            company: formData.company || null,
-            companySize: formData.companySize || null,
-            industry: formData.industry || null,
-            automationType: formData.automationType || null,
-            currentTools: formData.currentTools || null,
-            message: formData.message,
-            gdprConsent: formData.gdprConsent,
-            submittedAt: new Date().toISOString(),
-          }),
-        });
-        n8nSuccess = true;
-      } catch (webhookError) {
-        console.error('Failed to send data to n8n webhook:', webhookError);
-      }
-    } else {
-      console.warn('n8n Webhook URL is not configured.');
+    try {
+      const webhookResponse = await fetch(leadWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phoneNumber || '',
+          company: formData.company || '',
+          automationArea: formData.automationType || '',
+          currentTools: formData.currentTools || '',
+          companySize: formData.companySize || '',
+          industry: formData.industry || '',
+          message: formData.message,
+          consent: formData.gdprConsent,
+          website: formData.website || '',
+          source: 'gauntlet-group.com',
+        }),
+      });
+      if (!webhookResponse.ok) throw new Error('Lead webhook request failed');
+      n8nSuccess = true;
+    } catch {
+      n8nSuccess = false;
     }
 
-    if (supabaseSuccess || n8nSuccess) {
+    if (n8nSuccess) {
       setFormData({
         firstName: '',
         lastName: '',
@@ -267,12 +263,13 @@ function App() {
         currentTools: '',
         message: '',
         gdprConsent: false,
+        website: '',
       });
       setTouched({});
       setErrors({});
       alert("Thank you for your inquiry! We'll get back to you soon.");
     } else {
-      alert('There was an error submitting your inquiry. Please try again.');
+      alert('Something went wrong, please try again or email us directly');
     }
 
     setIsSubmitting(false);

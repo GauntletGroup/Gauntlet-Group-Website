@@ -32,9 +32,7 @@ const leadWebhookUrl = import.meta.env.VITE_LEAD_WEBHOOK_URL || 'https://n8n-gt1
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [introComplete, setIntroComplete] = useState(false);
-
-  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
+  const handleIntroComplete = useCallback(() => undefined, []);
   const [isWEEEModalOpen, setIsWEEEModalOpen] = useState(false);
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isHelpdeskModalOpen, setIsHelpdeskModalOpen] = useState(false);
@@ -44,6 +42,7 @@ function App() {
   const [isAIAssistantModalOpen, setIsAIAssistantModalOpen] = useState(false);
   const [isComplianceModalOpen, setIsComplianceModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -92,21 +91,12 @@ function App() {
     let supabaseSuccess = false;
     let n8nSuccess = false;
     try {
-      const messageParts = [
-        inquiry.message,
-        '---',
-        `Company Size: ${inquiry.companySize || 'Not specified'}`,
-        `Industry: ${inquiry.industry || 'Not specified'}`,
-        `Automation Type: ${inquiry.automationType || 'Not specified'}`,
-        `Current Tools: ${inquiry.currentTools || 'Not specified'}`,
-        'GDPR Consent: Yes (via WebMCP agent)',
-      ];
       const inquiryData: ContactInquiry = {
-        name: `${inquiry.firstName} ${inquiry.lastName}`,
+        name: `${inquiry.firstName} ${inquiry.lastName || ''}`.trim(),
         email: inquiry.email,
         contact_number: inquiry.phoneNumber || null,
         company: inquiry.company || null,
-        message: messageParts.join('\n'),
+        message: inquiry.message || '',
       };
       const { error } = await supabase.from('contact_inquiries').insert([inquiryData]);
       if (error) throw error;
@@ -123,7 +113,16 @@ function App() {
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            ...inquiry,
+            firstName: inquiry.firstName,
+            lastName: inquiry.lastName || '',
+            email: inquiry.email,
+            message: inquiry.message || '',
+            phoneNumber: inquiry.phoneNumber || '',
+            company: inquiry.company || '',
+            companySize: inquiry.companySize || '',
+            industry: inquiry.industry || '',
+            automationType: inquiry.automationType || '',
+            currentTools: inquiry.currentTools || '',
             gdprConsent: true,
             submittedAt: new Date().toISOString(),
           }),
@@ -138,12 +137,10 @@ function App() {
     return { success: false, error: 'Failed to submit inquiry' };
   }, []);
 
-  const validateField = (name: string, value: any) => {
+  const validateField = (name: string, value: unknown) => {
     let error = '';
     if (name === 'firstName') {
       if (typeof value === 'string' && !value.trim()) error = 'First name is required';
-    } else if (name === 'lastName') {
-      if (typeof value === 'string' && !value.trim()) error = 'Last name is required';
     } else if (name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (typeof value === 'string') {
@@ -151,10 +148,7 @@ function App() {
         else if (!emailRegex.test(value.trim())) error = 'Please enter a valid email address';
       }
     } else if (name === 'message') {
-      if (typeof value === 'string') {
-        if (!value.trim()) error = 'Message is required';
-        else if (value.trim().length < 10) error = 'Message must be at least 10 characters';
-      }
+      if (typeof value !== 'string') error = 'Please enter a valid message';
     } else if (name === 'gdprConsent') {
       if (!value) error = 'You must accept the GDPR compliance statement';
     }
@@ -180,7 +174,7 @@ function App() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formFields = ['firstName', 'lastName', 'email', 'message', 'gdprConsent'];
+    const formFields = ['firstName', 'email', 'gdprConsent'];
     const newErrors: Record<string, string> = {};
     const newTouched: Record<string, boolean> = {};
     let hasErrors = false;
@@ -199,29 +193,23 @@ function App() {
     setErrors(newErrors);
     if (hasErrors) return;
 
+    setSubmissionStatus(null);
     setIsSubmitting(true);
     let n8nSuccess = false;
+    let supabaseFailed = false;
 
     try {
-      const messageParts = [
-        formData.message,
-        '---',
-        `Company Size: ${formData.companySize || 'Not specified'}`,
-        `Industry: ${formData.industry || 'Not specified'}`,
-        `Automation Type: ${formData.automationType || 'Not specified'}`,
-        `Current Tools: ${formData.currentTools || 'Not specified'}`,
-        'GDPR Consent: Yes',
-      ];
       const inquiryData: ContactInquiry = {
-        name: `${formData.firstName} ${formData.lastName}`,
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
         contact_number: formData.phoneNumber || null,
         company: formData.company || null,
-        message: messageParts.join('\n'),
+        message: formData.message || '',
       };
       const { error } = await supabase.from('contact_inquiries').insert([inquiryData]);
       if (error) throw error;
     } catch {
+      supabaseFailed = true;
     }
 
     try {
@@ -250,7 +238,7 @@ function App() {
       n8nSuccess = false;
     }
 
-    if (n8nSuccess) {
+    if (n8nSuccess && !supabaseFailed) {
       setFormData({
         firstName: '',
         lastName: '',
@@ -267,9 +255,9 @@ function App() {
       });
       setTouched({});
       setErrors({});
-      alert("Thank you for your inquiry! We'll get back to you soon.");
+      setSubmissionStatus({ type: 'success', message: "Thanks — your enquiry has been sent. We'll be in touch." });
     } else {
-      alert('Something went wrong, please try again or email us directly');
+      setSubmissionStatus({ type: 'error', message: 'Something went wrong, please try again or email us directly' });
     }
 
     setIsSubmitting(false);
@@ -339,6 +327,7 @@ function App() {
           handleBlur={handleBlur}
           handleSubmit={handleSubmit}
           isSubmitting={isSubmitting}
+          submissionStatus={submissionStatus}
         />
       </main>
 
@@ -354,8 +343,8 @@ function App() {
                 className="w-64 object-contain drop-shadow-[0_0_20px_rgba(245,158,11,0.15)]"
               />
             </div>
-            <h2 className="text-5xl md:text-7xl font-display font-extrabold text-gray-800 tracking-tight leading-none mb-4">
-              Always automating.
+            <h2 className="text-5xl md:text-7xl font-display font-extrabold text-white tracking-tight leading-none mb-4">
+              Less Manual Work. More Momentum.
             </h2>
             <a
               href="mailto:imran.ishaq@gauntlet-group.com"
@@ -369,35 +358,38 @@ function App() {
           {/* Bottom bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/5">
             <div className="flex gap-6 text-xs">
-              <a href="#services" className="text-gray-600 hover:text-amber-400 transition-colors">Services</a>
-              <a href="#about" className="text-gray-600 hover:text-amber-400 transition-colors">About</a>
-              <a href="#contact" className="text-gray-600 hover:text-amber-400 transition-colors">Book a Review</a>
-              <a href="#faq" className="text-gray-600 hover:text-amber-400 transition-colors">FAQ</a>
+              <a href="#services" className="text-gray-300 hover:text-amber-400 transition-colors">Services</a>
+              <a href="#about" className="text-gray-300 hover:text-amber-400 transition-colors">About</a>
+              <a href="#book-call" className="text-gray-300 hover:text-amber-400 transition-colors">Book a Review</a>
+              <a href="#faq" className="text-gray-300 hover:text-amber-400 transition-colors">FAQ</a>
             </div>
             <div className="flex items-center gap-4">
               <a
                 href="https://www.linkedin.com/company/gauntlet-group"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-amber-400 transition-colors"
+                className="text-gray-300 hover:text-amber-400 transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={18} />
               </a>
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="text-gray-600 hover:text-amber-400 transition-colors"
+                className="text-gray-300 hover:text-amber-400 transition-colors"
                 aria-label="Back to top"
               >
                 <ArrowUp size={18} />
               </button>
             </div>
           </div>
-          <p className="text-gray-700 text-[10px] text-center mt-6">&copy; {new Date().getFullYear()} Gauntlet Group. All rights reserved.</p>
+          <p className="text-gray-300 text-[10px] text-center mt-6">&copy; {new Date().getFullYear()} Gauntlet Group. All rights reserved.</p>
         </div>
       </footer>
 
-      <StickyBookCTA />
+      <StickyBookCTA
+        isMenuOpen={isMenuOpen}
+        isModalOpen={isWEEEModalOpen || isAlertModalOpen || isHelpdeskModalOpen || isOnboardingModalOpen || isOffboardingModalOpen || isCustomWorkflowModalOpen || isAIAssistantModalOpen || isComplianceModalOpen}
+      />
 
       {/* AI Alert Triage Modal */}
       <Modal isOpen={isAlertModalOpen} onClose={() => setIsAlertModalOpen(false)}>
@@ -410,7 +402,7 @@ function App() {
           </div>
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
-            {(['overview', 'demo', 'integrations', 'how-it-works'] as const).map((tab) => (
+            {(['overview', 'integrations', 'how-it-works'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setAlertTab(tab)}
@@ -418,7 +410,7 @@ function App() {
                   alertTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'
                 }`}
               >
-                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'how-it-works' ? 'How It Works' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {alertTab === tab && <motion.div layoutId="alertActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400" />}
               </button>
             ))}
@@ -438,21 +430,6 @@ function App() {
                     <p className="text-gray-400 text-xs leading-relaxed">{s.desc}</p>
                   </div>
                 ))}
-              </div>
-            )}
-
-            {alertTab === 'demo' && (
-              <div>
-                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                  <iframe
-                    src="https://www.youtube.com/embed/ALERT_VIDEO_ID"
-                    allowFullScreen
-                    frameBorder="0"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="AI Alert Triage Demo"
-                  />
-                </div>
-                <p className="text-gray-500 text-xs text-center mt-3">Azure Monitor → AI Summary → Teams → Audit Log</p>
               </div>
             )}
 
@@ -586,7 +563,7 @@ function App() {
           </div>
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
-            {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
+            {(['overview', 'how-it-works'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setHelpdeskTab(tab)}
@@ -594,7 +571,7 @@ function App() {
                   helpdeskTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'
                 }`}
               >
-                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'how-it-works' ? 'How It Works' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {helpdeskTab === tab && <motion.div layoutId="helpdeskActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400" />}
               </button>
             ))}
@@ -614,21 +591,6 @@ function App() {
                     <p className="text-gray-400 text-xs">{s.desc}</p>
                   </div>
                 ))}
-              </div>
-            )}
-
-            {helpdeskTab === 'demo' && (
-              <div>
-                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                  <iframe
-                    src="https://www.youtube.com/embed/HELPDESK_VIDEO_ID"
-                    allowFullScreen
-                    frameBorder="0"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="IT Helpdesk Automation Demo"
-                  />
-                </div>
-                <p className="text-gray-500 text-xs text-center mt-3">Tally → Azure AD → Graph API → Email → Audit Log</p>
               </div>
             )}
 
@@ -667,7 +629,7 @@ function App() {
           </div>
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
-            {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
+            {(['overview', 'how-it-works'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setOnboardingTab(tab)}
@@ -675,7 +637,7 @@ function App() {
                   onboardingTab === tab ? 'text-blue-400 font-bold' : 'text-gray-400 hover:text-gray-300'
                 }`}
               >
-                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'how-it-works' ? 'How It Works' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {onboardingTab === tab && <motion.div layoutId="onboardingActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400" />}
               </button>
             ))}
@@ -695,21 +657,6 @@ function App() {
                     <p className="text-gray-400 text-xs">{s.desc}</p>
                   </div>
                 ))}
-              </div>
-            )}
-
-            {onboardingTab === 'demo' && (
-              <div>
-                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                  <iframe
-                    src="https://www.youtube.com/embed/ONBOARDING_VIDEO_ID"
-                    allowFullScreen
-                    frameBorder="0"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="Employee Onboarding Demo"
-                  />
-                </div>
-                <p className="text-gray-500 text-xs text-center mt-3">Tally → Azure AD → Welcome email → IT notification → Audit Log</p>
               </div>
             )}
 
@@ -748,7 +695,7 @@ function App() {
           </div>
 
           <div className="flex justify-center border-b border-gray-800 mb-8 max-w-md mx-auto">
-            {(['overview', 'demo', 'how-it-works'] as const).map((tab) => (
+            {(['overview', 'how-it-works'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setOffboardingTab(tab)}
@@ -756,7 +703,7 @@ function App() {
                   offboardingTab === tab ? 'text-amber-400 font-bold' : 'text-gray-400 hover:text-gray-300'
                 }`}
               >
-                {tab === 'how-it-works' ? 'How It Works' : tab === 'demo' ? 'Watch Demo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'how-it-works' ? 'How It Works' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 {offboardingTab === tab && <motion.div layoutId="offboardingActiveTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400" />}
               </button>
             ))}
@@ -778,21 +725,6 @@ function App() {
                     <p className="text-gray-400 text-xs">{s.desc}</p>
                   </div>
                 ))}
-              </div>
-            )}
-
-            {offboardingTab === 'demo' && (
-              <div>
-                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                  <iframe
-                    src="https://www.youtube.com/embed/OFFBOARDING_VIDEO_ID"
-                    allowFullScreen
-                    frameBorder="0"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="Employee Offboarding Demo"
-                  />
-                </div>
-                <p className="text-gray-500 text-xs text-center mt-3">Tally → IT Approval → Azure AD → Graph API → Audit Log</p>
               </div>
             )}
 
@@ -863,8 +795,8 @@ function App() {
           </div>
 
           <div className="flex justify-center mt-6">
-            <Button variant="primary" onClick={() => { setIsCustomWorkflowModalOpen(false); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}>
-              Book a Free Scoping Call
+            <Button variant="primary" onClick={() => { setIsCustomWorkflowModalOpen(false); document.getElementById('book-call')?.scrollIntoView({ behavior: 'smooth' }); }}>
+              Book a Free Automation Review
             </Button>
           </div>
         </div>

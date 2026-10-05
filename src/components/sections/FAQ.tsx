@@ -13,8 +13,8 @@ const faqs = [
     a: "You do. Every automation uses your own Azure app registrations and API keys with least-privilege access. Nothing is stored in our systems.",
   },
   {
-    q: "How fast can you deliver?",
-    a: "Most pilots ship in 48 hours to 2 weeks. We start with one workflow, prove the value, then scale.",
+    q: "How do you approach delivery?",
+    a: "We start with one clearly scoped workflow, agree the integrations involved, and build it in your environment before handing it over."
   },
   {
     q: "What if I'm not sure what to automate?",
@@ -41,7 +41,7 @@ export const FAQ: React.FC = () => {
   const toggle = (i: number) => setOpenIndex((prev) => (prev === i ? null : i));
 
   const handleContactClick = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('book-call')?.scrollIntoView({ behavior: shouldReduceMotion ? 'auto' : 'smooth' });
   };
 
   return (

@@ -2,45 +2,58 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Calendar } from 'lucide-react';
 
-export const StickyBookCTA: React.FC = () => {
+interface StickyBookCTAProps {
+  isMenuOpen?: boolean;
+  isModalOpen?: boolean;
+}
+
+export const StickyBookCTA: React.FC<StickyBookCTAProps> = ({ isMenuOpen = false, isModalOpen = false }) => {
   const [visible, setVisible] = useState(false);
+  const [covered, setCovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
+    const bookingSection = document.getElementById('book-call');
+    const contactSection = document.getElementById('contact');
+    if (!bookingSection || !contactSection) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => setCovered(entries.some((entry) => entry.isIntersecting)),
+      { threshold: 0.15 },
+    );
+    observer.observe(bookingSection);
+    observer.observe(contactSection);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const handleClick = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('book-call')?.scrollIntoView({ behavior: shouldReduceMotion ? 'auto' : 'smooth' });
   };
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !covered && !isMenuOpen && !isModalOpen && (
         <motion.div
           initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
           animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed bottom-6 right-6 z-50"
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-4 sm:right-6 z-40"
         >
-          <div className="relative">
-            {!shouldReduceMotion && (
-              <>
-                <div className="absolute inset-0 rounded-full bg-amber-400/30 animate-ping" style={{ animationDuration: '2s' }} />
-                <div className="absolute -inset-2 rounded-full bg-amber-400/10 blur-lg animate-pulse" style={{ animationDuration: '2.5s' }} />
-              </>
-            )}
-            <button
-              onClick={handleClick}
-              className="relative flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold rounded-full px-6 py-3 shadow-2xl hover:from-amber-400 hover:to-amber-500 transition-all duration-200 hover:scale-105"
-            >
-              <Calendar size={16} />
-              Book a Free Review
-            </button>
-          </div>
+          <button
+            onClick={handleClick}
+            className="flex items-center gap-2 bg-amber-400 text-black font-bold rounded-full px-5 py-3 shadow-[0_12px_30px_rgba(0,0,0,0.35)] hover:bg-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200 focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
+          >
+            <Calendar size={16} />
+            Book a Free Automation Review
+          </button>
         </motion.div>
       )}
     </AnimatePresence>

@@ -157,9 +157,9 @@ function WorkflowCard({ title, accent, nodes, startDelay }: WorkflowCardProps) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.25 }}
-              className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs px-3 py-1.5 rounded-full"
+              className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs px-3 py-1.5 rounded-full"
             >
-              Completed in ~3 seconds
+              Workflow outcome recorded
             </motion.span>
           )}
         </AnimatePresence>
@@ -231,7 +231,7 @@ export function WorkflowDiagram() {
             <span className="bg-gradient-to-r from-amber-400 to-blue-600 bg-clip-text text-transparent">Run Themselves</span>
           </h2>
           <p className="text-sm text-gray-500 max-w-xl mx-auto text-center">
-            Trigger &rarr; outcome. In seconds. No manual steps.
+            Trigger &rarr; outcome. Connected systems, clear hand-offs.
           </p>
         </div>
 

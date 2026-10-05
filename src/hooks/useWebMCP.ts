@@ -35,12 +35,12 @@ const SECTIONS = [
 ];
 
 const SERVICES = [
-  { name: 'AI Alert Triage', description: 'Automated triage and routing of IT alerts in roughly 3 seconds end-to-end.', key: 'AI Alert Triage' },
+  { name: 'AI Alert Triage', description: 'Automated triage and routing of IT alerts before they reach your team.', key: 'AI Alert Triage' },
   { name: 'IT Helpdesk Automation', description: 'Automated handling of common helpdesk requests such as password resets.', key: 'IT Helpdesk Automation' },
-  { name: 'Employee Onboarding', description: 'Automated onboarding of new starters — accounts, access, and welcome email ready on day one.', key: 'Employee Onboarding' },
+  { name: 'Employee Onboarding', description: 'Automated onboarding of new starters — accounts, access, and welcome email.', key: 'Employee Onboarding' },
   { name: 'AI Support Assistants', description: 'RAG-based AI assistants that answer questions from your own documentation, available 24/7.', key: 'AI Support Assistants' },
   { name: 'Custom Workflows', description: 'Bespoke automation of any process that involves copying data or waiting for a human.', key: 'Custom Workflows' },
-  { name: 'WEEE & IT Asset Disposal', description: 'Secure, certified, zero-to-landfill IT asset recycling and disposal.', key: 'WEEE & IT Asset Disposal' },
+  { name: 'WEEE & IT Asset Disposal', description: 'Secure, zero-to-landfill IT asset recycling and disposal.', key: 'WEEE & IT Asset Disposal' },
 ];
 
 function buildTools(handlers: WebMCPHandlers): WebMCPTool[] {
@@ -136,16 +136,16 @@ function buildTools(handlers: WebMCPHandlers): WebMCPTool[] {
     {
       name: 'send_inquiry',
       description:
-        'Submit a contact inquiry on behalf of the visitor. Requires at least firstName, lastName, email, and message.',
+        'Submit a contact inquiry on behalf of the visitor. Requires firstName and email.',
       inputSchema: {
         type: 'object',
         properties: {
           firstName: { type: 'string', description: 'First name (required)' },
-          lastName: { type: 'string', description: 'Last name (required)' },
+          lastName: { type: 'string', description: 'Last name (optional)' },
           email: { type: 'string', description: 'Email address (required)' },
           message: {
             type: 'string',
-            description: 'The inquiry message (required, min 10 chars)',
+            description: 'The inquiry message (optional)',
           },
           phoneNumber: {
             type: 'string',
@@ -163,20 +163,14 @@ function buildTools(handlers: WebMCPHandlers): WebMCPTool[] {
             description: 'Current tools used (optional)',
           },
         },
-        required: ['firstName', 'lastName', 'email', 'message'],
+        required: ['firstName', 'email'],
       },
       execute: async (args) => {
-        const required = ['firstName', 'lastName', 'email', 'message'];
+        const required = ['firstName', 'email'];
         for (const field of required) {
           if (!args[field] || String(args[field]).trim().length === 0) {
             return { success: false, error: `Missing required field: ${field}` };
           }
-        }
-        if (String(args.message).trim().length < 10) {
-          return {
-            success: false,
-            error: 'Message must be at least 10 characters',
-          };
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(String(args.email).trim())) {
@@ -184,9 +178,9 @@ function buildTools(handlers: WebMCPHandlers): WebMCPTool[] {
         }
         return handlers.sendInquiry({
           firstName: String(args.firstName),
-          lastName: String(args.lastName),
+          lastName: args.lastName ? String(args.lastName) : '',
           email: String(args.email),
-          message: String(args.message),
+          message: args.message ? String(args.message) : '',
           phoneNumber: args.phoneNumber as string | undefined,
           company: args.company as string | undefined,
           companySize: args.companySize as string | undefined,
@@ -199,7 +193,7 @@ function buildTools(handlers: WebMCPHandlers): WebMCPTool[] {
     {
       name: 'get_organization_info',
       description:
-        'Get information about Gauntlet Group including contact details, service area, hours, and compliance certifications.',
+        'Get information about Gauntlet Group including contact details, service area, and hours.',
       inputSchema: { type: 'object', properties: {} },
       execute: async () => ({
         name: 'Gauntlet Group',
@@ -214,9 +208,8 @@ function buildTools(handlers: WebMCPHandlers): WebMCPTool[] {
         serviceArea: 'GB',
         hours: 'Mon-Fri 09:00-17:00 GMT',
         compliance: {
-          certifications: ['ISO 27701'],
-          privacy: 'GDPR compliant',
-        },
+          privacy: 'Privacy-conscious handling of submitted enquiries',
+        }
       }),
       annotations: { readOnlyHint: true },
     },

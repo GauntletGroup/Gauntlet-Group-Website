@@ -1,97 +1,46 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { Terminal, Zap, Clock, Shield } from 'lucide-react';
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Bell, GitBranch, CheckCircle2 } from 'lucide-react';
+
+const stages = [
+  { icon: Bell, title: 'Capture', description: 'Start with a request, alert or scheduled task.', colour: 'text-amber-400 border-amber-400/30 bg-amber-400/10' },
+  { icon: GitBranch, title: 'Process', description: 'Connect the relevant systems and apply the agreed workflow.', colour: 'text-blue-400 border-blue-400/30 bg-blue-400/10' },
+  { icon: CheckCircle2, title: 'Notify', description: 'Send updates and record the outcome.', colour: 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10' },
+];
 
 export const ImpactWidget: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  const stats = [
-    { icon: Clock, label: 'Avg. workflow runtime', value: 3, suffix: ' sec', color: 'amber' },
-    { icon: Zap, label: 'Manual steps eliminated', value: 5, suffix: ' per workflow', color: 'blue' },
-    { icon: Shield, label: 'IT tickets avoided', value: 100, suffix: '%', color: 'emerald' },
-  ];
-
-  const [displayValues, setDisplayValues] = useState(stats.map(() => 0));
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    if (!isInView || hasAnimated.current || shouldReduceMotion) {
-      if (shouldReduceMotion) setDisplayValues(stats.map(s => s.value));
-      return;
-    }
-    hasAnimated.current = true;
-
-    const duration = 1500;
-    const steps = 40;
-    const stepDuration = duration / steps;
-    let currentStep = 0;
-
-    const interval = setInterval(() => {
-      currentStep++;
-      const progress = currentStep / steps;
-      const eased = progress * (2 - progress);
-
-      setDisplayValues(stats.map(s => Math.floor(s.value * eased)));
-
-      if (currentStep >= steps) {
-        clearInterval(interval);
-        setDisplayValues(stats.map(s => s.value));
-      }
-    }, stepDuration);
-
-    return () => clearInterval(interval);
-  }, [isInView, shouldReduceMotion]);
-
-  const colorClasses = {
-    amber: 'text-amber-400',
-    blue: 'text-blue-400',
-    emerald: 'text-emerald-400',
-  };
 
   return (
-    <section className="py-12 bg-black">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-16 bg-[#0B1120] border-y border-white/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          ref={ref}
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-gray-900/50 border border-amber-400/20 rounded-2xl p-6 font-mono overflow-hidden relative"
+          className="max-w-4xl mx-auto"
         >
-          <div className="flex items-center space-x-2 mb-6 border-b border-gray-800 pb-4">
-            <Terminal className="text-amber-400" size={18} />
-            <span className="text-gray-400 text-xs">automation_impact --live</span>
-            <div className="flex space-x-1 ml-auto">
-              <div className="w-2 h-2 rounded-full bg-red-500/50" />
-              <div className="w-2 h-2 rounded-full bg-amber-500/50" />
-              <div className="w-2 h-2 rounded-full bg-green-500/50" />
-            </div>
+          <div className="text-center mb-10">
+            <p className="text-amber-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">A practical starting point</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">From manual task to connected workflow</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {stats.map((stat, i) => {
-              const Icon = stat.icon;
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0">
+            {stages.map((stage, index) => {
+              const Icon = stage.icon;
               return (
-                <div key={i} className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Icon size={14} className={colorClasses[stat.color as keyof typeof colorClasses]} />
-                    <span className={`${colorClasses[stat.color as keyof typeof colorClasses]} text-xs uppercase tracking-widest`}>
-                      {stat.label}
-                    </span>
+                <div key={stage.title} className="relative flex md:flex-col items-start md:items-center text-left md:text-center gap-4 md:gap-3 p-5 md:p-6 bg-black/20 border border-white/5 first:rounded-2xl md:first:rounded-l-2xl md:first:rounded-r-none last:rounded-2xl md:last:rounded-r-2xl md:last:rounded-l-none">
+                  <div className={`w-12 h-12 shrink-0 rounded-2xl border flex items-center justify-center ${stage.colour}`}>
+                    <Icon size={22} />
                   </div>
-                  <div className="text-3xl text-white font-bold">
-                    {displayValues[i]}
-                    <span className="text-xs text-gray-500 ml-1">{stat.suffix}</span>
+                  <div>
+                    <h3 className="text-white font-bold text-base mb-1">{stage.title}</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">{stage.description}</p>
                   </div>
+                  {index < stages.length - 1 && <div className="hidden md:block absolute top-12 -right-2 w-4 h-px bg-white/20" aria-hidden="true" />}
                 </div>
               );
             })}
-          </div>
-
-          <div className="mt-6 text-[10px] text-gray-600 animate-pulse">
-            [OK] AUTOMATION_ACTIVE ... MONITORING_WORKFLOWS ...
           </div>
         </motion.div>
       </div>

@@ -12,6 +12,18 @@
 }
 
 @layer utilities {
+  .text-gray-500 {
+    color: #cbd5e1 !important;
+  }
+
+  .text-gray-600 {
+    color: #94a3b8 !important;
+  }
+
+  .text-gray-700 {
+    color: #64748b !important;
+  }
+
   .mesh-gradient {
     background-image: 
       radial-gradient(at 0% 0%, rgba(184, 134, 11, 0.15) 0px, transparent 50%),
@@ -205,6 +217,30 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Custom scrollbar */

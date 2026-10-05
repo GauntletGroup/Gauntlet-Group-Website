@@ -21,7 +21,7 @@ export const Problems: React.FC = () => {
 
   const cardVariants = {
     hidden: { y: shouldReduceMotion ? 0 : 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: shouldReduceMotion ? 0 : 0.5, ease: 'easeOut' } },
+    visible: { y: 0, opacity: 1, transition: { duration: shouldReduceMotion ? 0 : 0.5, ease: 'easeOut' as const } },
   };
 
   return (

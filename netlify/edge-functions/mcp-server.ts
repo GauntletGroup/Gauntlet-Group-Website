@@ -259,7 +259,7 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
   }
 }
 
-export default async (request: Request, context: { next: () => Promise<Response> }) => {
+export default async (request: Request) => {
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }

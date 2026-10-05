@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Activity, Headphones, Users, UserMinus, MessageSquare, GitBranch, Recycle, ArrowRight, Zap, Link2, ShieldCheck } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface Service {
-  icon: any;
+  icon: LucideIcon;
   title: string;
   description: string;
   hoverStat: string;
@@ -82,7 +83,7 @@ const services: Service[] = [
   {
     icon: Recycle,
     title: 'WEEE & IT Asset Disposal',
-    description: 'Secure, certified, zero-cost IT asset recycling and disposal.',
+    description: 'Secure, zero-cost IT asset recycling and disposal.',
     hoverStat: 'Zero-to-landfill',
     accent: 'emerald',
     delay: 0.6,
@@ -150,7 +151,7 @@ export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
             transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
             className="text-sm text-gray-500 max-w-xl mx-auto"
           >
-            Six proven workflows. One pilot to start.
+            Common workflows. One focused starting point.
           </motion.p>
         </div>
 

@@ -35,9 +35,9 @@ export const Contact: React.FC<ContactProps> = ({ formData, errors, touched, han
   const shouldReduceMotion = useReducedMotion();
   const [expandedImage, setExpandedImage] = useState<typeof workflowImages[number] | null>(null);
   const contactInfo = [
-    { icon: Mail, title: 'Email', detail: 'imran.ishaq@gauntlet-group.com' },
-    { icon: Phone, title: 'Phone', detail: '+44 7800 721443' },
-    { icon: MapPin, title: 'Office', detail: 'Peterborough, UK' },
+    { icon: Mail, title: 'Email', detail: 'imran.ishaq@gauntlet-group.com', accent: 'text-amber-400 border-amber-400/40 bg-amber-400/5' },
+    { icon: Phone, title: 'Phone', detail: '+44 7800 721443', accent: 'text-emerald-400 border-emerald-400/40 bg-emerald-400/5' },
+    { icon: MapPin, title: 'Office', detail: 'Peterborough, UK', accent: 'text-gray-200 border-gray-500/60 bg-gray-400/5' },
   ];
 
   const getBorderClass = (fieldName: keyof ContactFormData) => {
@@ -122,7 +122,7 @@ export const Contact: React.FC<ContactProps> = ({ formData, errors, touched, han
               <div className="space-y-6">
                 {contactInfo.map((info) => {
                   const Icon = info.icon;
-                  return <div key={info.title} className="flex items-start space-x-5 group"><div className="p-4 rounded-2xl border border-white/15 bg-[#151B28] text-amber-400 transition-transform duration-300 group-hover:scale-105"><Icon size={22} /></div><div><h4 className="text-white font-bold text-base mb-1">{info.title}</h4><p className="text-gray-300 text-sm">{info.detail}</p></div></div>;
+                  return <div key={info.title} className="flex items-start space-x-5 group"><div className={`p-4 rounded-2xl border transition-transform duration-300 group-hover:scale-105 ${info.accent}`}><Icon size={22} /></div><div><h4 className="text-white font-bold text-base mb-1">{info.title}</h4><p className="text-slate-300 text-sm">{info.detail}</p></div></div>;
                 })}
               </div>
             </motion.div>

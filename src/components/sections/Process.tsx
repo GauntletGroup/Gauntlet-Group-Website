@@ -58,8 +58,8 @@ export const Process: React.FC = () => {
         </div>
 
         <div className="mt-12 max-w-3xl mx-auto text-center border border-amber-400/30 bg-amber-400/5 rounded-3xl px-6 py-7">
-          <p className="text-white font-semibold">Custom automation projects start from £8,000.</p>
-          <p className="text-gray-300 text-sm mt-2">Final pricing depends on scope and integrations.</p>
+          <p className="text-white font-semibold">See what your automation opportunity could look like.</p>
+          <p className="text-gray-300 text-sm mt-2">Book a free review to map the workflow, scope the integrations, and identify the best next step.</p>
           <a href="#book-call" className="inline-flex items-center gap-2 mt-5 text-amber-400 hover:text-amber-300 font-bold text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded">
             Book a Free Automation Review <ArrowRight size={16} />
           </a>

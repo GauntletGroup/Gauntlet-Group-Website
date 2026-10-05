@@ -18,7 +18,6 @@ export const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
 
     const timer = setTimeout(() => {
       setVisible(false);
-      setTimeout(onComplete, 600);
     }, 2600);
 
     return () => clearTimeout(timer);
@@ -27,12 +26,13 @@ export const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
   if (shouldReduceMotion) return null;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={onComplete}>
       {visible && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
+          exit={{ opacity: 0, scale: 1.025, filter: 'blur(4px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: 'center center' }}
           className="fixed inset-0 z-[100] bg-black flex items-center justify-center overflow-hidden"
         >
           {/* Radial glow behind logo */}
@@ -92,10 +92,7 @@ export const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
 
           {/* Skip button */}
           <button
-            onClick={() => {
-              setVisible(false);
-              setTimeout(onComplete, 300);
-            }}
+            onClick={() => setVisible(false)}
             className="absolute bottom-8 right-8 text-gray-700 hover:text-gray-500 text-[10px] uppercase tracking-widest transition-colors"
           >
             Skip

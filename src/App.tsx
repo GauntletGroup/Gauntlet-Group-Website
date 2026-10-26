@@ -26,6 +26,7 @@ import { FAQ } from './components/sections/FAQ';
 import { BookCall } from './components/sections/BookCall';
 import { Contact } from './components/sections/Contact';
 import { FounderQuote } from './components/sections/FounderQuote';
+import { Certifications } from './components/sections/Certifications';
 import { StickyBookCTA } from './components/ui/StickyBookCTA';
 
 const leadWebhookUrl = import.meta.env.VITE_LEAD_WEBHOOK_URL || 'https://n8n-gt11s75hpakmln8m2nnyoia3.34.89.96.245.sslip.io/webhook/website-lead';
@@ -306,6 +307,7 @@ function App() {
         <Hero />
         <ImpactWidget />
         <TechStackStrip />
+        <Certifications />
         <Problems />
         <Services onServiceClick={handleServiceClick} />
         <WorkflowDiagram />
@@ -340,7 +342,7 @@ function App() {
               />
             </div>
             <h2 className="text-5xl md:text-7xl font-display font-extrabold text-white tracking-tight leading-none mb-4">
-              Less Manual Work. More Momentum.
+              Make Work Move.
             </h2>
             <a
               href="mailto:imran.ishaq@gauntlet-group.com"

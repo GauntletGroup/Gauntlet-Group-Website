@@ -342,7 +342,7 @@ function App() {
               />
             </div>
             <h2 className="text-5xl md:text-7xl font-display font-extrabold text-white tracking-tight leading-none mb-4">
-              Make Work Move.
+              Automate the ordinary. Accelerate the exceptional.
             </h2>
             <a
               href="mailto:imran.ishaq@gauntlet-group.com"

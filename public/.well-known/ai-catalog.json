@@ -1,10 +1,57 @@
 {
   "specVersion": "1.0",
+  "host": {
+    "name": "Gauntlet Group",
+    "description": "AI-powered IT automation services for growing UK businesses — alert triage, helpdesk workflows, employee onboarding, and custom integrations.",
+    "url": "https://gauntlet-group.com"
+  },
   "entries": [
     {
       "identifier": "urn:air:gauntlet-group.com:mcp:services",
+      "displayName": "Gauntlet Group MCP Server",
       "type": "application/mcp-server-card+json",
-      "url": "https://gauntlet-group.com/.well-known/mcp/server-card.json"
+      "url": "https://gauntlet-group.com/.well-known/mcp/server-card.json",
+      "representativeQueries": [
+        "What IT automation services does Gauntlet Group offer?",
+        "How do I list services available from Gauntlet Group?",
+        "Submit a contact inquiry to Gauntlet Group",
+        "Get details about Gauntlet Group's employee onboarding automation"
+      ]
+    },
+    {
+      "identifier": "urn:air:gauntlet-group.com:agent-skills:index",
+      "displayName": "Gauntlet Group Agent Skills Index",
+      "type": "application/json",
+      "url": "https://gauntlet-group.com/.well-known/agent-skills/index.json",
+      "representativeQueries": [
+        "What agent skills does Gauntlet Group publish?",
+        "How can an AI agent interact with Gauntlet Group?",
+        "Find the skill for submitting a Gauntlet Group inquiry",
+        "Discover automation skills available from Gauntlet Group"
+      ]
+    },
+    {
+      "identifier": "urn:air:gauntlet-group.com:api:openapi",
+      "displayName": "Gauntlet Group MCP OpenAPI Description",
+      "type": "application/json",
+      "url": "https://gauntlet-group.com/api/mcp-openapi.json",
+      "representativeQueries": [
+        "OpenAPI schema for the Gauntlet Group MCP endpoint",
+        "What HTTP operations does the Gauntlet Group API expose?",
+        "API reference for Gauntlet Group automation tools",
+        "How do I call the Gauntlet Group MCP server over HTTP?"
+      ]
+    },
+    {
+      "identifier": "urn:air:gauntlet-group.com:api:status",
+      "displayName": "Gauntlet Group Service Status",
+      "type": "application/json",
+      "url": "https://gauntlet-group.com/api/status.json",
+      "representativeQueries": [
+        "Is the Gauntlet Group MCP service online?",
+        "Check Gauntlet Group API availability",
+        "Current status of Gauntlet Group automation services"
+      ]
     }
   ]
 }

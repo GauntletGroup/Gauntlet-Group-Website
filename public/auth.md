@@ -1,4 +1,4 @@
-# auth.md
+# Auth.md
 
 ## Gauntlet Group — Agent Registration
 
